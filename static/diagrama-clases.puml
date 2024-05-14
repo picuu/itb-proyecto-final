@@ -1,0 +1,92 @@
+@startuml diagrama+clases
+
+class Usuari {
+  == attributes ==
+  + id: Int
+  + name: String
+  + surname: String
+  + email: String
+  + phone: String
+  + auth_level: AuthLevel
+
+  == methods ==
+  + constructor(Int, String, String, String, String, AuthLevel)
+
+  + createOffer()
+  + updateOffer()
+  + deleteOffer()
+  + subscribe()
+  + unsubscribe()
+  + updateProfile()
+  + sendMessage()
+  + update()
+  + delete()
+}
+
+enum AuthLevel {
+  USER
+  ADMIN
+}
+
+class Category {
+  == attributes ==
+  + id: Int
+  + name: String
+}
+
+class Tag {
+  == attributes ==
+  + id: Int
+  + name: String
+}
+
+Abstract class Oferta {
+  == attributes ==
+  + id: Int 
+  + owner_id: Int
+  + title: String
+  + description: String
+  + category: Category
+  + tags: Array(Tag)
+  + time: String
+  + ubication: String
+  + publish_date: Date
+
+  == methods ==
+  + constructor(Int, Int, String, String)
+
+  + update()
+  + delete()
+}
+
+class Servei {
+  == attributes ==
+  + subscribed_user: Int
+
+  == methods ==
+  + constructor(Int, Driver, Double, Char): super(Int, Int, String, String)
+
+
+}
+
+class Taller {
+  == attributes ==
+  + volunteers: Array(Int)
+  + subscribed_users: Array(Int)
+  + max_subscribeds: Int
+
+  == methods ==
+  + constructor(Int, Driver, Double, Int): super(Int, Int, String, String)
+
+  + addVolunteer()
+  + removeVolunteer()
+  + addSubscribed()
+  + removeSubscribed()
+}
+
+Oferta <|-- Servei
+Oferta <|-- Taller
+Oferta *- Usuari
+Oferta *- Tag
+Oferta *- Category
+@enduml
