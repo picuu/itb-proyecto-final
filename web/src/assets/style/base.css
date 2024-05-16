@@ -55,6 +55,7 @@
 *::after {
   box-sizing: border-box;
   margin: 0;
+  padding: 0;
   font-weight: normal;
 }
 
@@ -65,8 +66,9 @@ body {
   transition:
     color 0.5s,
     background-color 0.5s;
-  line-height: 1.6;
+  line-height: 1.4;
   font-family:
+    'Onest Variable',
     Inter,
     -apple-system,
     BlinkMacSystemFont,
