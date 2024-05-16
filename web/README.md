@@ -1,6 +1,8 @@
-# web
+# Banco del tiempo
 
-This template should help get you started developing with Vue 3 in Vite.
+Proyecto final del primer curso del ciclo formativo de grado superior de Desarrollo de Aplicaciones Web.
+
+> This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
 
