@@ -1,97 +1,116 @@
-/*Aqí va la creación de la base de datos*/
+CREATE DATABASE SistemaOfertas;
+USE SistemaOfertas;
 
--- Data base creation
-CREATE DATABASE IF NOT EXISTS `bankTime` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-
--- auth_level_type creation
-
-CREATE TYPE auth_level_type AS ENUM('1', '2');
-
--- Date type creation
-
-CREATE TYPE date as (
-    `day` INT NOT NULL,
-    `month` INT NOT NULL,
-    `year` INT NOT NULL,
-    `hour` INT NOT NULL,
-    `minute` INT NOT NULL
+-- Tabla AuthLevel
+CREATE TABLE AuthLevel (
+    level VARCHAR(10) PRIMARY KEY
 );
 
--- User creation
+-- Insertar valores en AuthLevel
+INSERT INTO AuthLevel (level) VALUES ('USER'), ('ADMIN');
 
-CREATE TABLE IF NOT EXISTS `User`(
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(50) NOT NULL,
-    `surname` VARCHAR(50) NOT NULL,
-    `email` VARCHAR(50) NOT NULL,
-    `password` VARCHAR(50) NOT NULL,
-    `balance` DECIMAL(10,2) NOT NULL,
-    `valorations` TEXT NOT NULL,
-    `history` TEXT NOT NULL,
-    `auth_level` auth_level_type NOT NULL
+-- Tabla User
+CREATE TABLE User (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    surname VARCHAR(50),
+    email VARCHAR(50),
+    phone VARCHAR(20),
+    balance FLOAT,
+    auth_level VARCHAR(10),
+    FOREIGN KEY (auth_level) REFERENCES AuthLevel(level)
 );
 
--- Valoration creation
-
-CREATE TABLE IF NOT EXISTS `Valoration`(
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `owner_id` INT NOT NULL,
-    `valorated_member` INT NOT NULL,
-    `punctuation` INT NOT NULL,
-    `description` TEXT NOT NULL
+-- Tabla Tag
+CREATE TABLE Tag (
+    id INT PRIMARY KEY,
+    name VARCHAR(50)
 );
 
--- History creation
-
-CREATE TABLE IF NOT EXISTS `History`(
-    `publisher_id` INT NOT NULL,
-    `enrolled_id` INT NOT NULL,
-    `offer` offer_type NOT NULL,
-    `booking` booking_type NOT NULL
+-- Tabla Category
+CREATE TABLE Category (
+    id INT PRIMARY KEY,
+    name VARCHAR(50)
 );
 
--- Offer creation (Object)
-
-CREATE TYPE offer_type AS (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `owner_id` INT NOT NULL,
-    `title` VARCHAR(50) NOT NULL,
-    `description` TEXT NOT NULL,
-    `category` category NOT NULL,
-    `tags` tag_type NOT NULL,
-    `time` date NOT NULL,
-    `ubication` VARCHAR(50) NOT NULL,
-    `availability` date NOT NULL,
-    `publish_date` date NOT NULL,
+-- Tabla Date
+CREATE TABLE Date (
+    day INT,
+    month INT,
+    year INT,
+    hour INT,
+    minute INT,
+    PRIMARY KEY (day, month, year, hour, minute)
 );
 
--- Tag creation (Object)
-
-CREATE TYPE tag_type AS (
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(50) NOT NULL
+-- Tabla Offer
+CREATE TABLE Offer (
+    id INT PRIMARY KEY,
+    owner_id INT,
+    title VARCHAR(100),
+    description VARCHAR(255),
+    category INT,
+    time FLOAT,
+    ubication VARCHAR(100),
+    availability TEXT,
+    publish_date DATE,
+    FOREIGN KEY (owner_id) REFERENCES User(id),
+    FOREIGN KEY (category) REFERENCES Category(id)
 );
 
--- Booking creation (Object)
-
-CREATE TYPE booking_type AS(
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `publisher_id` INT NOT NULL,
-    `enrolled_id` INT NOT NULL,
-    `offer_id` INT NOT NULL,
-    `date` date NOT NULL
+-- Tabla Booking
+CREATE TABLE Booking (
+    id INT PRIMARY KEY,
+    publisher_id INT,
+    enrolled_id INT,
+    offer_id INT,
+    date DATE,
+    FOREIGN KEY (publisher_id) REFERENCES User(id),
+    FOREIGN KEY (enrolled_id) REFERENCES User(id),
+    FOREIGN KEY (offer_id) REFERENCES Offer(id)
 );
 
--- Service creation
-
-CREATE TABLE IF NOT EXISTS `Service`(
-    `subscriber_id` INT NOT NULL
+-- Tabla Valoration
+CREATE TABLE Valoration (
+    id INT PRIMARY KEY,
+    owner_id INT,
+    valorated_member INT,
+    punctuation INT,
+    description VARCHAR(255),
+    FOREIGN KEY (owner_id) REFERENCES User(id),
+    FOREIGN KEY (valorated_member) REFERENCES User(id)
 );
 
--- Comunity offer creation
+-- Tabla History
+CREATE TABLE History (
+    id INT PRIMARY KEY,
+    publisher_id INT,
+    enrolled_id INT,
+    offer_id INT,
+    booking_id INT,
+    FOREIGN KEY (publisher_id) REFERENCES User(id),
+    FOREIGN KEY (enrolled_id) REFERENCES User(id),
+    FOREIGN KEY (offer_id) REFERENCES Offer(id),
+    FOREIGN KEY (booking_id) REFERENCES Booking(id)
+);
 
-CREATE TABLE IF NOT EXISTS `Comunity_offer`(
-    `volunteers` INT NOT NULL,
-    `subscribed_users` INT NOT NULL,
-    `max_subscribers` INT NOT NULL
+-- Tabla Service
+CREATE TABLE Service (
+    id INT PRIMARY KEY,
+    volunteers INT[],
+    subscribed_users INT[],
+    max_subscribed INT,
+    FOREIGN KEY (id) REFERENCES Offer(id)
+);
+
+-- Tabla Taller
+CREATE TABLE Taller (
+    id INT PRIMARY KEY,
+    FOREIGN KEY (id) REFERENCES Offer(id)
+);
+
+-- Tabla Demanda
+CREATE TABLE Demanda (
+    id INT PRIMARY KEY,
+    FOREIGN KEY (id) REFERENCES Offer(id)
 );
