@@ -1,116 +1,117 @@
 CREATE DATABASE SistemaOfertas;
 USE SistemaOfertas;
 
--- Tabla AuthLevel
-CREATE TABLE AuthLevel (
-    level VARCHAR(10) PRIMARY KEY
+-- Tipo AuthLevel
+CREATE TYPE AuthLevel AS (
+    level SMALLINT,
+    name VARCHAR(10)
 );
-
--- Insertar valores en AuthLevel
-INSERT INTO AuthLevel (level) VALUES ('USER'), ('ADMIN');
 
 -- Tabla User
 CREATE TABLE User (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(50),
     surname VARCHAR(50),
     email VARCHAR(50),
     phone VARCHAR(20),
-    balance FLOAT,
-    auth_level VARCHAR(10),
-    FOREIGN KEY (auth_level) REFERENCES AuthLevel(level)
+    balance BIGINT,
+    auth_level AuthLevel
 );
 
--- Tabla Tag
-CREATE TABLE Tag (
-    id INT PRIMARY KEY,
-    name VARCHAR(50)
-);
-
--- Tabla Category
-CREATE TABLE Category (
-    id INT PRIMARY KEY,
-    name VARCHAR(50)
-);
-
--- Tabla Date
-CREATE TABLE Date (
-    day INT,
-    month INT,
-    year INT,
-    hour INT,
-    minute INT,
-    PRIMARY KEY (day, month, year, hour, minute)
-);
-
--- Tabla Offer
-CREATE TABLE Offer (
-    id INT PRIMARY KEY,
+-- Tabla Valoration
+CREATE TABLE Valoration (
+    id SERIAL PRIMARY KEY,
     owner_id INT,
-    title VARCHAR(100),
+    valorated_member_id INT,
+    punctuation INT,
     description VARCHAR(255),
-    category INT,
-    time FLOAT,
-    ubication VARCHAR(100),
-    availability TEXT,
-    publish_date DATE,
+    publish_date DateType,
     FOREIGN KEY (owner_id) REFERENCES User(id),
-    FOREIGN KEY (category) REFERENCES Category(id)
+    FOREIGN KEY (valorated_member_id) REFERENCES User(id)
 );
 
 -- Tabla Booking
 CREATE TABLE Booking (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     publisher_id INT,
     enrolled_id INT,
     offer_id INT,
-    date DATE,
+    date DateType,
     FOREIGN KEY (publisher_id) REFERENCES User(id),
     FOREIGN KEY (enrolled_id) REFERENCES User(id),
     FOREIGN KEY (offer_id) REFERENCES Offer(id)
 );
 
--- Tabla Valoration
-CREATE TABLE Valoration (
-    id INT PRIMARY KEY,
-    owner_id INT,
-    valorated_member INT,
-    punctuation INT,
-    description VARCHAR(255),
-    FOREIGN KEY (owner_id) REFERENCES User(id),
-    FOREIGN KEY (valorated_member) REFERENCES User(id)
-);
-
 -- Tabla History
 CREATE TABLE History (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     publisher_id INT,
     enrolled_id INT,
-    offer_id INT,
-    booking_id INT,
+    offer Offer,
+    booking Booking,
     FOREIGN KEY (publisher_id) REFERENCES User(id),
-    FOREIGN KEY (enrolled_id) REFERENCES User(id),
-    FOREIGN KEY (offer_id) REFERENCES Offer(id),
-    FOREIGN KEY (booking_id) REFERENCES Booking(id)
+    FOREIGN KEY (enrolled_id) REFERENCES User(id)
 );
 
--- Tabla Service
-CREATE TABLE Service (
-    id INT PRIMARY KEY,
-    volunteers INT[],
-    subscribed_users INT[],
-    max_subscribed INT,
-    FOREIGN KEY (id) REFERENCES Offer(id)
+-- Tabla Tag
+CREATE TABLE Tag (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+-- Tabla Category
+CREATE TABLE Category (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50)
+);
+
+-- Tipo DateType
+CREATE TYPE DateType AS (
+    day INT,
+    month INT,
+    year INT,
+    hour INT,
+    minute INT
+);
+
+-- Tipo TimeType
+CREATE TYPE TimeType AS (
+    hours INT,
+    minutes INT
+);
+
+-- Tabla Advert
+CREATE TABLE Advert (
+    id SERIAL PRIMARY KEY,
+    owner_id INT,
+    title VARCHAR(100),
+    description VARCHAR(255),
+    category_id INT,
+    time TimeType,
+    ubication VARCHAR(100),
+    availability TEXT,
+    publish_date DateType,
+    FOREIGN KEY (owner_id) REFERENCES User(id),
+    FOREIGN KEY (category_id) REFERENCES Category(id)
 );
 
 -- Tabla Taller
 CREATE TABLE Taller (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
+    volunteers_id INT[],
+    subscribed_users_id INT[],
+    max_subscribed INT,
+    FOREIGN KEY (id) REFERENCES Offer(id)
+);
+
+-- Tabla Offer
+CREATE TABLE Offer (
+    id SERIAL PRIMARY KEY,
     FOREIGN KEY (id) REFERENCES Offer(id)
 );
 
 -- Tabla Demanda
 CREATE TABLE Demanda (
-    id INT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     FOREIGN KEY (id) REFERENCES Offer(id)
 );
