@@ -7,6 +7,21 @@ CREATE TYPE AuthLevel AS (
     name VARCHAR(10)
 );
 
+-- Tipo DateType
+CREATE TYPE DateType AS (
+    day INT,
+    month INT,
+    year INT,
+    hour INT,
+    minute INT
+);
+
+-- Tipo TimeType
+CREATE TYPE TimeType AS (
+    hours INT,
+    minutes INT
+);
+
 -- Tabla User
 CREATE TABLE User (
     id SERIAL PRIMARY KEY,
@@ -14,6 +29,7 @@ CREATE TABLE User (
     surname VARCHAR(50),
     email VARCHAR(50),
     phone VARCHAR(20),
+    password VARCHAR(35),
     balance BIGINT,
     auth_level AuthLevel
 );
@@ -24,7 +40,7 @@ CREATE TABLE Valoration (
     owner_id INT,
     valorated_member_id INT,
     punctuation INT,
-    description VARCHAR(255),
+    comment VARCHAR(255),
     publish_date DateType,
     FOREIGN KEY (owner_id) REFERENCES User(id),
     FOREIGN KEY (valorated_member_id) REFERENCES User(id)
@@ -35,11 +51,11 @@ CREATE TABLE Booking (
     id SERIAL PRIMARY KEY,
     publisher_id INT,
     enrolled_id INT,
-    offer_id INT,
+    advert_id INT,
     date DateType,
     FOREIGN KEY (publisher_id) REFERENCES User(id),
     FOREIGN KEY (enrolled_id) REFERENCES User(id),
-    FOREIGN KEY (offer_id) REFERENCES Offer(id)
+    FOREIGN KEY (advert_id) REFERENCES Advert(id)
 );
 
 -- Tabla History
@@ -47,7 +63,7 @@ CREATE TABLE History (
     id SERIAL PRIMARY KEY,
     publisher_id INT,
     enrolled_id INT,
-    offer Offer,
+    advert Advert,
     booking Booking,
     FOREIGN KEY (publisher_id) REFERENCES User(id),
     FOREIGN KEY (enrolled_id) REFERENCES User(id)
@@ -63,21 +79,6 @@ CREATE TABLE Tag (
 CREATE TABLE Category (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50)
-);
-
--- Tipo DateType
-CREATE TYPE DateType AS (
-    day INT,
-    month INT,
-    year INT,
-    hour INT,
-    minute INT
-);
-
--- Tipo TimeType
-CREATE TYPE TimeType AS (
-    hours INT,
-    minutes INT
 );
 
 -- Tabla Advert
@@ -101,17 +102,17 @@ CREATE TABLE Taller (
     volunteers_id INT[],
     subscribed_users_id INT[],
     max_subscribed INT,
-    FOREIGN KEY (id) REFERENCES Offer(id)
+    FOREIGN KEY (id) REFERENCES Advert(id)
 );
 
 -- Tabla Offer
 CREATE TABLE Offer (
     id SERIAL PRIMARY KEY,
-    FOREIGN KEY (id) REFERENCES Offer(id)
+    FOREIGN KEY (id) REFERENCES Advert(id)
 );
 
 -- Tabla Demanda
 CREATE TABLE Demanda (
     id SERIAL PRIMARY KEY,
-    FOREIGN KEY (id) REFERENCES Offer(id)
+    FOREIGN KEY (id) REFERENCES Advert(id)
 );
