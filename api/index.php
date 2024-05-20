@@ -33,9 +33,65 @@
                     echo json_encode($users);
                 }
             } elseif($uri[0]=="valoration") {
-
-            } elseif($uri[0]=="") {
-                
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $result = mysqli_query($conn, "SELECT * FROM valoration order by id");
+                    $valorations = array();
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $valorations[] = $row;
+                    }
+                    header('Content-Type: application/json');
+                    echo json_encode($valorations);
+                }
+            } elseif($uri[0]=="offer") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $result = mysqli_query($conn, "SELECT * FROM offer o, advert a WHERE o.id = a.id order by o.id");
+                    $offers = array();
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $offers[] = $row;
+                    }
+                    header('Content-Type: application/json');
+                    echo json_encode($offers);
+                }
+            } elseif($uri[0]=="request") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $result = mysqli_query($conn, "SELECT * FROM request r, advert a WHERE r.id = a.id order by r.id");
+                    $requests = array();
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $requests[] = $row;
+                    }
+                    header('Content-Type: application/json');
+                    echo json_encode($requests);
+                }
+            } elseif($uri[0]=="workshop") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $result = mysqli_query($conn, "SELECT * FROM workshop w, advert a WHERE w.id = a.id order by w.id");
+                    $workshops = array();
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $workshops[] = $row;
+                    }
+                    header('Content-Type: application/json');
+                    echo json_encode($workshops);
+                }
+            } elseif($uri[0]=="booking") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $result = mysqli_query($conn, "SELECT * FROM booking order by id");
+                    $bookings = array();
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $bookings[] = $row;
+                    }
+                    header('Content-Type: application/json');
+                    echo json_encode($bookings);
+                }
+            } elseif($uri[0]=="history") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $result = mysqli_query($conn, "SELECT * FROM history order by id");
+                    $bookings = array();
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $bookings[] = $row;
+                    }
+                    header('Content-Type: application/json');
+                    echo json_encode($bookings);
+                }
             } else {
                 paginaError();
             }
