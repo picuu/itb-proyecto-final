@@ -11,9 +11,9 @@ export default {
 
 <template>
   <div>
-    <AdvertCard title="Offers" link="/offers" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras lobortis efficitur mauris et laoreet. Nulla consequat sed mauris non ornare. Morbi molestie dui non laoreet varius." />
-    <AdvertCard title="Demands" link="/demands" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras lobortis efficitur mauris et laoreet. Nulla consequat sed mauris non ornare. Morbi molestie dui non laoreet varius." />
-    <AdvertCard title="Events" link="/events" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras lobortis efficitur mauris et laoreet. Nulla consequat sed mauris non ornare. Morbi molestie dui non laoreet varius." />
+    <AdvertCard title="Offers" link="/offers" image="heart-handshake.png" description="See what others have to offer you" />
+    <AdvertCard title="Demands" link="/demands" image="MdiOffer.png" description="Ask for a specific service" />
+    <AdvertCard title="Events" link="/events" image="GrommetIconsWorkshop.png" description="Learn and teach together, without limits" />
   </div>
 </template>
 
@@ -24,3 +24,4 @@ div {
   gap: 1.5rem;
 }
 </style>
+
