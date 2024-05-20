@@ -39,7 +39,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: var(--vt-c-black);
+    --color-background: rgb(10 10 10);
     --color-background-soft: var(--vt-c-black-soft);
     --color-background-mute: var(--vt-c-black-mute);
 
@@ -68,7 +68,7 @@ body {
   transition:
     color 0.5s,
     background-color 0.5s;
-  line-height: 1.5;
+  line-height: 1.4;
   font-family:
     'Onest Variable',
     Inter,

@@ -1,5 +1,9 @@
 @import './base.css';
 
+body {
+  position: relative;
+}
+
 #app {
   max-width: 1280px;
   margin-inline: auto;
