@@ -57,19 +57,20 @@ export default {
   methods: {
     async testGetRequest() {
       try {
-        const response = await fetch(`/api/index.php/${this.getEndpoint}/`);
+        const response = await fetch(`api/index.php/${this.getEndpoint}/`);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        this.getResponse = JSON.stringify(data, null, 2);  // Formatea el JSON para mostrarlo mejor
+        console.log(data);
+        this.getResponse = JSON.stringify(data, null, 2);
       } catch (error) {
         this.getResponse = `Error: ${error.message}`;
       }
     },
     async testPostRequest() {
       try {
-        const response = await fetch(`/api/index.php/${this.postEndpoint}/`, {
+        const response = await fetch(`api/index.php/${this.postEndpoint}/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ export default {
     },
     async testPutRequest() {
       try {
-        const response = await fetch(`/api/index.php/${this.putEndpoint}/`, {
+        const response = await fetch(`api/index.php/${this.putEndpoint}/`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -105,7 +106,7 @@ export default {
     },
     async testDeleteRequest() {
       try {
-        const response = await fetch(`/api/index.php/${this.deleteEndpoint}/`, {
+        const response = await fetch(`api/index.php/${this.deleteEndpoint}/`, {
           method: 'DELETE',
         });
         if (!response.ok) {

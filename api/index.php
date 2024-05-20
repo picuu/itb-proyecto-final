@@ -85,12 +85,12 @@
             } elseif($uri[0]=="history") {
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $result = mysqli_query($conn, "SELECT * FROM history order by id");
-                    $bookings = array();
+                    $history = array();
                     while ($row = mysqli_fetch_assoc($result)) {
-                        $bookings[] = $row;
+                        $history[] = $row;
                     }
                     header('Content-Type: application/json');
-                    echo json_encode($bookings);
+                    echo json_encode($history);
                 }
             } else {
                 paginaError();
