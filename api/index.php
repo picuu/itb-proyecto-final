@@ -23,6 +23,7 @@
             break;
         case 2:
             if($uri[0]=="user") {
+                // todos los usuarios
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $result = mysqli_query($conn, "SELECT * FROM user order by id");
                     $users = array();
@@ -33,6 +34,7 @@
                     echo json_encode($users);
                 }
             } elseif($uri[0]=="valoration") {
+                // todas las valoraciones
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $result = mysqli_query($conn, "SELECT * FROM valoration order by id");
                     $valorations = array();
@@ -42,7 +44,19 @@
                     header('Content-Type: application/json');
                     echo json_encode($valorations);
                 }
+            } elseif($uri[0]=="advert") {
+                // todos los anuncios
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $result = mysqli_query($conn, "SELECT * FROM advert order by id");
+                    $advertisements = array();
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $advertisements[] = $row;
+                    }
+                    header('Content-Type: application/json');
+                    echo json_encode($advertisements);
+                }
             } elseif($uri[0]=="offer") {
+                // todas las ofertas
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $result = mysqli_query($conn, "SELECT * FROM offer o, advert a WHERE o.id = a.id order by o.id");
                     $offers = array();
@@ -53,6 +67,7 @@
                     echo json_encode($offers);
                 }
             } elseif($uri[0]=="request") {
+                // todas las peticiones
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $result = mysqli_query($conn, "SELECT * FROM request r, advert a WHERE r.id = a.id order by r.id");
                     $requests = array();
@@ -63,6 +78,7 @@
                     echo json_encode($requests);
                 }
             } elseif($uri[0]=="workshop") {
+                // todos los talleres
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $result = mysqli_query($conn, "SELECT * FROM workshop w, advert a WHERE w.id = a.id order by w.id");
                     $workshops = array();
@@ -73,6 +89,7 @@
                     echo json_encode($workshops);
                 }
             } elseif($uri[0]=="booking") {
+                // todas las reservas
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $result = mysqli_query($conn, "SELECT * FROM booking order by id");
                     $bookings = array();
@@ -83,6 +100,7 @@
                     echo json_encode($bookings);
                 }
             } elseif($uri[0]=="history") {
+                // todos los historiales
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $result = mysqli_query($conn, "SELECT * FROM history order by id");
                     $history = array();
@@ -91,6 +109,28 @@
                     }
                     header('Content-Type: application/json');
                     echo json_encode($history);
+                }
+            } elseif($uri[0]=="category") {
+                // todas las categorías
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $result = mysqli_query($conn, "SELECT * FROM category order by id");
+                    $categories = array();
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $categories[] = $row;
+                    }
+                    header('Content-Type: application/json');
+                    echo json_encode($categories);
+                }
+            } elseif($uri[0]=="tag") {
+                // todos los tags
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $result = mysqli_query($conn, "SELECT * FROM tag order by id");
+                    $tags = array();
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $tags[] = $row;
+                    }
+                    header('Content-Type: application/json');
+                    echo json_encode($tags);
                 }
             } else {
                 paginaError();
