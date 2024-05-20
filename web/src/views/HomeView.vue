@@ -1,9 +1,19 @@
 <script>
+import SectionHero from '../sections/SectionHero.vue'
+import CardsRow from '../components/CardsRow.vue'
+
 export default {
-  name: 'HomeView'
+  name: 'HomeView',
+  components: {
+    SectionHero,
+    CardsRow
+  }
 }
 </script>
 
 <template>
-  <main></main>
+  <main>
+    <SectionHero />
+    <CardsRow />
+  </main>
 </template>
