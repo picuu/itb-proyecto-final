@@ -57,7 +57,7 @@ export default {
   methods: {
     async testGetRequest() {
       try {
-        const response = await fetch(`http://localhost:8000/${this.getEndpoint}`);
+        const response = await fetch(`api/index.php/${this.getEndpoint}`);
         this.getResponse = await response.json();
       } catch (error) {
         this.getResponse = `Error: ${error.message}`;
@@ -65,7 +65,7 @@ export default {
     },
     async testPostRequest() {
       try {
-        const response = await fetch(`http://localhost:8000/${this.postEndpoint}`, {
+        const response = await fetch(`api/index.php/${this.postEndpoint}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export default {
     },
     async testPutRequest() {
       try {
-        const response = await fetch(`http://localhost:8000/${this.putEndpoint}`, {
+        const response = await fetch(`api/index.php/${this.putEndpoint}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ export default {
     },
     async testDeleteRequest() {
       try {
-        const response = await fetch(`http://localhost:8000/${this.deleteEndpoint}`, {
+        const response = await fetch(`api/index.php/${this.deleteEndpoint}`, {
           method: 'DELETE',
         });
         this.deleteResponse = await response.json();
@@ -125,6 +125,7 @@ button {
 }
 pre {
   background: #f0f0f0;
+  color: black;
   padding: 10px;
   overflow-x: auto;
 }

@@ -23,7 +23,15 @@
             break;
         case 2:
             if($uri[0]=="user") {
-                
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $result = mysqli_query($conn, "SELECT * FROM user order by id");
+                    $users = array();
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $users[] = $row;
+                    }
+                    header('Content-Type: application/json');
+                    echo json_encode($users);
+                }
             } elseif($uri[0]=="valoration") {
 
             } elseif($uri[0]=="") {
