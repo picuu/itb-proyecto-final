@@ -32,6 +32,7 @@
 
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
+  --color-text-bright: #23303c;
 
   --section-gap: 160px;
 }
@@ -47,6 +48,7 @@
 
     --color-heading: var(--vt-c-text-dark-1);
     --color-text: var(--vt-c-text-dark-2);
+    --color-text-bright: rgba(235, 235, 235, 0.84);
   }
 }
 
@@ -66,7 +68,7 @@ body {
   transition:
     color 0.5s,
     background-color 0.5s;
-  line-height: 1.4;
+  line-height: 1.5;
   font-family:
     'Onest Variable',
     Inter,

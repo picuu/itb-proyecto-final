@@ -1,29 +1,32 @@
 <script>
 import { RouterLink, RouterView } from 'vue-router'
-import IconMenu from './icons/IconMenu.vue'
 
 export default {
   name: 'App',
   components: {
     RouterLink,
     RouterView,
-    IconMenu
   }
 }
 </script>
 
 <template>
   <header>
-    <img alt="Time Bank logo" src="@/assets/img/logo.svg" />
-
     <div class="wrapper">
-      <span>
-        <IconMenu size="32" />
-      </span>
-
+      <img alt="Time Bank logo" src="@/assets/img/logo.svg" />
+      
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <div>
+          <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/about">About</RouterLink>
+          <RouterLink to="/offers">Offers</RouterLink>
+          <RouterLink to="/demands">Demands</RouterLink>
+          <RouterLink to="/events">Events</RouterLink>
+        </div>
+        <div>
+          <RouterLink to="/login">Login</RouterLink>
+          <RouterLink to="/sign-up">Sign Up</RouterLink>
+        </div>
       </nav>
     </div>
   </header>
@@ -31,4 +34,51 @@ export default {
   <RouterView />
 </template>
 
-<style scoped></style>
+<style scoped>
+main {
+  margin-top: 3rem;
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem 0;
+  background-color: rgb(0 0 0 / .15);
+  backdrop-filter: blur(12px);
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: min(1280px, 100% - 4rem);
+  margin-inline: auto;
+}
+
+img {
+  display: block;
+  height: 16px;
+}
+
+.menu-icon {
+  display: none;
+}
+
+nav, nav > div {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+nav {
+  justify-content: space-between;
+  width: 100%;
+}
+
+a {
+  color: var(--color-text-bright);
+  text-decoration: none;
+}
+</style>
