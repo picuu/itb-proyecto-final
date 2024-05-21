@@ -1,19 +1,31 @@
 <script>
 import AdvertCard from "@/components/AdvertCard.vue"
+import { IconHeartHandshake, IconMessageQuestion, IconFriends } from '@tabler/icons-vue';
 
 export default {
   name: "CardsRow",
   components: {
-    AdvertCard
+    AdvertCard,
+    IconHeartHandshake,
+    IconMessageQuestion,
+    IconFriends
   }
 }
 </script>
 
 <template>
   <div>
-    <AdvertCard title="Offers" link="/offers" image="heart-handshake.png" description="See what others have to offer you" />
-    <AdvertCard title="Demands" link="/demands" image="MdiOffer.png" description="Ask for a specific service" />
-    <AdvertCard title="Events" link="/events" image="GrommetIconsWorkshop.png" description="Learn and teach together, without limits" />
+    <AdvertCard title="Offers" link="/offers" description="See what others have to offer you">
+      <IconHeartHandshake class="icon" size="92" stroke="1" />
+    </AdvertCard>
+
+    <AdvertCard title="Requests" link="/demands" description="Ask others for a specific service">
+      <IconMessageQuestion class="icon" size="92" stroke="1" />
+    </AdvertCard>
+
+    <AdvertCard title="Workshops" link="/events" description="Learn and teach together, without limits">
+      <IconFriends class="icon" size="92" stroke="1" />
+    </AdvertCard>
   </div>
 </template>
 
@@ -21,7 +33,7 @@ export default {
 div {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  justify-items: center;
 }
 </style>
 

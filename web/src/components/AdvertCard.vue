@@ -6,11 +6,10 @@ export default {
   props: {
     title: String,
     description: String,
-    image: String,
     link: String
   },
   components: {
-    RouterLink
+    RouterLink,
   }
 }
 </script>
@@ -18,7 +17,7 @@ export default {
 <template>
   <article>
     <RouterLink :to="link">
-      <img :src="image" :alt="title">
+      <slot />
       <div class="text">
         <h3>{{ title }}</h3>
         <p>{{ description }}</p>
@@ -30,30 +29,34 @@ export default {
 <style scoped>
 article {
   position: relative;
+  width: 85%;
 }
 
 a {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 1.25rem;
   padding: 2rem;
   width: 100%;
   height: 100%;
-  background: linear-gradient(322deg,#ffffff05,#ffffff08);
+  border: none;
   border-radius: 8px;
-  border: 1px solid rgb(255 255 255 / .05);
+  color: rgba(255, 255, 255, .85);
   text-decoration: none;
+  -webkit-transition: background-image 0.2s ease-in-out;
+  transition: background-image 0.2s ease-in-out;
 }
 
-img {
-  width: 100%;
-  height: auto;
+article:hover a {
+  background-image: linear-gradient(322deg,#ffffff05,#ffffff08);
 }
 
 .text {
   display: flex;
   flex-direction: column;
   gap: .25rem;
+  text-align: center;
 }
 
 h3, p {
