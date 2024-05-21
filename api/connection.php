@@ -1,13 +1,17 @@
 <?php
-    $servername = "localhost";
-    $database = "time_bank_db";
-    $username = "root";
-    $password = "";
+    $db_hostname = "tai.db.elephantsql.com";
+    $db_port = "5432";
+    $db_database = "esbqluwa";
+    $db_username = "esbqluwa";
+    $db_password = "sJS9diDu9-e601KT16WPnxYPyr2ilMt8";
 
-    $conn = mysqli_connect($servername, $username, $password, $database);
-    mysqli_set_charset($conn, "utf8");
+    $db_options = "--client_encoding=UTF8";
 
-    if (!$conn) {
-        die("Connection failed: " . mysqli_connect_error());
+    $db_conn_str = "host=$db_hostname port=$db_port dbname=$db_database user=$db_username password=$db_password options='$db_options'";
+
+    $conn = pg_connect($db_conn_str);
+
+    if (pg_last_error($conn)) {
+        die("Connection failed: " . pg_last_error($conn));
     }
 ?>
