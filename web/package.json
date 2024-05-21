@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@fontsource-variable/onest": "^5.0.4",
+    "@tabler/icons-vue": "^3.4.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
