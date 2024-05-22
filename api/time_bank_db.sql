@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 19-05-2024 a las 23:48:51
+-- Tiempo de generación: 22-05-2024 a las 09:29:15
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -24,31 +24,36 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `advert`
+-- Estructura de tabla para la tabla `advertisement`
 --
 
-CREATE TABLE `advert` (
+CREATE TABLE `advertisement` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `owner_id` bigint(20) UNSIGNED NOT NULL,
-  `title` varchar(100) NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `image` varchar(100) NOT NULL,
   `description` text NOT NULL,
+  `type` enum('offer','request','workshop') NOT NULL,
   `category_id` bigint(20) UNSIGNED NOT NULL,
   `tags` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`tags`)),
-  `time` time NOT NULL,
-  `location` varchar(100) NOT NULL,
+  `duration` time NOT NULL,
   `availability` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`availability`)),
-  `publish_date` datetime NOT NULL
+  `location` varchar(50) NOT NULL,
+  `loc_latitude` varchar(50) NOT NULL,
+  `loc_longitude` varchar(50) NOT NULL,
+  `collaborators` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`collaborators`)),
+  `max_subscribers` int(11) NOT NULL,
+  `publishing_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Volcado de datos para la tabla `advert`
+-- Volcado de datos para la tabla `advertisement`
 --
 
-INSERT INTO `advert` (`id`, `owner_id`, `title`, `description`, `category_id`, `tags`, `time`, `location`, `availability`, `publish_date`) VALUES
-(1, 1, 'Clase de Matemáticas', 'Clases de matemáticas para nivel secundario', 1, '[\"educación\", \"matemáticas\"]', '02:00:00', 'Madrid', '[\"lunes\", \"miércoles\"]', '2024-05-01 10:00:00'),
-(2, 2, 'Sesión de Yoga', 'Sesión de yoga para principiantes', 2, '[\"salud\", \"yoga\"]', '01:00:00', 'Barcelona', '[\"martes\", \"jueves\"]', '2024-05-02 11:00:00'),
-(3, 1, 'Solicitud de Tutor de Inglés', 'Busco un tutor de inglés para mejorar mi nivel', 1, '[\"educación\", \"inglés\"]', '01:30:00', 'Valencia', '[\"lunes\", \"viernes\"]', '2024-05-03 10:00:00'),
-(4, 2, 'Ayuda con Jardinería', 'Necesito ayuda con el mantenimiento del jardín', 2, '[\"salud\", \"jardinería\"]', '02:00:00', 'Sevilla', '[\"sábado\", \"domingo\"]', '2024-05-04 11:00:00');
+INSERT INTO `advertisement` (`id`, `owner_id`, `title`, `image`, `description`, `type`, `category_id`, `tags`, `duration`, `availability`, `location`, `loc_latitude`, `loc_longitude`, `collaborators`, `max_subscribers`, `publishing_date`) VALUES
+(1, 1, 'Clases de Matemáticas', 'math.jpg', 'Ofrezco clases de matemáticas para secundaria', 'offer', 1, '[\"Online\", \"Gratis\"]', '01:00:00', '[\"Lunes 10:00-12:00\", \"Miércoles 14:00-16:00\"]', 'Madrid', '40.416775', '-3.703790', '[]', 3, '2024-05-22 07:24:12'),
+(2, 2, 'Taller de Programación', 'programming.jpg', 'Taller intensivo de programación en Python', 'workshop', 2, '[\"Presencial\", \"Pago\"]', '02:00:00', '[\"Viernes 18:00-20:00\"]', 'Barcelona', '41.385064', '2.173404', '[1, 3]', 20, '2024-05-21 23:59:12'),
+(3, 3, 'Ayuda con clases de inglés', 'english_help.jpg', 'Busco alguien que me ayude con clases de inglés conversacional', 'request', 1, '[\"Online\", \"Pago\"]', '01:30:00', '[\"Martes 17:00-18:30\", \"Jueves 17:00-18:30\"]', 'Valencia', '39.469907', '-0.376288', '[]', 1, '2024-05-22 00:03:52');
 
 -- --------------------------------------------------------
 
@@ -58,19 +63,22 @@ INSERT INTO `advert` (`id`, `owner_id`, `title`, `description`, `category_id`, `
 
 CREATE TABLE `booking` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `advert_id` bigint(20) UNSIGNED NOT NULL,
   `publisher_id` bigint(20) UNSIGNED NOT NULL,
   `enrolled_id` bigint(20) UNSIGNED NOT NULL,
-  `advert_id` bigint(20) UNSIGNED NOT NULL,
-  `date` datetime NOT NULL
+  `date` date NOT NULL,
+  `time` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `booking`
 --
 
-INSERT INTO `booking` (`id`, `publisher_id`, `enrolled_id`, `advert_id`, `date`) VALUES
-(1, 1, 2, 1, '2024-05-10 09:00:00'),
-(2, 2, 1, 2, '2024-05-11 08:00:00');
+INSERT INTO `booking` (`id`, `advert_id`, `publisher_id`, `enrolled_id`, `date`, `time`) VALUES
+(1, 1, 1, 2, '2024-05-25', '10:00:00'),
+(2, 2, 2, 3, '2024-05-26', '18:00:00'),
+(3, 3, 3, 1, '2024-05-27', '17:00:00'),
+(4, 1, 1, 3, '2024-05-28', '10:00:00');
 
 -- --------------------------------------------------------
 
@@ -89,8 +97,8 @@ CREATE TABLE `category` (
 
 INSERT INTO `category` (`id`, `name`) VALUES
 (1, 'Educación'),
-(2, 'Salud'),
-(3, 'Tecnología');
+(2, 'Tecnología'),
+(3, 'Salud');
 
 -- --------------------------------------------------------
 
@@ -111,44 +119,8 @@ CREATE TABLE `history` (
 --
 
 INSERT INTO `history` (`id`, `publisher_id`, `enrolled_id`, `advert`, `booking`) VALUES
-(1, 1, 2, '{\"id\":1, \"title\":\"Clase de Matemáticas\", \"description\":\"Clases de matemáticas para nivel secundario\"}', '{\"id\":1, \"date\":\"2024-05-10 09:00:00\"}'),
-(2, 2, 1, '{\"id\":2, \"title\":\"Sesión de Yoga\", \"description\":\"Sesión de yoga para principiantes\"}', '{\"id\":2, \"date\":\"2024-05-11 08:00:00\"}');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `offer`
---
-
-CREATE TABLE `offer` (
-  `id` bigint(20) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `offer`
---
-
-INSERT INTO `offer` (`id`) VALUES
-(1),
-(2);
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `request`
---
-
-CREATE TABLE `request` (
-  `id` bigint(20) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `request`
---
-
-INSERT INTO `request` (`id`) VALUES
-(3),
-(4);
+(1, 1, 2, '{\"id\": 1, \"title\": \"Clases de Matemáticas\", \"type\": \"offer\", \"category\": \"Educación\"}', '{\"id\": 1, \"advert_id\": 1, \"date\": \"2024-05-25\", \"time\": \"10:00:00\"}'),
+(2, 2, 3, '{\"id\": 2, \"title\": \"Taller de Programación\", \"type\": \"workshop\", \"category\": \"Tecnología\"}', '{\"id\": 2, \"advert_id\": 2, \"date\": \"2024-05-26\", \"time\": \"18:00:00\"}');
 
 -- --------------------------------------------------------
 
@@ -166,10 +138,10 @@ CREATE TABLE `tag` (
 --
 
 INSERT INTO `tag` (`id`, `name`) VALUES
-(1, 'educación'),
-(2, 'matemáticas'),
-(3, 'salud'),
-(4, 'yoga');
+(1, 'Online'),
+(2, 'Presencial'),
+(3, 'Gratis'),
+(4, 'Pago');
 
 -- --------------------------------------------------------
 
@@ -193,9 +165,11 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `surname`, `email`, `phone`, `password`, `balance`, `auth_level`) VALUES
-(1, 'Juan', 'Pérez', 'juan.perez@example.com', '123456789', 'password1', 100, 'user'),
-(2, 'Ana', 'García', 'ana.garcia@example.com', '987654321', 'password2', 200, 'user'),
-(3, 'Carlos', 'López', 'carlos.lopez@example.com', '456123789', 'password3', 150, 'admin');
+(1, 'Juan', 'Pérez', 'juan.perez@example.com', '123456789', 'password123', 100, 'user'),
+(2, 'María', 'Gómez', 'maria.gomez@example.com', '987654321', 'password456', 200, 'user'),
+(3, 'Carlos', 'López', 'carlos.lopez@example.com', '456789123', 'password789', 150, 'admin'),
+(4, 'Ana', 'Martínez', 'ana.martinez@example.com', '111222333', 'password101', 120, 'user'),
+(5, 'Luis', 'García', 'luis.garcia@example.com', '444555666', 'password202', 80, 'user');
 
 -- --------------------------------------------------------
 
@@ -209,47 +183,28 @@ CREATE TABLE `valoration` (
   `valorated_member_id` bigint(20) UNSIGNED NOT NULL,
   `score` int(11) NOT NULL,
   `comment` text NOT NULL,
-  `publish_date` datetime NOT NULL
+  `publishing_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `valoration`
 --
 
-INSERT INTO `valoration` (`id`, `owner_id`, `valorated_member_id`, `score`, `comment`, `publish_date`) VALUES
-(1, 1, 2, 5, 'Excelente clase de matemáticas, muy recomendada.', '2024-05-15 10:30:00'),
-(2, 2, 1, 4, 'Muy buena sesión de yoga, muy relajante.', '2024-05-16 11:00:00');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `workshop`
---
-
-CREATE TABLE `workshop` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `volunteers` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`volunteers`)),
-  `subscribed_users` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`subscribed_users`)),
-  `max_subscribed` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `workshop`
---
-
-INSERT INTO `workshop` (`id`, `volunteers`, `subscribed_users`, `max_subscribed`) VALUES
-(1, '[\"volunteer1\", \"volunteer2\"]', '[\"user1\", \"user2\"]', 20),
-(2, '[\"volunteer3\", \"volunteer4\"]', '[\"user3\", \"user4\"]', 15);
+INSERT INTO `valoration` (`id`, `owner_id`, `valorated_member_id`, `score`, `comment`, `publishing_date`) VALUES
+(1, 2, 1, 5, 'Excelente profesor de matemáticas', '2024-05-21 23:59:12'),
+(2, 3, 2, 4, 'Muy buen taller de programación', '2024-05-21 23:59:12'),
+(3, 1, 3, 5, 'Carlos es un administrador excelente', '2024-05-22 06:36:39'),
+(4, 2, 3, 4, 'Muy buen trabajo organizando talleres', '2024-05-22 06:36:39');
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `advert`
+-- Indices de la tabla `advertisement`
 --
-ALTER TABLE `advert`
-  ADD PRIMARY KEY (`id`),
+ALTER TABLE `advertisement`
+  ADD PRIMARY KEY (`id`) USING BTREE,
   ADD KEY `owner_id` (`owner_id`),
   ADD KEY `category_id` (`category_id`);
 
@@ -258,9 +213,9 @@ ALTER TABLE `advert`
 --
 ALTER TABLE `booking`
   ADD PRIMARY KEY (`id`),
+  ADD KEY `advert_id` (`advert_id`),
   ADD KEY `publisher_id` (`publisher_id`),
-  ADD KEY `enrolled_id` (`enrolled_id`),
-  ADD KEY `advert_id` (`advert_id`);
+  ADD KEY `enrolled_id` (`enrolled_id`);
 
 --
 -- Indices de la tabla `category`
@@ -275,20 +230,6 @@ ALTER TABLE `history`
   ADD PRIMARY KEY (`id`),
   ADD KEY `publisher_id` (`publisher_id`),
   ADD KEY `enrolled_id` (`enrolled_id`);
-
---
--- Indices de la tabla `offer`
---
-ALTER TABLE `offer`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
--- Indices de la tabla `request`
---
-ALTER TABLE `request`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
 
 --
 -- Indices de la tabla `tag`
@@ -311,27 +252,20 @@ ALTER TABLE `valoration`
   ADD KEY `valorated_member_id` (`valorated_member_id`);
 
 --
--- Indices de la tabla `workshop`
---
-ALTER TABLE `workshop`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id` (`id`);
-
---
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT de la tabla `advert`
+-- AUTO_INCREMENT de la tabla `advertisement`
 --
-ALTER TABLE `advert`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `advertisement`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `booking`
 --
 ALTER TABLE `booking`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `category`
@@ -355,32 +289,32 @@ ALTER TABLE `tag`
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `valoration`
 --
 ALTER TABLE `valoration`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `advert`
+-- Filtros para la tabla `advertisement`
 --
-ALTER TABLE `advert`
-  ADD CONSTRAINT `advert_ibfk_1` FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `advert_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `advertisement`
+  ADD CONSTRAINT `advertisement_ibfk_1` FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `advertisement_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `booking`
 --
 ALTER TABLE `booking`
-  ADD CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`publisher_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`enrolled_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `booking_ibfk_3` FOREIGN KEY (`advert_id`) REFERENCES `advert` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`advert_id`) REFERENCES `advertisement` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`publisher_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `booking_ibfk_3` FOREIGN KEY (`enrolled_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `history`
@@ -390,29 +324,11 @@ ALTER TABLE `history`
   ADD CONSTRAINT `history_ibfk_2` FOREIGN KEY (`enrolled_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `offer`
---
-ALTER TABLE `offer`
-  ADD CONSTRAINT `offer_ibfk_1` FOREIGN KEY (`id`) REFERENCES `advert` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `request`
---
-ALTER TABLE `request`
-  ADD CONSTRAINT `request_ibfk_1` FOREIGN KEY (`id`) REFERENCES `advert` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Filtros para la tabla `valoration`
 --
 ALTER TABLE `valoration`
   ADD CONSTRAINT `valoration_ibfk_1` FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `valoration_ibfk_2` FOREIGN KEY (`valorated_member_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `workshop`
---
-ALTER TABLE `workshop`
-  ADD CONSTRAINT `workshop_ibfk_1` FOREIGN KEY (`id`) REFERENCES `advert` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
