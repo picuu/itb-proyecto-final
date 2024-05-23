@@ -16,7 +16,7 @@ export default {
   <header>
     <div class="wrapper">
       <img alt="Time Bank logo" src="@/assets/img/logo.svg" />
-      
+
       <nav>
         <div>
           <RouterLink to="/">Home</RouterLink>
@@ -40,7 +40,7 @@ export default {
 
 <style scoped>
 main {
-  margin-top: 3rem;
+  padding-top: calc((1.5rem * 2) + (15px * 1.4));
 }
 
 header {
@@ -49,7 +49,7 @@ header {
   left: 0;
   width: 100%;
   padding: 1.5rem 0;
-  background-color: rgb(0 0 0 / .15);
+  background-color: rgb(0 0 0 / 0.15);
   backdrop-filter: blur(12px);
 }
 
@@ -70,7 +70,8 @@ img {
   display: none;
 }
 
-nav, nav > div {
+nav,
+nav > div {
   display: flex;
   align-items: center;
   gap: 2rem;
