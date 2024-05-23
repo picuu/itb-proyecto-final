@@ -25,284 +25,94 @@
     
     switch($numElementsRuta) {
         case 1:
+            header("Access-Control-Allow-Origin: *");
             paginaError();
             break;
         case 2:
+            header("Access-Control-Allow-Origin: *");
             if($uri[0]=="user") {
                 // mostrar todos los usuarios
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    getUsers($conn);
+                    $getAllUsers = getUsers($conn);
+                    echo $getAllUsers;
                 }
                 // crear nuevo usuario
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $data = json_decode(file_get_contents('php://input'), true);
-                    $name = $data['name'];
-                    $surname = $data['surname'];
-                    $email = $data['email'];
-                    $phone = $data['phone'];
-                    $password = md5($data['password']);
-                    $auth_level = $data['auth_level'];
-
-                    $result = mysqli_query($conn, "INSERT INTO user (name, surname, email, phone, password, auth_level) VALUES ('$name', '$surname', '$email', '$phone', '$password', '$auth_level')");
-                    if ($result) {
-                        $response = array('status' => 'success');
-                    } else {
-                        $response = array('status' => 'error');
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($response);
-                }
-            } elseif($uri[0]=="valoration") {
-                // mostrar todas las valoraciones
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $result = mysqli_query($conn, "SELECT * FROM valoration order by id");
-                    $valorations = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $valorations[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($valorations);
+                    $addANewUser = addUser($conn,$data);
+                    echo $addANewUser;
                 }
             } elseif($uri[0]=="advert") {
                 // mostrar todos los anuncios
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $result = mysqli_query($conn, "SELECT * FROM advert order by id");
-                    $advertisements = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $advertisements[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($advertisements);
+                    $getAllAdverts = getAdverts($conn);
+                    echo $getAllAdverts;
                 }
-            } elseif($uri[0]=="offer") {
-                // mostrar todas las ofertas
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $result = mysqli_query($conn, "SELECT * FROM offer o, advert a WHERE o.id = a.id order by o.id");
-                    $offers = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $offers[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($offers);
-                }
-            } elseif($uri[0]=="request") {
-                // mostrar todas las peticiones
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $result = mysqli_query($conn, "SELECT * FROM request r, advert a WHERE r.id = a.id order by r.id");
-                    $requests = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $requests[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($requests);
-                }
-            } elseif($uri[0]=="workshop") {
-                // mostrar todos los talleres
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $result = mysqli_query($conn, "SELECT * FROM workshop w, advert a WHERE w.id = a.id order by w.id");
-                    $workshops = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $workshops[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($workshops);
+                // crear nuevo anuncio
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $data = json_decode(file_get_contents('php://input'), true);
+                    $addANewAdvert = addAdvert($conn,$data);
+                    echo $addANewAdvert;
                 }
             } elseif($uri[0]=="booking") {
                 // mostrar todas las reservas
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $result = mysqli_query($conn, "SELECT * FROM booking order by id");
-                    $bookings = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $bookings[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($bookings);
-                }
-            } elseif($uri[0]=="history") {
-                // mostrar todos los historiales
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $result = mysqli_query($conn, "SELECT * FROM history order by id");
-                    $history = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $history[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($history);
-                }
+
+                // crear nueva reserva
+                
             } elseif($uri[0]=="category") {
                 // mostrar todas las categorías
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $result = mysqli_query($conn, "SELECT * FROM category order by id");
-                    $categories = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $categories[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($categories);
-                }
-                // crear nueva categoria
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    $data = json_decode(file_get_contents('php://input'), true);
-                    $name = $data['name'];
 
-                    $result = mysqli_query($conn, "INSERT INTO category (name) VALUES ('$name')");
-                    if ($result) {
-                        $response = array('status' => 'success');
-                    } else {
-                        $response = array('status' => 'error');
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($response);
-                }
+                // crear nueva categoria
+                
             } elseif($uri[0]=="tag") {
                 // mostrar todos los tags
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $result = mysqli_query($conn, "SELECT * FROM tag order by id");
-                    $tags = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $tags[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($tags);
-                }
+               
                 // crear nuevo tag
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                    $data = json_decode(file_get_contents('php://input'), true);
-                    $name = $data['name'];
+                
+            } elseif($uri[0]=="advert_tags"){
+                // mostrar
 
-                    $result = mysqli_query($conn, "INSERT INTO tag (name) VALUES ('$name')");
-                    if ($result) {
-                        $response = array('status' => 'success');
-                    } else {
-                        $response = array('status' => 'error');
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($response);
-                }
+                // crear
+
             } else {
                 paginaError();
             }
         case 3:
+            header("Access-Control-Allow-Origin: *");
             if($uri[0]=="user") {
                 // mostrar un usario concreto
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $id = $uri[1];
-                    $result = mysqli_query($conn, "SELECT * FROM user WHERE id=$id");
-                    $users = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $users[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($users);
-                }
-            } elseif ($uri[0]=="valoration") {
-                // mostrar una valoración concreta
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $id = $uri[1];
-                    $result = mysqli_query($conn, "SELECT * FROM valoration WHERE id=$id");
-                    $users = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $users[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($users);
+                    $getASingleUser = getUserById($conn,$id);
+                    echo $getASingleUser;
                 }
             } elseif ($uri[0]=="advert") {
                 // mostrar un anuncio concreto
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $id = $uri[1];
-                    $result = mysqli_query($conn, "SELECT * FROM advert WHERE id=$id");
-                    $users = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $users[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($users);
-                }
-            } elseif ($uri[0]=="offer") {
-                // mostrar una oferta concreta
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $id = $uri[1];
-                    $result = mysqli_query($conn, "SELECT * FROM offer o, advert a WHERE o.id = a.id AND o.id=$id");
-                    $users = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $users[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($users);
-                }
-            } elseif ($uri[0]=="request") {
-                // mostrar una petición concreta
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $id = $uri[1];
-                    $result = mysqli_query($conn, "SELECT * FROM request r, advert a WHERE r.id = a.id AND r.id=$id");
-                    $users = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $users[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($users);
-                }
-            } elseif ($uri[0]=="workshop") {
-                // mostrar un taller concreto
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $id = $uri[1];
-                    $result = mysqli_query($conn, "SELECT * FROM workshop w, advert a WHERE w.id = a.id AND w.id=$id");
-                    $users = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $users[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($users);
+                    $getASingleAdvert = getAdvertById($conn, $id);
+                    echo $getASingleAdvert;
                 }
             } elseif ($uri[0]=="booking") {
                 // mostrar una reserva concreta
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $id = $uri[1];
-                    $result = mysqli_query($conn, "SELECT * FROM booking WHERE id=$id");
-                    $users = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $users[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($users);
-                }
-            } elseif ($uri[0]=="history") {
-                // mostrar un historial concreto
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $id = $uri[1];
-                    $result = mysqli_query($conn, "SELECT * FROM history WHERE id=$id");
-                    $users = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $users[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($users);
-                }
+
+                // crear
+                
             } elseif ($uri[0]=="category") {
                 // mostrar una categoría concreta
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $id = $uri[1];
-                    $result = mysqli_query($conn, "SELECT * FROM category WHERE id=$id");
-                    $users = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $users[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($users);
-                }
+
+                //crear
+               
             } elseif ($uri[0]=="tag") {
                 // mostrar un tag concreto
-                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $id = $uri[1];
-                    $result = mysqli_query($conn, "SELECT * FROM tag WHERE id=$id");
-                    $users = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $users[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($users);
-                }
+
+                // crear
+                
+            } elseif ($uri[0]=="advert_tags") {
+                // mostrar
+
+                //crear
+
             } else {
                 paginaError();
             }
