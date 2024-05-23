@@ -27,19 +27,21 @@ export default {
 </script>
 
 <template>
-  <template v-if="type == 'primary'">
-    <RouterLink :href="'/offers/category/' + id" :class="'pill pill-' + type">
-      <IconSchool size="20" stroke="1" />
-      {{ text }}
-    </RouterLink>
-  </template>
-
-  <template v-else>
-    <RouterLink :href="'/offers/tag/' + id" :class="'pill pill-' + type">
-      <IconTag size="18" stroke="1" />
-      {{ text }}
-    </RouterLink>
-  </template>
+  <span>
+    <template v-if="type == 'primary'">
+      <RouterLink :to="'/offers/category/' + id" :class="'pill pill-' + type">
+        <IconSchool size="20" stroke="1" />
+        {{ text }}
+      </RouterLink>
+    </template>
+  
+    <template v-else>
+      <RouterLink :to="'/offers/tag/' + id" :class="'pill pill-' + type">
+        <IconTag size="18" stroke="1" />
+        {{ text }}
+      </RouterLink>
+    </template>
+  </span>
 </template>
 
 <style scoped>
