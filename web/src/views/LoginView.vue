@@ -72,9 +72,16 @@
 
 <script>
 export default {
+    name: "LoginView",
+    props: {
+        activeTabProp: {
+            type: String,
+            default: 'login'
+        }
+    },
     data() {
         return {
-            activeTab: 'login',
+            activeTab: this.activeTabProp,
             loginEmail: '',
             loginPassword: '',
             loginCheck: true,

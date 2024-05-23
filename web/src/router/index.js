@@ -32,12 +32,18 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginView.vue')
+      component: () => import('../views/LoginView.vue'),
+      props: {
+        activeTabProp: "login"
+      }
     },
     {
       path: '/sign-up',
       name: 'sign-up',
-      component: () => import('../views/SignUpView.vue')
+      component: () => import('../views/LoginView.vue'),
+      props: {
+        activeTabProp: "register"
+      }
     }
   ]
 })
