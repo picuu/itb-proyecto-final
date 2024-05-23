@@ -9,7 +9,8 @@ export default {
     RouterLink,
     RouterView,
     FooterComponent,
-    BackgroundComponent
+    BackgroundComponent,
+    LoginView
   }
 }
 </script>
