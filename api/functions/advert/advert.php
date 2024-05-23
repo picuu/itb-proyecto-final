@@ -64,7 +64,7 @@
         return json_encode($response);
     }
 // delete an advert
-    function deleteUser($conn, $id){
+    function deleteAdvert($conn, $id){
         $result = mysqli_query($conn, "DELETE FROM advert WHERE id='$id'");
         if ($result) {
             $response = array('status' => 'success');
