@@ -1,4 +1,5 @@
-import './assets/main.css'
+import '@/assets/style/main.css'
+import '@fontsource-variable/onest'
 
 import { createApp } from 'vue'
 import App from './App.vue'
