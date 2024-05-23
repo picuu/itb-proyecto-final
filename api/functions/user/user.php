@@ -1,6 +1,7 @@
 <?php
+include '../../connection.php';
 // get all users
-    function getUsers($conn,$id){
+    function getUsers($conn){
         $result = mysqli_query($conn, "SELECT * FROM user order by id");
         $advertisements = array();
         while($row = mysqli_fetch_assoc($result)){

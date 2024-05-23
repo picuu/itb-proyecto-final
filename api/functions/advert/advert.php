@@ -10,7 +10,7 @@
     }
 //get advert by id
     function getAdvertById($conn, $id){
-        $result = mysqli_query($conn, "SELECT * FROM advert where id = $id");
+        $result = mysqli_query($conn, "SELECT * FROM advert where id = '$id'");
         $advertisements = mysqli_fetch_assoc($result);
         return json_encode($advertisements);
     }

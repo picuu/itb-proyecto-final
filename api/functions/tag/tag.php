@@ -29,4 +29,5 @@
             $response = array('status' => 'error');
         }
         return json_encode($response);
+    }
 ?>

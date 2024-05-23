@@ -1,5 +1,11 @@
 <?php
     require_once 'connection.php';
+    include 'functions/advert/advert.php';
+    include 'functions/advert_tags/advert_tags.php';
+    include 'functions/booking/booking.php';
+    include 'functions/category/category.php';
+    include 'functions/tag/tag.php';
+    include 'functions/user/user.php';
 
     // Guardamos la URL
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -25,13 +31,7 @@
             if($uri[0]=="user") {
                 // mostrar todos los usuarios
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $result = mysqli_query($conn, "SELECT * FROM user order by id");
-                    $users = array();
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $users[] = $row;
-                    }
-                    header('Content-Type: application/json');
-                    echo json_encode($users);
+                    getUsers($conn);
                 }
                 // crear nuevo usuario
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
