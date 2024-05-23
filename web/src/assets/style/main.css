@@ -12,21 +12,21 @@ body {
   font-weight: normal;
 }
 
-main,
+.content-grid,
 .full-width {
   display: grid;
-  grid-template-columns: [full-width-start] 1rem [breakout-start] 100px [content-start] 1fr [content-end] 100px [breakout-end] 1rem [full-width-end];
+  grid-template-columns: [full-width-start] 100px [breakout-start] 150px [content-start] 1fr [content-end] 150px [breakout-end] 100px [full-width-end];
 }
 
-main > *,
+.content-grid > *,
 .full-width > * {
   grid-column: content;
 }
 
-main > .breakout {
+.content-grid > .breakout {
   grid-column: breakout;
 }
 
-main > .full-width {
+.content-grid > .full-width {
   grid-column: full-width;
 }

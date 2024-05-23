@@ -33,7 +33,7 @@ div {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   justify-items: center;
-  width: calc(100% - 300px);
+  width: calc(100% - 250px);
   margin-inline: auto;
 }
 </style>

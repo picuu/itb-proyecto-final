@@ -12,7 +12,7 @@ export default {
 </script>
 
 <template>
-  <main>
+  <main class="content-grid">
     <SectionHero class="full-width" />
     <CardsRow />
   </main>
