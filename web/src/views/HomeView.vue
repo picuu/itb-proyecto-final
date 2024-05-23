@@ -12,8 +12,6 @@ export default {
 </script>
 
 <template>
-  <main class="content-grid">
-    <SectionHero class="full-width" />
-    <CardsRow />
-  </main>
+  <SectionHero class="full-width" />
+  <CardsRow />
 </template>

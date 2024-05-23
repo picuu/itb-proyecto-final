@@ -9,8 +9,7 @@ export default {
     RouterLink,
     RouterView,
     FooterComponent,
-    BackgroundComponent,
-    LoginView
+    BackgroundComponent
   }
 }
 </script>
@@ -36,7 +35,9 @@ export default {
     </div>
   </header>
 
-  <RouterView />
+  <main class="content-grid">
+    <RouterView />
+  </main>
 
   <FooterComponent />
 
