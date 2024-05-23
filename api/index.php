@@ -39,7 +39,7 @@
                 // crear nuevo usuario
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $data = json_decode(file_get_contents('php://input'), true);
-                    $addANewUser = addUser($conn,$data);
+                    $addANewUser = addUser($conn, $data);
                     echo $addANewUser;
                 }
             } elseif($uri[0]=="advert") {
@@ -51,7 +51,7 @@
                 // crear nuevo anuncio
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $data = json_decode(file_get_contents('php://input'), true);
-                    $addANewAdvert = addAdvert($conn,$data);
+                    $addANewAdvert = addAdvert($conn, $data);
                     echo $addANewAdvert;
                 }
             } elseif($uri[0]=="booking") {
@@ -83,8 +83,21 @@
                 // mostrar un usario concreto
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $id = $uri[1];
-                    $getASingleUser = getUserById($conn,$id);
+                    $getASingleUser = getUserById($conn, $id);
                     echo $getASingleUser;
+                }
+                // actualizar un usuario
+                if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+                    $id = $uri[1];
+                    $data = json_decode(file_get_contents('php://input'), true);
+                    $updateAUser = updateUser($conn, $id, $data);
+                    echo $updateAUser;
+                }
+                // borrar un usuario
+                if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+                    $id = $uri[1];
+                    $deleteAUser = deleteUser($conn, $id);
+                    echo $deleteAUser;
                 }
             } elseif ($uri[0]=="advert") {
                 // mostrar un anuncio concreto
@@ -92,6 +105,19 @@
                     $id = $uri[1];
                     $getASingleAdvert = getAdvertById($conn, $id);
                     echo $getASingleAdvert;
+                }
+                // actualizar un anuncio
+                if ($_SERVER['REQUEST_METHOD'] == 'PUT') {
+                    $id = $uri[1];
+                    $data = json_decode(file_get_contents('php://input'), true);
+                    $updateAnAdvert = updateAdvert($conn, $id, $data);
+                    echo $updateAnAdvert;
+                }
+                // borrar un anuncio
+                if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+                    $id = $uri[1];
+                    $deleteAnAdvert = deleteAdvert($conn, $id);
+                    echo $deleteAnAdvert;
                 }
             } elseif ($uri[0]=="booking") {
                 // mostrar una reserva concreta
