@@ -49,6 +49,11 @@ const router = createRouter({
       component: () => import('../views/EventsView.vue')
     },
     {
+      path: '/advert-form',
+      name: 'advert-form',
+      component: () => import('../views/NewAdvertFormView.vue')
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue'),

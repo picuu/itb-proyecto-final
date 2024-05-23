@@ -1,168 +1,222 @@
 <template>
-    <div>
-        <form @submit.prevent="submitForm">
-            <label>Title:</label>
-            <input type="text" v-model="formData.title" required>
-
-            <label>Image URL:</label>
-            <input type="text" v-model="formData.image" required>
-
-            <label>Description:</label>
-            <textarea v-model="formData.description" required></textarea>
-
-            <label>Type of advert:</label>
-            <select v-model="formData.isRequest">
-                <option :value="0">Offer</option>
-                <option :value="1">Request</option>
-            </select>
-
-            <label>Category:</label>
-            <select v-model="formData.category_id" required>
-                <option value="">Select category</option>
-                <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}
-                </option>
-            </select>
-
-            <label>Cost in TC's:</label>
-            <input type="number" v-model="formData.price" required>
-
-            <label>Your availability:</label>
-            <v-date-picker v-model="selectedDate" @input="updateAvailability" range scrollable
-                show-current></v-date-picker>
-            <v-time-picker v-model="selectedTime" @input="updateAvailability" format="24hr" min="00:00"
-                max="23:59"></v-time-picker>
-
-            <label for="location">Location:</label>
-            <input type="text" id="location" v-model="loc_name">
-            <div id="map"></div>
-
-            <button type="submit">Submit</button>
-        </form>
+    <div class="advert-form">
+      <form @submit.prevent="submitForm">
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input type="text" id="title" v-model="formData.title" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="image">Image URL:</label>
+          <input type="text" id="image" v-model="formData.image" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="description">Description:</label>
+          <textarea id="description" v-model="formData.description" required></textarea>
+        </div>
+  
+        <div class="form-group">
+          <label for="type">Type of advert:</label>
+          <select id="type" v-model="formData.isRequest">
+            <option :value="0">Offer</option>
+            <option :value="1">Request</option>
+          </select>
+        </div>
+  
+        <div class="form-group">
+          <label for="category">Category:</label>
+          <select id="category" v-model="formData.category_id" required>
+            <option value="">Select category</option>
+            <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+          </select>
+        </div>
+  
+        <div class="form-group">
+          <label for="price">Cost in TC's:</label>
+          <input type="number" id="price" v-model="formData.price" required>
+        </div>
+  
+        <div class="form-group">
+          <label>Your availability:</label>
+          <v-date-picker v-model="selectedDate" @input="updateAvailability" range scrollable show-current></v-date-picker>
+          <v-time-picker v-model="selectedTime" @input="updateAvailability" format="24hr" min="00:00" max="23:59"></v-time-picker>
+        </div>
+  
+        <div class="form-group">
+          <label for="location">Location:</label>
+          <input type="text" id="location" v-model="formData.loc_name">
+        </div>
+  
+        <div class="form-group">
+          <label for="max_subscribers">Maximum subscribers:</label>
+          <input type="number" id="max_subscribers" v-model="formData.max_subscribers">
+        </div>
+  
+        <button type="submit">Submit</button>
+      </form>
+  
+      <div id="map"></div>
     </div>
-</template>
-
-<script>
-export default {
+  </template>
+  
+  <script>
+  import L from 'leaflet';
+  
+  export default {
     data() {
-        return {
-            formData: {
-                title: '',
-                image: '',
-                description: '',
-                category_id: '',
-                isRequest: 0,
-                price: 0,
-                selectedDate: null,
-                selectedTime: null,
-                availability: {},
-                loc_name: '',
-                loc_latitude: 0,
-                loc_longitude: 0,
-                map: null,
-                marker: null
-            },
-            // Propiedad con un array para almacenar la lista de categorías obtenidas de la API que se ha de mostrar en el desplegable.
-            categories: [],
-            // Propiedad para almacenar la categoría seleccionada por el usuario
-            selectedCategory: ''
-        };
+      return {
+        formData: {
+          owner_id: null,
+          title: '',
+          image: '',
+          description: '',
+          category_id: '',
+          isRequest: 0,
+          price: 0,
+          selectedDate: new Date(),
+          selectedTime: null,
+          availability: {},
+          loc_name: '',
+          loc_latitude: 0,
+          loc_longitude: 0,
+          max_subscribers: 0,
+          publish_date: null
+        },
+        categories: [],
+        selectedCategory: '',
+        map: null,
+        marker: null
+      };
     },
     mounted() {
-        // Inicializar el mapa
-        this.initMap();
+      this.initMap();
     },
     methods: {
-        initMap() {
-            // Crear mapa
-            this.map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 40.73061, lng: -73.935242 },
-                zoom: 8
-            });
-
-            // Escuchar eventos de clic en el mapa
-            this.map.addListener('click', (event) => {
-                this.handleMapClick(event.latLng);
-            });
-        },
-        handleMapClick(latLng) {
-            // Actualizar la posición del marcador
-            if (!this.marker) {
-                this.marker = new google.maps.Marker({
-                    position: latLng,
-                    map: this.map,
-                    draggable: true
-                });
-            } else {
-                this.marker.setPosition(latLng);
-            }
-
-            // Actualizar las coordenadas
-            this.loc_latitude = latLng.lat();
-            this.loc_longitude = latLng.lng();
-
-            // Obtener el nombre de la ubicación (podrías utilizar la API de geocodificación inversa aquí)
-            // En este ejemplo, simplemente se muestra una alerta con las coordenadas
-            alert(`Selected location: Lat ${this.loc_latitude}, Lng ${this.loc_longitude}`);
-        },
-        async fetchCategories() {
-            try {
-                const response = await fetch('http://localhost/itb-proyecto-final/api/index.php/category');
-                if (response.ok) {
-                    this.categories = await response.json();
-                } else {
-                    console.error('Failed to fetch categories.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        },
-        async submitForm() {
-            try {
-                const response = await fetch('http://localhost/itb-proyecto-final/api/index.php/advert', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(this.formData)
-                });
-
-                if (response.ok) {
-                    console.log('Advert created successfully!');
-                    this.resetForm();
-                } else {
-                    console.error('Failed to create advert.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        },
-        updateAvailability() {
-            if (!this.selectedDate || !this.selectedTime) return;
-            const day = this.selectedDate.toDateString();
-            const time = this.selectedTime;
-            if (!this.availability[day]) {
-                this.$set(this.availability, day, []);
-            }
-            if (!this.availability[day].includes(time)) {
-                this.availability[day].push(time);
-            }
-        },
-        resetForm() {
-            // Reiniciar los valores del formulario después de enviarlos
-            this.formData.title = '';
-            this.formData.description = '';
-            this.formData.image = '';
-            // Reiniciar más campos si es necesario
-        },
-        created() {
-            this.fetchCategories();
+      initMap() {
+        this.map = L.map('map').setView([40.73061, -73.935242], 8);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(this.map);
+        this.map.on('click', (event) => {
+          this.handleMapClick(event.latlng);
+        });
+      },
+      handleMapClick(latLng) {
+        if (!this.marker) {
+          this.marker = L.marker(latLng, { draggable: true }).addTo(this.map);
+        } else {
+          this.marker.setLatLng(latLng);
         }
+        this.formData.loc_name = '';
+        this.formData.loc_latitude = latLng.lat;
+        this.formData.loc_longitude = latLng.lng;
+        alert(`Selected location: Lat ${this.formData.loc_latitude}, Lng ${this.formData.loc_longitude}`);
+      },
+      async fetchCategories() {
+        try {
+          const response = await fetch('http://localhost/itb-proyecto-final/api/index.php/category');
+          if (response.ok) {
+            this.categories = await response.json();
+          } else {
+            console.error('Failed to fetch categories.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      },
+      async submitForm() {
+        try {
+          const userId = localStorage.getItem('id');
+          if (!userId) {
+            console.error('User ID not found in localStorage.');
+            return;
+          }
+          this.formData.owner_id = userId;
+  
+          const currentDate = new Date();
+          const formattedDate = currentDate.toISOString();
+          this.formData.publish_date = formattedDate;
+  
+          const response = await fetch('http://localhost/itb-proyecto-final/api/index.php/advert', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.formData)
+          });
+  
+          if (response.ok) {
+            console.log('Advert created successfully!');
+          } else {
+            console.error('Failed to create advert.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      },
+      updateAvailability() {
+        if (!this.selectedDate || !this.selectedTime) return;
+        const day = this.selectedDate.toDateString();
+        const time = this.selectedTime;
+        if (!this.formData.availability[day]) {
+          this.$set(this.formData.availability, day, []);
+        }
+        if (!this.formData.availability[day].includes(time)) {
+          this.formData.availability[day].push(time);
+        }
+      }
+    },
+    created() {
+      this.fetchCategories();
     }
-};
-</script>
-
-<style scoped>
-#map {
+  };
+  </script>
+  
+  <style>
+  .advert-form {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  select {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  #map {
     height: 400px;
-}
-</style>
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  </style>  

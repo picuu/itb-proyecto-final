@@ -22,6 +22,7 @@ export default {
     </h2>
 
     <AdvertList endpoint="/offer/" />
+    <router-link to="/advert-form">Add New Advert</router-link>
   </LayoutSection>
 </template>
 
