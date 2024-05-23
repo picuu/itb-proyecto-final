@@ -1,4 +1,6 @@
 <script>
+import { RouterLink } from 'vue-router'
+
 export default {
   name: 'OfferCard',
   props: {
@@ -13,9 +15,15 @@ export default {
     image: {
       type: String,
       required: true
+    },
+    id: {
+      type: String,
+      required: true
     }
   },
-  components: {}
+  components: {
+    RouterLink
+  }
 }
 </script>
 
@@ -23,7 +31,7 @@ export default {
   <article>
     <img :src="image" :alt="title" />
     <div class="offer-info">
-      <h3>{{ title }}</h3>
+      <h3><RouterLink :to="'/offers/' + id">{{ title }}</RouterLink></h3>
       <p>{{ description }}</p>
       <div class="pills">
         <slot />
@@ -56,8 +64,14 @@ img {
   gap: 0.5rem;
 }
 
-h3 {
+h3 a {
   color: var(--color-heading);
+  text-decoration-color: transparent;
+  transition: text-decoration-color .2s ease-in-out;
+}
+
+h3 a:hover {
+  text-decoration-color: var(--color-text-bright);
 }
 
 .pills {

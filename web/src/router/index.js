@@ -31,6 +31,19 @@ const router = createRouter({
       component: () => import('../views/DemandsView.vue')
     },
     {
+      path: '/offers/:advertId',
+      name: 'advert-details',
+      component: () => import('../views/AdvertDetailsView.vue'),
+      props: true,
+      children: [
+        {
+          path: 'details',
+          component: () => import('../views/AdvertDetailsView.vue'),
+          alias: ['/requests/:advertId', '/requests/:advertId/details', '']
+        }
+      ]
+    },
+    {
       path: '/events',
       name: 'events',
       component: () => import('../views/EventsView.vue')
