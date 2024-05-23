@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "LayoutSection"
+  name: 'LayoutSection'
 }
 </script>
 
@@ -12,6 +12,6 @@ export default {
 
 <style scoped>
 section {
-  padding-bottom: var(--section-gap);
+  margin-bottom: var(--section-gap);
 }
 </style>
