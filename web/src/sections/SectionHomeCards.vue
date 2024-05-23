@@ -1,12 +1,12 @@
 <script>
-import AdvertCard from '@/components/AdvertCard.vue'
+import HomeCard from '@/components/HomeCard.vue'
 import LayoutSection from '@/sections/LayoutSection.vue'
 import { IconHeartHandshake, IconMessageQuestion } from '@tabler/icons-vue'
 
 export default {
-  name: 'CardsRow',
+  name: 'HomeView',
   components: {
-    AdvertCard,
+    HomeCard,
     LayoutSection,
     IconHeartHandshake,
     IconMessageQuestion
@@ -17,13 +17,13 @@ export default {
 <template>
   <LayoutSection>
     <div>
-      <AdvertCard title="Offers" link="/offers" description="See what others have to offer you">
+      <HomeCard title="Offers" link="/offers" description="See what others have to offer you">
         <IconHeartHandshake class="icon" size="92" stroke="1" />
-      </AdvertCard>
+      </HomeCard>
 
-      <AdvertCard title="Requests" link="/demands" description="Ask others for a specific service">
+      <HomeCard title="Requests" link="/demands" description="Ask others for a specific service">
         <IconMessageQuestion class="icon" size="92" stroke="1" />
-      </AdvertCard>
+      </HomeCard>
     </div>
   </LayoutSection>
 </template>
@@ -33,7 +33,8 @@ div {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   justify-items: center;
-  width: calc(100% - 250px);
+  width: calc(100% - 300px);
   margin-inline: auto;
+  padding-bottom: 2rem;
 }
 </style>

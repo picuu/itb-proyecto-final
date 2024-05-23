@@ -29,7 +29,7 @@ export default {
 <style scoped>
 article {
   position: relative;
-  width: 85%;
+  width: 400px;
 }
 
 a {

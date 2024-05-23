@@ -1,17 +1,17 @@
 <script>
-import SectionHero from '../sections/SectionHero.vue'
-import CardsRow from '../components/CardsRow.vue'
+import SectionHero from '@/sections/SectionHero.vue'
+import SectionHomeCards from '@/sections/SectionHomeCards.vue'
 
 export default {
   name: 'HomeView',
   components: {
     SectionHero,
-    CardsRow
+    SectionHomeCards
   }
 }
 </script>
 
 <template>
   <SectionHero class="full-width" />
-  <CardsRow />
+  <SectionHomeCards />
 </template>
