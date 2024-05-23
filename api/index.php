@@ -59,7 +59,8 @@
             } elseif ($uri[0] == "offer") {
                 // mostrar todas las ofertas
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    echo getOffers($conn);
+                    $offers = getOffers($conn);
+                    echo $offers;
                 }
             } elseif($uri[0]=="booking") {
                 // mostrar todas las reservas
@@ -69,8 +70,7 @@
             } elseif($uri[0]=="category") {
                 // mostrar todas las categorías
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $getAllCategories = getCategories($conn);
-                    echo $getAllCategories;
+                    echo getCategories($conn);
                 }
                 // crear nueva categoria
                 
@@ -87,8 +87,10 @@
             } else {
                 paginaError();
             }
+            break;
         case 3:
             header("Content-Type: application/json");
+
             if($uri[0]=="user") {
                 // mostrar un usario concreto
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -129,6 +131,11 @@
                     $deleteAnAdvert = deleteAdvert($conn, $id);
                     echo $deleteAnAdvert;
                 }
+            } elseif ($uri[0] == "offer") {
+                // mostrar una oferta concreta
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    echo getOfferById($conn, $uri[1]);
+                }
             } elseif ($uri[0]=="booking") {
                 // mostrar una reserva concreta
 
@@ -138,8 +145,7 @@
                 // mostrar una categoría concreta
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $id = $uri[1];
-                    $getASingleCategory = getCategoryById($conn, $id);
-                    echo $getASingleCategory;
+                    echo getCategoryById($conn, $id);
                 }
                 //crear
                
@@ -149,13 +155,28 @@
                 // crear
                 
             } elseif ($uri[0]=="advert_tags") {
-                // mostrar
-
+                // mostrar los tags de un anuncio concreto
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $id = $uri[1];
+                    echo getAdvertTagsById($conn, $id);
+                }
                 //crear
 
             } else {
                 paginaError();
             }
+            break;
+
+        case 4:
+            header("Content-Type: application/json");
+
+            if ($uri[0] == "offer" && $uri[2] == "category") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    echo getOfferCategory($conn, $uri[1]);
+                }
+            }
+
+
     }
 
 function paginaError() {
