@@ -1,0 +1,32 @@
+@import './base.css';
+
+body {
+  position: relative;
+}
+
+#app {
+  /* max-width: 1280px;
+  margin-inline: auto; */
+  /* padding: 2rem; */
+  padding-top: 0;
+  font-weight: normal;
+}
+
+.content-grid,
+.full-width {
+  display: grid;
+  grid-template-columns: [full-width-start] 100px [breakout-start] 150px [content-start] 1fr [content-end] 150px [breakout-end] 100px [full-width-end];
+}
+
+.content-grid > *,
+.full-width > * {
+  grid-column: content;
+}
+
+.content-grid > .breakout {
+  grid-column: breakout;
+}
+
+.content-grid > .full-width {
+  grid-column: full-width;
+}
