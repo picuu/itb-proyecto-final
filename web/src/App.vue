@@ -1,12 +1,14 @@
 <script>
 import { RouterLink, RouterView } from 'vue-router'
-import BackgroundComponent from './components/BackgroundComponent.vue'
+import FooterComponent from '@/components/FooterComponent.vue'
+import BackgroundComponent from '@/components/BackgroundComponent.vue'
 
 export default {
   name: 'App',
   components: {
     RouterLink,
     RouterView,
+    FooterComponent,
     BackgroundComponent
   }
 }
@@ -34,6 +36,8 @@ export default {
   </header>
 
   <RouterView />
+
+  <FooterComponent />
 
   <BackgroundComponent />
 </template>
