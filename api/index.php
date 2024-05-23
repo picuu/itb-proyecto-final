@@ -7,6 +7,7 @@
     include 'functions/tag/tag.php';
     include 'functions/user/user.php';
     include 'functions/offer/offer.php';
+    include 'functions/auth/auth.php';
 
     // Guardamos la URL
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -25,6 +26,9 @@
     $numElementsRuta = count($uri); // echo $numElementsRuta."<br>";
 
     header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Headers: Content-Type");
+    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
+    header("Allow: GET, POST, OPTIONS, PUT, DELETE");
     
     switch($numElementsRuta) {
         case 1:
@@ -161,8 +165,11 @@
                     echo getAdvertTagsById($conn, $id);
                 }
                 //crear
-
-            } else {
+            } else if ($uri[0] == "auth" && $uri[1] == "login") {
+                echo login($conn);
+            }
+            
+            else {
                 paginaError();
             }
             break;

@@ -16,11 +16,11 @@
                 <p>or:</p>
                 <div class="input-group">
                     <label for="loginEmail">Email address</label>
-                    <input type="email" id="loginEmail" v-model="loginEmail" />
+                    <input type="email" id="loginEmail" v-model="loginEmail" required />
                 </div>
                 <div class="input-group">
                     <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" v-model="loginPassword" />
+                    <input type="password" id="loginPassword" v-model="loginPassword" required />
                 </div>
                 <div class="checkbox-group">
                     <input type="checkbox" id="loginCheck" v-model="loginCheck" />
@@ -94,8 +94,35 @@ export default {
         };
     },
     methods: {
-        handleLogin() {
-            console.log('Login:', this.loginEmail, this.loginPassword, this.loginCheck);
+        async handleLogin() {
+            const data = {
+                user_email: this.loginEmail,
+                user_password: this.loginPassword
+            }
+
+            console.log(data)
+
+            const res = await fetch("http://localhost/itb-proyecto-final/api/index.php/auth/login", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+
+            const json_res = await res.json()
+
+            console.log(json_res)
+
+            if (json_res && json_res.length > 1) {
+                localStorage.setItem("token", json_res.token)
+                localStorage.setItem("isAdmin", json_res.isAdmin)
+                localStorage.setItem("id", json_res.id)
+                console.info("sesión iniciada")
+            } else {
+                console.warn("credenciales incorrectas")
+            }
         },
         handleRegister() {
             console.log('Register:', this.registerName, this.registerUsername, this.registerEmail, this.registerPassword, this.registerPasswordRepeat, this.registerTermsCheck);
