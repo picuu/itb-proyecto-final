@@ -176,6 +176,12 @@
                 }
             }
 
+            else if ($uri[0] == "offer" && $uri[1] == "category") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    echo getOffersByCategory($conn, $uri[2]);
+                }
+            }
+
 
     }
 
