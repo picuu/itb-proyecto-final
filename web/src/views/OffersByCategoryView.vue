@@ -5,11 +5,29 @@ import AdvertList from '@/components/AdvertList.vue'
 
 
 export default {
-  name: 'OffersView',
+  name: 'OffersByCategoryView',
+  props: {
+    categoryId: {
+      type: String,
+      default: "0"
+    }
+  },
   components: {
     LayoutSection,
     IconHeartHandshake,
     AdvertList
+  },
+  data() {
+    return {
+      endpoint: ""
+    }
+  },
+  created() {
+    if (this.categoryId && this.categoryId != "") {
+      this.endpoint = "/offer/category/" + this.categoryId
+    } else {
+      this.endpoint = "/offer/"
+    }
   }
 }
 </script>
@@ -21,7 +39,7 @@ export default {
       Offers
     </h2>
 
-    <AdvertList endpoint="/offer/" />
+    <AdvertList :endpoint="endpoint" />
   </LayoutSection>
 </template>
 
