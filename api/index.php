@@ -6,6 +6,7 @@
     include 'functions/category/category.php';
     include 'functions/tag/tag.php';
     include 'functions/user/user.php';
+    include 'functions/offer/offer.php';
 
     // Guardamos la URL
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -22,14 +23,15 @@
     // Hacemos un split estableciendo el slash ("/") como separador del array
     $uri = explode('/', $uri);
     $numElementsRuta = count($uri); // echo $numElementsRuta."<br>";
+
+    header("Access-Control-Allow-Origin: *");
     
     switch($numElementsRuta) {
         case 1:
-            header("Access-Control-Allow-Origin: *");
             paginaError();
             break;
         case 2:
-            header("Access-Control-Allow-Origin: *");
+            header("Content-Type: application/json");
             if($uri[0]=="user") {
                 // mostrar todos los usuarios
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -53,6 +55,11 @@
                     $data = json_decode(file_get_contents('php://input'), true);
                     $addANewAdvert = addAdvert($conn, $data);
                     echo $addANewAdvert;
+                }
+            } elseif ($uri[0] == "offer") {
+                // mostrar todas las ofertas
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    echo getOffers($conn);
                 }
             } elseif($uri[0]=="booking") {
                 // mostrar todas las reservas
@@ -78,7 +85,7 @@
                 paginaError();
             }
         case 3:
-            header("Access-Control-Allow-Origin: *");
+            header("Content-Type: application/json");
             if($uri[0]=="user") {
                 // mostrar un usario concreto
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
