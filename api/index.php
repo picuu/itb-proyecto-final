@@ -134,7 +134,7 @@
             } elseif ($uri[0] == "offer") {
                 // mostrar una oferta concreta
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    echo getOfferById($conn, $uri[1]);
+                    echo getAdvertById($conn, $uri[1]);
                 }
             } elseif ($uri[0]=="booking") {
                 // mostrar una reserva concreta
@@ -172,7 +172,7 @@
 
             if ($uri[0] == "offer" && $uri[2] == "category") {
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    echo getOfferCategory($conn, $uri[1]);
+                    echo getAdvertCategory($conn, $uri[1]);
                 }
             }
 

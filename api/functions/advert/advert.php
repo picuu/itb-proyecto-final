@@ -8,11 +8,23 @@
         }
         return json_encode($advertisements);
     }
-//get advert by id
-    function getAdvertById($conn, $id){
-        $result = mysqli_query($conn, "SELECT * FROM advert WHERE id = '$id'");
-        $advertisements = mysqli_fetch_assoc($result);
-        return json_encode($advertisements);
+    //get advert by id
+    function getAdvertById($conn, $id) {
+        $result_offer = mysqli_query($conn, "SELECT * FROM advert WHERE isRequest = '0' AND id = '$id'");
+        
+        $offer = mysqli_fetch_assoc($result_offer);
+        $result_category = mysqli_query($conn, "SELECT c.name, c.id FROM advert a JOIN category c ON (a.category_id = c.id) WHERE a.id = '$id'");
+        $result_tags = mysqli_query($conn, "SELECT t.* FROM advert_tags at JOIN tag t ON (at.tag_id = t.id) WHERE advert_id = '$id'");
+
+        $offer['category'] = mysqli_fetch_assoc($result_category);
+
+        $tags = array();
+        while ($tag = mysqli_fetch_assoc($result_tags)) {
+        $tags[] = $tag;
+        }
+        $offer['tags'] = $tags;
+
+        return json_encode($offer);
     }
 //add advert
     function addAdvert($conn, $data){
@@ -72,5 +84,14 @@
             $response = array('status' => 'error');
         }
         return json_encode($response);
+    }
+
+    // get the category of an advert
+    function getAdvertCategory($conn, $id) {
+        $result = mysqli_query($conn, "SELECT c.name, c.id FROM advert a JOIN category c ON (a.category_id = c.id) WHERE a.id = '$id'");
+        
+        $category = mysqli_fetch_assoc($result);
+
+        return json_encode($category);
     }
 ?>
