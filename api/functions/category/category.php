@@ -1,7 +1,7 @@
 <?php
 //get all categories
     function getCategories($conn){
-        $result = mysqli_query($conn, "SELECT * FROM category order by id");
+        $result = mysqli_query($conn, "SELECT * FROM category ORDER BY id");
         $categories = array();
         while ($row = mysqli_fetch_assoc($result)) {
             $categories[] = $row;
@@ -11,7 +11,7 @@
 
 //get category by id
     function getCategoryById($conn, $id){
-        $result = mysqli_query($conn, "SELECT * FROM category where id = $id");
+        $result = mysqli_query($conn, "SELECT * FROM category where id = '$id'");
         $categories = mysqli_fetch_assoc($result);
         return json_encode($categories);
     }

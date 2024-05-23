@@ -68,7 +68,10 @@
                 
             } elseif($uri[0]=="category") {
                 // mostrar todas las categorías
-
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $getAllCategories = getCategories($conn);
+                    echo $getAllCategories;
+                }
                 // crear nueva categoria
                 
             } elseif($uri[0]=="tag") {
@@ -133,7 +136,11 @@
                 
             } elseif ($uri[0]=="category") {
                 // mostrar una categoría concreta
-
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $id = $uri[1];
+                    $getASingleCategory = getCategoryById($conn, $id);
+                    echo $getASingleCategory;
+                }
                 //crear
                
             } elseif ($uri[0]=="tag") {
