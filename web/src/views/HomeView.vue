@@ -13,7 +13,7 @@ export default {
 
 <template>
   <main>
-    <SectionHero />
+    <SectionHero class="full-width" />
     <CardsRow />
   </main>
 </template>

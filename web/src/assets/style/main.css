@@ -5,8 +5,28 @@ body {
 }
 
 #app {
-  max-width: 1280px;
-  margin-inline: auto;
-  padding: 2rem;
+  /* max-width: 1280px;
+  margin-inline: auto; */
+  /* padding: 2rem; */
+  padding-top: 0;
   font-weight: normal;
+}
+
+main,
+.full-width {
+  display: grid;
+  grid-template-columns: [full-width-start] 1rem [breakout-start] 100px [content-start] 1fr [content-end] 100px [breakout-end] 1rem [full-width-end];
+}
+
+main > *,
+.full-width > * {
+  grid-column: content;
+}
+
+main > .breakout {
+  grid-column: breakout;
+}
+
+main > .full-width {
+  grid-column: full-width;
 }
