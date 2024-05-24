@@ -130,7 +130,7 @@ export default {
 
             console.log(json_res);
 
-            if (json_res && json_res.length > 1) {
+            if (json_res && typeof json_res == "object") {
                 localStorage.setItem("token", json_res.token);
                 localStorage.setItem("isAdmin", json_res.isAdmin);
                 localStorage.setItem("id", json_res.id);
