@@ -26,9 +26,9 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/demands',
-      name: 'demands',
-      component: () => import('../views/DemandsView.vue')
+      path: '/requests',
+      name: 'requests',
+      component: () => import('../views/RequestsView.vue')
     },
     {
       path: '/offers/:advertId',
@@ -42,11 +42,6 @@ const router = createRouter({
           alias: ['/requests/:advertId', '/requests/:advertId/details', '']
         }
       ]
-    },
-    {
-      path: '/events',
-      name: 'events',
-      component: () => import('../views/EventsView.vue')
     },
     {
       path: '/advert-form',
@@ -68,6 +63,12 @@ const router = createRouter({
       props: {
         activeTabProp: "register"
       }
+    },
+    {
+      path: '/user/:userId',
+      name: "user-profile",
+      component: () => import("../views/UserProfileView.vue"),
+      props: true
     }
   ]
 })

@@ -5,6 +5,23 @@ export default {
   name: 'FooterComponent',
   components: {
     RouterLink
+  },
+  data() {
+    return {
+      isLogged: false
+    }
+  },
+  methods: {
+    checkLogin() {
+      if (localStorage.getItem("authInfo")) this.isLogged = true
+      else this.isLogged = false
+    }
+  },
+  created() {
+    this.checkLogin()
+  },
+  updated() {
+    this.checkLogin()
   }
 }
 </script>
@@ -19,12 +36,16 @@ export default {
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/about">About</RouterLink>
           <RouterLink to="/offers">Offers</RouterLink>
-          <RouterLink to="/demands">Demands</RouterLink>
-          <RouterLink to="/events">Events</RouterLink>
+          <RouterLink to="/requests">Requests</RouterLink>
         </div>
         <div>
-          <RouterLink to="/login">Login</RouterLink>
-          <RouterLink to="/sign-up">Sign Up</RouterLink>
+          <template v-if="isLogged">
+            <a href="/logout">Log out</a>
+          </template>
+          <template v-else>
+            <RouterLink to="/login">Login</RouterLink>
+            <RouterLink to="/sign-up">Sign Up</RouterLink>
+          </template>
         </div>
       </nav>
     </div>

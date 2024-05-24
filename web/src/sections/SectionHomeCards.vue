@@ -21,7 +21,7 @@ export default {
         <IconHeartHandshake class="icon" size="92" stroke="1" />
       </HomeCard>
 
-      <HomeCard title="Requests" link="/demands" description="Ask others for a specific service">
+      <HomeCard title="Requests" link="/requests" description="Ask others for a specific service">
         <IconMessageQuestion class="icon" size="92" stroke="1" />
       </HomeCard>
     </div>
