@@ -1,4 +1,5 @@
 <script>
+import HeaderComponent from '@/components/HeaderComponent.vue'
 import AdvertDetails from '@/components/AdvertDetails.vue'
 
 export default {
@@ -10,19 +11,24 @@ export default {
     }
   },
   components: {
+    HeaderComponent,
     AdvertDetails
   }
 }
 </script>
 
 <template>
-  <main class="content-grid">
-    <LayoutSection>
-      <h2>Advert Details</h2>
-
-      <AdvertDetails :advertId="advertId" />
-    </LayoutSection>
-  </main>
+  <div>
+    <HeaderComponent />
+    
+    <main class="content-grid">
+      <LayoutSection>
+        <h2>Advert Details</h2>
+        
+        <AdvertDetails :advertId="advertId" />
+      </LayoutSection>
+    </main>
+  </div>
 </template>
 
 <style scoped>

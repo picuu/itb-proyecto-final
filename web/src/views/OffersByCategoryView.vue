@@ -2,7 +2,7 @@
 import { IconHeartHandshake } from '@tabler/icons-vue'
 import LayoutSection from '@/sections/LayoutSection.vue'
 import AdvertList from '@/components/AdvertList.vue'
-
+import HeaderComponent from '../components/HeaderComponent.vue'
 
 export default {
   name: 'OffersByCategoryView',
@@ -15,7 +15,8 @@ export default {
   components: {
     LayoutSection,
     IconHeartHandshake,
-    AdvertList
+    AdvertList,
+    HeaderComponent
   },
   data() {
     return {
@@ -33,14 +34,20 @@ export default {
 </script>
 
 <template>
-  <LayoutSection>
-    <h2>
-      <IconHeartHandshake size="36" />
-      Offers
-    </h2>
+  <div>
+    <HeaderComponent />
 
-    <AdvertList :endpoint="endpoint" />
-  </LayoutSection>
+    <main class="content-grid">
+      <LayoutSection>
+        <h2>
+          <IconHeartHandshake size="36" />
+          Offers
+        </h2>
+    
+        <AdvertList :endpoint="endpoint" />
+      </LayoutSection>
+    </main>
+  </div>
 </template>
 
 <style scoped>

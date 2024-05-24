@@ -1,29 +1,39 @@
 <script>
+import { RouterLink } from 'vue-router'
 import { IconHeartHandshake } from '@tabler/icons-vue'
 import LayoutSection from '@/sections/LayoutSection.vue'
 import AdvertList from '@/components/AdvertList.vue'
+import HeaderComponent from '../components/HeaderComponent.vue'
 
 
 export default {
   name: 'OffersView',
   components: {
+    RouterLink,
     LayoutSection,
     IconHeartHandshake,
-    AdvertList
+    AdvertList,
+    HeaderComponent
   }
 }
 </script>
 
 <template>
-  <LayoutSection>
-    <h2>
-      <IconHeartHandshake size="36" />
-      Offers
-    </h2>
+  <div>
+    <HeaderComponent />
 
-    <AdvertList endpoint="/offer/" />
-    <router-link to="/advert-form">Add New Advert</router-link>
-  </LayoutSection>
+    <main class="content-grid">
+      <LayoutSection>
+        <h2>
+          <IconHeartHandshake size="36" />
+          Offers
+        </h2>
+    
+        <AdvertList endpoint="/offer/" />
+        <RouterLink to="/advert-form">Add New Advert</RouterLink>
+      </LayoutSection>
+    </main>
+  </div>
 </template>
 
 <style scoped>
