@@ -133,7 +133,7 @@ export default {
             if (json_res && typeof json_res == "object" && json_res.token) {
                 localStorage.setItem("authInfo", JSON.stringify(json_res));
                 console.info("sesión iniciada");
-                // location.assign("/")
+                this.$router.push(`/user/${json_res.id}`)
             } else {
                 console.warn("credenciales incorrectas");
             }
