@@ -47,7 +47,7 @@ export default {
 
         <nav>
           <span>Product</span>
-          <RouterLink to="/demands">Demands</RouterLink>
+          <RouterLink to="/requests">Requests</RouterLink>
           <RouterLink to="/offers">Offers</RouterLink>
         </nav>
 
