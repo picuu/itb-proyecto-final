@@ -131,8 +131,9 @@ export default {
             console.log(json_res);
 
             if (json_res && typeof json_res == "object" && json_res.token) {
-                localStorage.setItem("authInfo", json_res);
+                localStorage.setItem("authInfo", JSON.stringify(json_res));
                 console.info("sesión iniciada");
+                // location.assign("/")
             } else {
                 console.warn("credenciales incorrectas");
             }
