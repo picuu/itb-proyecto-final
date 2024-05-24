@@ -103,6 +103,7 @@ CREATE TABLE `user` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(45) NOT NULL,
   `surname` varchar(90) NOT NULL,
+  `image` varchar(45) NOT NULL DEFAULT 'default-profile.webp',
   `email` varchar(45) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `password` varchar(35) NOT NULL,
