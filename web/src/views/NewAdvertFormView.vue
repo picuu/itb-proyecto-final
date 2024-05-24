@@ -18,7 +18,7 @@
 
       <div class="form-group">
         <label for="type">Type of advert:</label>
-        <select id="type" v-model="formData.isRequest">
+        <select id="type" v-model="formData.isRequest" required>
           <option :value="0">Offer</option>
           <option :value="1">Request</option>
         </select>
@@ -39,9 +39,7 @@
 
       <div class="form-group">
         <label>Your availability:</label>
-        <v-date-picker v-model="selectedDate" @input="updateAvailability" range scrollable show-current></v-date-picker>
-        <v-time-picker v-model="selectedTime" @input="updateAvailability" format="24hr" min="00:00"
-          max="23:59"></v-time-picker>
+        <input type="text" id="availability" v-model="availability" required>
       </div>
 
       <div class="form-group">
@@ -62,6 +60,8 @@
 
 <script>
 import L from 'leaflet';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
 
 export default {
   data() {
@@ -74,9 +74,7 @@ export default {
         category_id: '',
         isRequest: 0,
         price: 0,
-        selectedDate: new Date(),
-        selectedTime: null,
-        availability: {},
+        availability: [],
         loc_name: '',
         loc_latitude: 0,
         loc_longitude: 0,
@@ -86,11 +84,13 @@ export default {
       categories: [],
       selectedCategory: '',
       map: null,
-      marker: null
+      marker: null,
+      availability: '',
     };
   },
   mounted() {
     this.initMap();
+    this.initFlatpickr();
   },
   methods: {
     initMap() {
@@ -98,6 +98,7 @@ export default {
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(this.map);
+      L.Control.geocoder().addTo(this.map);
       this.map.on('click', (event) => {
         this.handleMapClick(event.latlng);
       });
@@ -112,6 +113,37 @@ export default {
       this.formData.loc_latitude = latLng.lat;
       this.formData.loc_longitude = latLng.lng;
       alert(`Selected location: Lat ${this.formData.loc_latitude}, Lng ${this.formData.loc_longitude}`);
+    },
+    async geocodeCity() {
+      try {
+        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${this.formData.loc_name}`);
+        const data = await response.json();
+        if (data.length > 0) {
+          const { lat, lon } = data[0];
+          this.map.setView([lat, lon], 12);
+        } else {
+          console.error('Location not found.');
+        }
+      } catch (error) {
+        console.error('Error', error);
+      }
+    },
+    watch: {
+      'formData.loc_name': function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+          this.geocodeCity();
+        }
+      }
+    },
+    initFlatpickr() {
+      const self = this;
+      flatpickr("#availability", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        onChange: function (selectedDates, dateStr, instance) {
+          self.formData.availability = selectedDates.map(date => date.toISOString());
+        }
+      });
     },
     async fetchCategories() {
       try {
@@ -155,17 +187,6 @@ export default {
         console.error('Error:', error);
       }
     },
-    updateAvailability() {
-      if (!this.selectedDate || !this.selectedTime) return;
-      const day = this.selectedDate.toDateString();
-      const time = this.selectedTime;
-      if (!this.formData.availability[day]) {
-        this.$set(this.formData.availability, day, []);
-      }
-      if (!this.formData.availability[day].includes(time)) {
-        this.formData.availability[day].push(time);
-      }
-    }
   },
   created() {
     this.fetchCategories();
@@ -175,7 +196,7 @@ export default {
 
 <style>
 .advert-form {
-  max-width: 800px;
+  width: 800px;
   margin: 0 auto;
 }
 
@@ -201,7 +222,7 @@ select {
 
 .map-container {
   height: 300px;
-  width: auto;
+  width: 100%;
 }
 
 button {
