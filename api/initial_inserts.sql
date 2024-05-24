@@ -1,8 +1,8 @@
 -- Inserts para la tabla `user`
 INSERT INTO `user` (`id`, `name`, `surname`, `email`, `phone`, `password`, `balance`, `isAdmin`) VALUES
-(1, 'Juan', 'Pérez', 'juan.perez@example.com', '123456789', 'password123', 100, 0),
-(2, 'Ana', 'Gómez', 'ana.gomez@example.com', '987654321', 'password123', 200, 0),
-(3, 'Admin', 'User', 'admin@example.com', '555555555', 'adminpass', 500, 1);
+(1, 'Juan', 'Pérez', 'juan.perez@example.com', '123456789', 'a94652aa97c7211ba8954dd15a3cf838', 100, 0),
+(2, 'Ana', 'Gómez', 'ana.gomez@example.com', '987654321', '276b6c4692e78d4799c12ada515bc3e4', 200, 0),
+(3, 'Admin', 'User', 'admin@example.com', '555555555', '21232f297a57a5a743894a0e4a801fc3', 500, 1);
 
 -- Inserts para la tabla `category`
 INSERT INTO `category` (`id`, `name`) VALUES
