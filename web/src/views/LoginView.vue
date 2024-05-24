@@ -130,10 +130,8 @@ export default {
 
             console.log(json_res);
 
-            if (json_res && typeof json_res == "object") {
-                localStorage.setItem("token", json_res.token);
-                localStorage.setItem("isAdmin", json_res.isAdmin);
-                localStorage.setItem("id", json_res.id);
+            if (json_res && typeof json_res == "object" && json_res.token) {
+                localStorage.setItem("authInfo", json_res);
                 console.info("sesión iniciada");
             } else {
                 console.warn("credenciales incorrectas");
