@@ -40,6 +40,7 @@
       <div class="form-group">
         <label>Your availability:</label>
         <input type="text" id="availability" v-model="availability" required>
+        <VDatePicker v-model="date" mode="dateTime" is24hr />
       </div>
 
       <div class="form-group">
@@ -60,8 +61,8 @@
 
 <script>
 import L from 'leaflet';
-import flatpickr from 'flatpickr';
-import 'flatpickr/dist/flatpickr.min.css';
+import { ref } from 'vue';
+const date = ref(new Date())
 
 export default {
   data() {
@@ -90,7 +91,6 @@ export default {
   },
   mounted() {
     this.initMap();
-    this.initFlatpickr();
   },
   methods: {
     initMap() {
@@ -98,7 +98,6 @@ export default {
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(this.map);
-      L.Control.geocoder().addTo(this.map);
       this.map.on('click', (event) => {
         this.handleMapClick(event.latlng);
       });
@@ -114,37 +113,6 @@ export default {
       this.formData.loc_longitude = latLng.lng;
       alert(`Selected location: Lat ${this.formData.loc_latitude}, Lng ${this.formData.loc_longitude}`);
     },
-    async geocodeCity() {
-      try {
-        const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${this.formData.loc_name}`);
-        const data = await response.json();
-        if (data.length > 0) {
-          const { lat, lon } = data[0];
-          this.map.setView([lat, lon], 12);
-        } else {
-          console.error('Location not found.');
-        }
-      } catch (error) {
-        console.error('Error', error);
-      }
-    },
-    watch: {
-      'formData.loc_name': function (newVal, oldVal) {
-        if (newVal !== oldVal) {
-          this.geocodeCity();
-        }
-      }
-    },
-    initFlatpickr() {
-      const self = this;
-      flatpickr("#availability", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        onChange: function (selectedDates, dateStr, instance) {
-          self.formData.availability = selectedDates.map(date => date.toISOString());
-        }
-      });
-    },
     async fetchCategories() {
       try {
         const response = await fetch('http://localhost/itb-proyecto-final/api/index.php/category');
@@ -159,12 +127,14 @@ export default {
     },
     async submitForm() {
       try {
-        const userId = localStorage.getItem('id');
-        if (!userId) {
+        const authInfo_json = localStorage.getItem('authInfo');
+        const authInfo = JSON.parse(authInfo_json);
+
+        if (!authInfo.id) {
           console.error('User ID not found in localStorage.');
           return;
         }
-        this.formData.owner_id = userId;
+        this.formData.owner_id = authInfo.id;
 
         const currentDate = new Date();
         const formattedDate = currentDate.toISOString();
