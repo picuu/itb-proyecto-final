@@ -45,12 +45,16 @@
                     <input type="text" id="registerName" v-model="registerName" />
                 </div>
                 <div class="input-group">
-                    <label for="registerUsername">Username</label>
-                    <input type="text" id="registerUsername" v-model="registerUsername" />
+                    <label for="registerSurname">Surname</label>
+                    <input type="text" id="registerSurname" v-model="registerSurname" />
                 </div>
                 <div class="input-group">
                     <label for="registerEmail">Email</label>
                     <input type="email" id="registerEmail" v-model="registerEmail" />
+                </div>
+                <div class="input-group">
+                    <label for="registerPhone">Phone</label>
+                    <input type="text" id="registerPhone" v-model="registerPhone" />
                 </div>
                 <div class="input-group">
                     <label for="registerPassword">Password</label>
@@ -59,6 +63,14 @@
                 <div class="input-group">
                     <label for="registerPasswordRepeat">Repeat password</label>
                     <input type="password" id="registerPasswordRepeat" v-model="registerPasswordRepeat" />
+                </div>
+                <div class="input-group">
+                    <label for="registerBalance">Balance</label>
+                    <input type="number" id="registerBalance" v-model="registerBalance" />
+                </div>
+                <div class="input-group">
+                    <label for="registerIsAdmin">Is Admin</label>
+                    <input type="checkbox" id="registerIsAdmin" v-model="registerIsAdmin" />
                 </div>
                 <div class="checkbox-group">
                     <input type="checkbox" id="registerTermsCheck" v-model="registerTermsCheck" />
@@ -86,10 +98,13 @@ export default {
             loginPassword: '',
             loginCheck: true,
             registerName: '',
-            registerUsername: '',
+            registerSurname: '',
             registerEmail: '',
+            registerPhone: '',
             registerPassword: '',
             registerPasswordRepeat: '',
+            registerBalance: 0,
+            registerIsAdmin: false,
             registerTermsCheck: true,
         };
     },
@@ -98,9 +113,9 @@ export default {
             const data = {
                 user_email: this.loginEmail,
                 user_password: this.loginPassword
-            }
+            };
 
-            console.log(data)
+            console.log(data);
 
             const res = await fetch("http://localhost/itb-proyecto-final/api/index.php/auth/login", {
                 method: "POST",
@@ -109,24 +124,54 @@ export default {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(data)
-            })
+            });
 
-            const json_res = await res.json()
+            const json_res = await res.json();
 
-            console.log(json_res)
+            console.log(json_res);
 
             if (json_res && json_res.length > 1) {
-                localStorage.setItem("token", json_res.token)
-                localStorage.setItem("isAdmin", json_res.isAdmin)
-                localStorage.setItem("id", json_res.id)
-                console.info("sesión iniciada")
+                localStorage.setItem("token", json_res.token);
+                localStorage.setItem("isAdmin", json_res.isAdmin);
+                localStorage.setItem("id", json_res.id);
+                console.info("sesión iniciada");
             } else {
-                console.warn("credenciales incorrectas")
+                console.warn("credenciales incorrectas");
             }
         },
-        handleRegister() {
-            console.log('Register:', this.registerName, this.registerUsername, this.registerEmail, this.registerPassword, this.registerPasswordRepeat, this.registerTermsCheck);
-        },
+        async handleRegister() {
+            const data = {
+                name: this.registerName,
+                surname: this.registerSurname,
+                email: this.registerEmail,
+                phone: this.registerPhone,
+                password: this.registerPassword,
+                password_repeat: this.registerPasswordRepeat,
+                balance: this.registerBalance,
+                isAdmin: this.registerIsAdmin
+            };
+
+            console.log('Register:', data);
+
+            const res = await fetch("http://localhost/itb-proyecto-final/api/index.php/user", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            const json_res = await res.json();
+
+            console.log(json_res);
+
+            if (json_res.status === 'success') {
+                console.info("Usuario registrado exitosamente");
+            } else {
+                console.warn("Error en el registro:", json_res.message);
+            }
+        }
     },
 };
 </script>
