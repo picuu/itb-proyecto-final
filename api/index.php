@@ -7,6 +7,7 @@
     include 'functions/tag/tag.php';
     include 'functions/user/user.php';
     include 'functions/offer/offer.php';
+    include 'functions/request/request.php';
     include 'functions/auth/auth.php';
 
     // Guardamos la URL
@@ -65,6 +66,11 @@
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $offers = getOffers($conn);
                     echo $offers;
+                }
+            } elseif ($uri[0] == "request") {
+                // mostrar todas las demandas
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    echo getRequests($conn);
                 }
             } elseif($uri[0]=="booking") {
                 // mostrar todas las reservas
@@ -190,6 +196,12 @@
             else if ($uri[0] == "offer" && $uri[1] == "category") {
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     echo getOffersByCategory($conn, $uri[2]);
+                }
+            }
+
+            else if ($uri[0] == "request" && $uri[1] == "category") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    echo getRequestsByCategory($conn, $uri[2]);
                 }
             }
 
