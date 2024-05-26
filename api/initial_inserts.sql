@@ -8,7 +8,8 @@ INSERT INTO `user` (`id`, `name`, `surname`, `image`, `email`, `phone`, `passwor
 INSERT INTO `category` (`id`, `name`) VALUES
 (1, 'Educación'),
 (2, 'Cuidado Personal'),
-(3, 'Reparaciones');
+(3, 'Reparaciones'),
+(4, 'Tareas domésticas');
 
 -- Inserts para la tabla `tag`
 INSERT INTO `tag` (`id`, `name`) VALUES
@@ -19,13 +20,15 @@ INSERT INTO `tag` (`id`, `name`) VALUES
 -- Inserts para la tabla `advert`
 INSERT INTO `advert` (`id`, `owner_id`, `category_id`, `title`, `image`, `description`, `isRequest`, `price`, `availability`, `loc_name`, `loc_latitude`, `loc_longitude`, `max_subscribers`, `publish_date`) VALUES
 (1, 1, 1, 'Clases de Matemáticas', 'image1.jpg', 'Ofrezco clases de matemáticas para estudiantes de secundaria.', 0, 50, '{"lunes": "10:00-12:00", "miércoles": "14:00-16:00"}', 'Madrid', 40.416775, -3.703790, 5, '2024-05-23 09:13:36'),
-(2, 2, 2, 'Sesión de Yoga', 'image2.jpg', 'Ofrezco sesiones de yoga para principiantes.', 0, 30, '{"martes": "09:00-10:00", "jueves": "18:00-19:00"}', 'Barcelona', 41.385064, 2.173404, 10, '2024-05-23 09:13:36');
+(2, 2, 2, 'Sesión de Yoga', 'image2.jpg', 'Ofrezco sesiones de yoga para principiantes.', 1, 30, '{"martes": "09:00-10:00", "jueves": "18:00-19:00"}', 'Barcelona', 41.385064, 2.173404, 10, '2024-05-23 09:13:36'),
+(3, 2, 4, 'Busco alguien para pasear mis perros', 'image2.jpg', 'Busco alguien a que le gusten los animales para que pueda pasear mis perros las mañanas de los viernes, ya que trabajo y no puedo.', 0, 30, '{"viernes": "09:00-10:00"}', 'Barcelona', 41.385064, 2.173404, 1, '2024-05-26 22:05:00');
 
 -- Inserts para la tabla `advert_tags`
 INSERT INTO `advert_tags` (`advert_id`, `tag_id`) VALUES
 (1, 1),
 (1, 3),
-(2, 2);
+(2, 2),
+(3, 1);
 
 -- Inserts para la tabla `booking`
 INSERT INTO `booking` (`id`, `advert_id`, `user_id`, `booking_date`, `valoration_score`, `valoration_comment`, `valoration_date`) VALUES
