@@ -25,7 +25,7 @@ export default {
 
     <main class="content-grid">
       <LayoutSection>
-        <h2>Login</h2>
+        <h2>Authentication</h2>
 
         <LoginForm :activeTabProp="activeTabProp" />
       </LayoutSection>
@@ -33,4 +33,15 @@ export default {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block: 2rem;
+  color: var(--color-heading);
+  font-size: 2rem;
+  font-weight: 500;
+}
+</style>

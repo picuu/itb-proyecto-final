@@ -1,84 +1,78 @@
 <template>
-  <div class="form-container">
-      <div class="tabs">
-          <button :class="{ active: activeTab === 'login' }" @click="activeTab = 'login'">Login</button>
-          <button :class="{ active: activeTab === 'register' }" @click="activeTab = 'register'">Register</button>
-      </div>
-      <div v-if="activeTab === 'login'" class="form">
-          <form @submit.prevent="handleLogin">
-              <h3>Login</h3>
-              <div class="social-buttons">
-                  <button type="button" class="btn-social fb">Facebook</button>
-                  <button type="button" class="btn-social google">Google</button>
-                  <button type="button" class="btn-social twitter">Twitter</button>
-                  <button type="button" class="btn-social github">GitHub</button>
-              </div>
-              <p>or:</p>
-              <div class="input-group">
-                  <label for="loginEmail">Email address</label>
-                  <input type="email" id="loginEmail" v-model="loginEmail" required />
-              </div>
-              <div class="input-group">
-                  <label for="loginPassword">Password</label>
-                  <input type="password" id="loginPassword" v-model="loginPassword" required />
-              </div>
-              <div class="checkbox-group">
-                  <input type="checkbox" id="loginCheck" v-model="loginCheck" />
-                  <label for="loginCheck">Remember me</label>
-              </div>
-              <button type="submit" class="btn-submit">Sign in</button>
-              <p>Not a member? <a href="#" @click.prevent="activeTab = 'register'">Register</a></p>
-          </form>
-      </div>
-      <div v-if="activeTab === 'register'" class="form">
-          <form @submit.prevent="handleRegister">
-              <h3>Register</h3>
-              <div class="social-buttons">
-                  <button type="button" class="btn-social fb">Facebook</button>
-                  <button type="button" class="btn-social google">Google</button>
-                  <button type="button" class="btn-social twitter">Twitter</button>
-                  <button type="button" class="btn-social github">GitHub</button>
-              </div>
-              <p>or:</p>
-              <div class="input-group">
-                  <label for="registerName">Name</label>
-                  <input type="text" id="registerName" v-model="registerName" />
-              </div>
-              <div class="input-group">
-                  <label for="registerSurname">Surname</label>
-                  <input type="text" id="registerSurname" v-model="registerSurname" />
-              </div>
-              <div class="input-group">
-                  <label for="registerEmail">Email</label>
-                  <input type="email" id="registerEmail" v-model="registerEmail" />
-              </div>
-              <div class="input-group">
-                  <label for="registerPhone">Phone</label>
-                  <input type="text" id="registerPhone" v-model="registerPhone" />
-              </div>
-              <div class="input-group">
-                  <label for="registerPassword">Password</label>
-                  <input type="password" id="registerPassword" v-model="registerPassword" />
-              </div>
-              <div class="input-group">
-                  <label for="registerPasswordRepeat">Repeat password</label>
-                  <input type="password" id="registerPasswordRepeat" v-model="registerPasswordRepeat" />
-              </div>
-              <div class="input-group">
-                  <label for="registerBalance">Balance</label>
-                  <input type="number" id="registerBalance" v-model="registerBalance" />
-              </div>
-              <div class="input-group">
-                  <label for="registerIsAdmin">Is Admin</label>
-                  <input type="checkbox" id="registerIsAdmin" v-model="registerIsAdmin" />
-              </div>
-              <div class="checkbox-group">
-                  <input type="checkbox" id="registerTermsCheck" v-model="registerTermsCheck" />
-                  <label for="registerTermsCheck">I have read and agree to the terms</label>
-              </div>
-              <button type="submit" class="btn-submit">Register</button>
-          </form>
-      </div>
+  <div class="container">
+    <div class="tabs">
+      <button :class="{ active: activeTab === 'login' }" @click="activeTab = 'login'">Login</button>
+      <button :class="{ active: activeTab === 'register' }" @click="activeTab = 'register'">Register</button>
+    </div>
+
+    <template v-if="activeTab == 'login'">
+      <form @submit.prevent="handleLogin">
+        <div class="input-group">
+          <label for="loginEmail">
+            <span>Email address</span>
+            <input type="email" name="loginEmail" id="loginEmail" placeholder="username@example.com" v-model="loginEmail" required>
+          </label>
+
+          <label for="loginPassword">
+            <span>Password</span>
+            <input type="password" name="loginPassword" id="loginPassword" v-model="loginPassword" required>
+          </label>
+        </div>
+
+        <button type="submit">Sign in</button>
+      </form>
+
+      <p class="register-reminder">Not a member? <a @click.prevent="activeTab = 'register'">Register</a></p>
+    </template>
+
+    <template v-if="activeTab == 'register'">
+      <form @submit.prevent="handleRegister">
+        <div class="input-group">
+          <label for="registerName">
+            <span>Name</span>
+            <input type="email" name="registerName" id="registerName" placeholder="John" v-model="registerName" required>
+          </label>
+
+          <label for="registerSurname">
+            <span>Surname</span>
+            <input type="email" name="registerSurname" id="registerSurname" placeholder="Doe Sins" v-model="registerSurname" required>
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label for="registerEmail">
+            <span>Email address</span>
+            <input type="email" name="registerEmail" id="registerEmail" placeholder="username@example.com" v-model="registerEmail" required>
+          </label>
+
+          <label for="registerPhone">
+            <span>Phone</span>
+            <input type="email" name="registerPhone" id="registerPhone" placeholder="600102030" v-model="registerPhone" required>
+          </label>
+        </div>
+
+        <div class="input-group">
+          <label for="registerPassword">
+            <span>Password</span>
+            <input type="password" name="registerPassword" id="registerPassword" v-model="registerPassword" required>
+          </label>
+
+          <label for="registerPasswordRepeat">
+            <span>Repeat password</span>
+            <input type="password" name="registerPasswordRepeat" id="registerPasswordRepeat" v-model="registerPasswordRepeat" required>
+          </label>
+        </div>
+
+        <label for="registerTermsCheck" class="checkbox-group">
+          <input type="checkbox" name="registerTermsCheck" id="registerTermsCheck" v-model="registerTermsCheck" required>
+          <span>I have read and agree to the terms</span>
+        </label>
+
+        <button type="submit">Sign in</button>
+      </form>
+
+      <p class="register-reminder">Already have an account? <a @click.prevent="activeTab = 'login'">Login</a></p>
+    </template>
   </div>
 </template>
 
@@ -176,114 +170,100 @@ export default {
 </script>
 
 <style scoped>
-.form-container {
-  background-color: #121212;
-  color: #ffffff;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-width: 400px;
-  margin: 40px auto;
+.container {
+  width: calc(85% - 400px);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 }
 
 .tabs {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  align-items: center;
+  gap: 2px;
 }
 
 .tabs button {
-  padding: 10px 20px;
-  cursor: pointer;
+  padding-block: 1rem .25rem;
+  padding-inline: 4rem;
+  background: none;
   border: none;
-  background: #333;
-  color: #fff;
-  margin: 0 5px;
-  border-radius: 5px;
+  border-bottom: 1px solid var(--color-border-hover);
+  color: var(--color-text);
+}
+
+.tabs button:hover {
+  cursor: pointer;
 }
 
 .tabs button.active {
-  background: #007bff;
+  border-bottom: 1px solid var(--color-text-bright);
+  color: var(--color-text-bright);
 }
 
-.form {
-  text-align: left;
-}
-
-.input-group,
-.checkbox-group {
-  margin-bottom: 15px;
-}
-
-.input-group label,
-.checkbox-group label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.input-group input,
-.checkbox-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #333;
-  color: #fff;
-}
-
-.checkbox-group {
+form,
+form label {
   display: flex;
-  align-items: center;
-}
-
-.checkbox-group input {
-  width: auto;
-  margin-right: 10px;
-}
-
-.btn-submit {
+  flex-direction: column;
+  gap: 1.5rem;
   width: 100%;
-  padding: 10px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
+}
+
+form label {
+  gap: .25rem;
+}
+
+form input {
+  padding: .5rem .75rem;
+  background-color: rgba(255 255 255 / .1);
+  border: 1px solid var(--color-border-hover);
+  border-radius: 6px;
+}
+
+form button {
+  padding: .5rem 1.25rem;
+  width: fit-content;
+  background-color: rgba(255 255 255 / .1);
+  border: 1px solid var(--color-border-hover);
+  border-radius: 6px;
+  transition: background-color .2s ease-in-out;
+}
+
+form button:hover {
+  cursor: pointer;
+  background-color: var(--color-border-hover);
+}
+
+.register-reminder {
+  opacity: .5;
+}
+
+.register-reminder a {
+  text-decoration: underline;
+  color: var(--color-text-bright)
+}
+
+.register-reminder a:hover {
   cursor: pointer;
 }
 
-.btn-submit:hover {
-  background: #0056b3;
-}
-
-.social-buttons {
+.input-group {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
+  align-items: center;
+  gap: 2.5rem;
 }
 
-.btn-social {
-  width: 30%;
-  margin: 1%;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
+.checkbox-group {
+  width: fit-content;
+  flex-direction: row;
+  gap: .5rem;
+}
+
+.checkbox-group:hover,
+.checkbox-group input:hover {
   cursor: pointer;
-  color: white;
-}
-
-.btn-social.fb {
-  background: #3b5998;
-}
-
-.btn-social.google {
-  background: #db4437;
-}
-
-.btn-social.twitter {
-  background: #1da1f2;
-}
-
-.btn-social.github {
-  background: #333;
 }
 </style>
