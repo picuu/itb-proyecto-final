@@ -4,22 +4,11 @@ import { RouterLink } from 'vue-router'
 export default {
   name: 'OfferCard',
   props: {
-    title: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    image: {
-      type: String,
-      required: true
-    },
-    id: {
-      type: String,
-      required: true
-    }
+    title: { type: String, required: true },
+    description: { type: String, required: true },
+    image: { type: String, required: true },
+    id: { type: String, required: true },
+    isRequest: { type: String, required: true }
   },
   components: {
     RouterLink
@@ -31,7 +20,7 @@ export default {
   <article>
     <img :src="image" :alt="title" />
     <div class="offer-info">
-      <h3><RouterLink :to="'/offers/' + id">{{ title }}</RouterLink></h3>
+      <h3><RouterLink :to="(isRequest ? '/requests/' : '/offers/') + id">{{ title }}</RouterLink></h3>
       <p>{{ description }}</p>
       <div class="pills">
         <slot />

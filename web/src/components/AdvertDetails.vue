@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     async getAdvert() {
-      const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/offer/${this.advertId}`)
+      const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`)
       const data = await res.json()
       return data
     }
