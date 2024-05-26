@@ -1,7 +1,7 @@
 <?php
 //get all tags
     function getTags($conn){
-        $result = mysqli_query($conn, "SELECT * FROM tag order by id");
+        $result = mysqli_query($conn, "SELECT * FROM tag ORDER BY id");
         $tags = array();
         while ($row = mysqli_fetch_assoc($result)) {
             $tags[] = $row;

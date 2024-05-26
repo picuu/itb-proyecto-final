@@ -74,13 +74,17 @@
             } elseif($uri[0]=="category") {
                 // mostrar todas las categorías
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    echo getCategories($conn);
+                    $getAllCategories = getCategories($conn);
+                    echo $getAllCategories;
                 }
                 // crear nueva categoria
                 
             } elseif($uri[0]=="tag") {
                 // mostrar todos los tags
-               
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $getAllTags = getTags($conn);
+                    echo $getAllTags;
+                }
                 // crear nuevo tag
                 
             } elseif($uri[0]=="advert_tags"){

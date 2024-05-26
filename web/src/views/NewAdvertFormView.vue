@@ -1,173 +1,247 @@
-<template>
-  <div class="advert-form">
-    <form @submit.prevent="submitForm">
-      <div class="form-group">
-        <label for="title">Title:</label>
-        <input type="text" id="title" v-model="formData.title" required>
-      </div>
-
-      <div class="form-group">
-        <label for="image">Image URL:</label>
-        <input type="text" id="image" v-model="formData.image" required>
-      </div>
-
-      <div class="form-group">
-        <label for="description">Description:</label>
-        <textarea id="description" v-model="formData.description" required></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="type">Type of advert:</label>
-        <select id="type" v-model="formData.isRequest" required>
-          <option :value="0">Offer</option>
-          <option :value="1">Request</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="category">Category:</label>
-        <select id="category" v-model="formData.category_id" required>
-          <option value="">Select category</option>
-          <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="price">Cost in TC's:</label>
-        <input type="number" id="price" v-model="formData.price" required>
-      </div>
-
-      <div class="form-group">
-        <label>Your availability:</label>
-        <input type="text" id="availability" v-model="availability" required>
-        <VDatePicker v-model="date" mode="dateTime" is24hr />
-      </div>
-
-      <div class="form-group">
-        <label for="location">Location:</label>
-        <input type="text" id="location" v-model="formData.loc_name">
-        <div id="map" class="map-container"></div>
-      </div>
-
-      <div class="form-group">
-        <label for="max_subscribers">Maximum subscribers:</label>
-        <input type="number" id="max_subscribers" v-model="formData.max_subscribers">
-      </div>
-
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-</template>
-
 <script>
+import LayoutSection from '@/sections/LayoutSection.vue'
+import HeaderComponent from '../components/HeaderComponent.vue'
+import { ref, onMounted } from 'vue';
+import 'v-calendar/dist/style.css';
+import { setupCalendar, DatePicker } from 'v-calendar';
 import L from 'leaflet';
-import { ref } from 'vue';
-const date = ref(new Date())
+import 'leaflet/dist/leaflet.css';
+import { IconCalendar } from '@tabler/icons-vue';
 
 export default {
-  data() {
-    return {
-      formData: {
-        owner_id: null,
-        title: '',
-        image: '',
-        description: '',
-        category_id: '',
-        isRequest: 0,
-        price: 0,
-        availability: [],
-        loc_name: '',
-        loc_latitude: 0,
-        loc_longitude: 0,
-        max_subscribers: 0,
-        publish_date: null
-      },
-      categories: [],
-      selectedCategory: '',
-      map: null,
-      marker: null,
-      availability: '',
-    };
+  name: 'new-advert-form',
+  components: {
+    LayoutSection,
+    HeaderComponent,
+    VDatePicker: DatePicker,
+    IconCalendar
   },
-  mounted() {
-    this.initMap();
-  },
-  methods: {
-    initMap() {
-      this.map = L.map('map').setView([40.73061, -73.935242], 8);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(this.map);
-      this.map.on('click', (event) => {
-        this.handleMapClick(event.latlng);
-      });
-    },
-    handleMapClick(latLng) {
-      if (!this.marker) {
-        this.marker = L.marker(latLng, { draggable: true }).addTo(this.map);
-      } else {
-        this.marker.setLatLng(latLng);
-      }
-      this.formData.loc_name = '';
-      this.formData.loc_latitude = latLng.lat;
-      this.formData.loc_longitude = latLng.lng;
-      alert(`Selected location: Lat ${this.formData.loc_latitude}, Lng ${this.formData.loc_longitude}`);
-    },
-    async fetchCategories() {
+  setup() {
+    const formData = ref({
+      owner_id: null,
+      category_id: '',
+      title: '',
+      image: '',
+      description: '',
+      isRequest: 0,
+      price: 0,
+      availability: [''],
+      loc_name: '',
+      loc_latitude: 0,
+      loc_longitude: 0,
+      max_subscribers: 0,
+      publish_date: '',
+      tags: []
+    });
+
+    const categories = ref([]);
+    const tags = ref([]);
+
+    onMounted(async () => {
+      setupCalendar();
       try {
-        const response = await fetch('http://localhost/itb-proyecto-final/api/index.php/category');
-        if (response.ok) {
-          this.categories = await response.json();
+        const categoriesResponse = await fetch('http://localhost/itb-proyecto-final/api/index.php/category');
+        if (categoriesResponse.ok) {
+          categories.value = await categoriesResponse.json();
         } else {
           console.error('Failed to fetch categories.');
         }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    },
-    async submitForm() {
-      try {
-        const authInfo_json = localStorage.getItem('authInfo');
-        const authInfo = JSON.parse(authInfo_json);
-
-        if (!authInfo.id) {
-          console.error('User ID not found in localStorage.');
-          return;
+        const tagsResponse = await fetch('http://localhost/itb-proyecto-final/api/index.php/tag');
+        if (tagsResponse.ok) {
+          tags.value = await tagsResponse.json();
+        } else {
+          console.error('Failed to fetch tags.');
         }
-        this.formData.owner_id = authInfo.id;
+        initMap();
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    });
 
-        const currentDate = new Date();
-        const formattedDate = currentDate.toISOString();
-        this.formData.publish_date = formattedDate;
+    const onFileChange = (e) => {
+      const file = e.target.files[0];
+      formData.value.image = file;
+    };
 
+    const addAvailability = () => {
+      formData.value.availability.push('');
+    };
+
+    const initMap = () => {
+      const map = L.map('map').setView([51.505, -0.09], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      const marker = L.marker([51.505, -0.09]).addTo(map);
+
+      map.on('click', function (e) {
+        const { lat, lng } = e.latlng;
+        marker.setLatLng(e.latlng);
+        formData.value.loc_latitude = lat;
+        formData.value.loc_longitude = lng;
+
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+          .then(response => response.json())
+          .then(data => {
+            formData.value.loc_name = data.display_name;
+          })
+          .catch(error => console.error('Error fetching location name:', error));
+      });
+    };
+
+    const submitForm = async () => {
+      const authInfo_json = localStorage.getItem('authInfo');
+      const authInfo = JSON.parse(authInfo_json);
+
+      if (!authInfo.id) {
+        console.error('User ID not found in localStorage.');
+        return;
+      }
+      formData.value.owner_id = authInfo.id;
+
+      const now = new Date();
+      formData.value.publish_date = now.toISOString();
+
+      const data = new FormData();
+      for (const key in formData.value) {
+        if (Array.isArray(formData.value[key])) {
+          formData.value[key].forEach((item, index) => {
+            data.append(`${key}[${index}]`, item);
+          });
+        } else {
+          data.append(key, formData.value[key]);
+        }
+      }
+
+      try {
         const response = await fetch('http://localhost/itb-proyecto-final/api/index.php/advert', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.formData)
+          body: data
         });
-
-        if (response.ok) {
-          console.log('Advert created successfully!');
+        const result = await response.json();
+        if (result.status === 'success') {
+          alert('Advert created successfully!');
         } else {
-          console.error('Failed to create advert.');
+          alert('Error creating advert.');
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error submitting form:', error);
+        alert('Error creating advert.');
       }
-    },
-  },
-  created() {
-    this.fetchCategories();
+    };
+
+    return {
+      formData,
+      categories,
+      tags,
+      onFileChange,
+      addAvailability,
+      submitForm
+    };
   }
 };
 </script>
 
-<style>
-.advert-form {
-  width: 800px;
-  margin: 0 auto;
+<template>
+  <div>
+    <HeaderComponent />
+    <main class="content-grid">
+      <LayoutSection>
+        <h1>Post a new advert</h1>
+        <form @submit.prevent="submitForm">
+          <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" v-model="formData.title" required />
+          </div>
+
+          <div class="form-group">
+            <label for="image">Image:</label>
+            <input type="file" @change="onFileChange" required />
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea v-model="formData.description" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="isRequest">Type of advert:</label>
+            <select v-model="formData.isRequest" required>
+              <option :value="0">Offer</option>
+              <option :value="1">Request</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="category">Category:</label>
+            <select v-model="formData.category_id" required>
+              <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Tags:</label>
+            <div v-for="tag in tags" :key="tag.id">
+              <input type="checkbox" :value="tag.id" v-model="formData.tags">
+              <label>{{ tag.name }}</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Cost in T-Coins:</label>
+            <input type="number" v-model="formData.price" required />
+          </div>
+
+          <div class="form-group">
+            <label>Availability:</label>
+            <div v-for="(avail, index) in formData.availability" :key="index" class="mb-2">
+              <VDatePicker v-model="formData.availability[index]" mode="dateTime" :popover="false">
+                <template #default="{ togglePopover, inputValue, inputEvents }">
+                  <div class="flex rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden">
+                    <button
+                      class="flex justify-center items-center px-2 bg-accent-100 hover:bg-accent-200 text-accent-700 border-r border-gray-300 dark:bg-gray-700 dark:text-accent-300 dark:border-gray-600 dark:hover:bg-gray-600"
+                      @click="() => togglePopover()">
+                      <IconCalendar stroke={2} class="w-5 h-5" />
+                    </button>
+                    <input :value="inputValue" v-on="inputEvents"
+                      class="flex-grow px-2 py-1 bg-white dark:bg-gray-700" />
+                  </div>
+                </template>
+              </VDatePicker>
+            </div>
+            <button type="button" @click="addAvailability">+</button>
+          </div>
+
+          <div class="form-group">
+            <label>Location:</label>
+            <input v-model="formData.loc_name" />
+            <input v-model="formData.loc_latitude" />
+            <input v-model="formData.loc_longitude" />
+            <div id="map" style="height: 400px;"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="max_subscribers">Maximum subscribers:</label>
+            <input type="number" v-model="formData.max_subscribers" required />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </LayoutSection>
+    </main>
+  </div>
+</template>
+
+<style scoped>
+h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block: 2rem;
+  color: var(--color-heading);
+  font-size: 2rem;
+  font-weight: 500;
 }
 
 .form-group {
@@ -203,6 +277,7 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  grid-template-columns: 4rem;
 }
 
 button:hover {

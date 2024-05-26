@@ -30,7 +30,7 @@ export default {
         </h2>
     
         <AdvertList endpoint="/offer/" />
-        <RouterLink to="/advert-form">Add New Advert</RouterLink>
+        <RouterLink to="/new-advert-form">Add New Advert</RouterLink>
       </LayoutSection>
     </main>
   </div>

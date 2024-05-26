@@ -44,8 +44,8 @@ const router = createRouter({
       ]
     },
     {
-      path: '/advert-form',
-      name: 'advert-form',
+      path: '/new-advert-form',
+      name: 'new-advert-form',
       component: () => import('../views/NewAdvertFormView.vue')
     },
     {
