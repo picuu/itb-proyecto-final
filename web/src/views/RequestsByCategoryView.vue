@@ -1,19 +1,34 @@
 <script>
-import { RouterLink } from 'vue-router'
 import { IconMessageQuestion } from '@tabler/icons-vue'
 import LayoutSection from '@/sections/LayoutSection.vue'
 import AdvertList from '@/components/AdvertList.vue'
 import HeaderComponent from '../components/HeaderComponent.vue'
 
-
 export default {
-  name: 'OffersView',
+  name: 'OffersByCategoryView',
+  props: {
+    categoryId: {
+      type: String,
+      default: "0"
+    }
+  },
   components: {
-    RouterLink,
     LayoutSection,
     IconMessageQuestion,
     AdvertList,
     HeaderComponent
+  },
+  data() {
+    return {
+      endpoint: ""
+    }
+  },
+  created() {
+    if (this.categoryId && this.categoryId != "") {
+      this.endpoint = "/request/category/" + this.categoryId
+    } else {
+      this.endpoint = "/request/"
+    }
   }
 }
 </script>
@@ -29,8 +44,7 @@ export default {
           Requests
         </h2>
     
-        <AdvertList endpoint="/request/" />
-        <RouterLink to="/new-advert-form">Add New Advert</RouterLink>
+        <AdvertList :endpoint="endpoint" />
       </LayoutSection>
     </main>
   </div>

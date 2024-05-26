@@ -16,12 +16,24 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    endpointProp: {
+      type: String,
+      required: true
     }
   },
   components: {
     RouterLink,
     IconSchool,
     IconTag
+  },
+  data() {
+    return {
+      endpoint: this.endpointProp
+    }
+  },
+  created() {
+    this.endpoint = "/" + this.endpointProp.split("/")[1] + "/"
   }
 }
 </script>
@@ -29,14 +41,14 @@ export default {
 <template>
   <span>
     <template v-if="type == 'primary'">
-      <RouterLink :to="'/offers/category/' + id" :class="'pill pill-' + type">
+      <RouterLink :to="endpoint + 'category/' + id" :class="'pill pill-' + type">
         <IconSchool size="20" stroke="1" />
         {{ text }}
       </RouterLink>
     </template>
   
     <template v-else>
-      <RouterLink :to="'/offers/tag/' + id" :class="'pill pill-' + type">
+      <RouterLink :to="endpoint + 'tag/' + id" :class="'pill pill-' + type">
         <IconTag size="18" stroke="1" />
         {{ text }}
       </RouterLink>

@@ -57,8 +57,8 @@ export default {
 <template>
       <div class="advert-list">
       <AdvertListItem v-for="offer in offers" :title="offer.title" :description="offer.description" :image="offer.image" :id="offer.id" :key="offer.id">
-        <PillComponent :text="offer.category.name" type="primary" :id="offer.category_id" />
-        <PillComponent v-for="tag in offer.tags" :text="tag.name" type="secondary" :id="tag.id" :key="tag.id" />
+        <PillComponent :text="offer.category.name" type="primary" :id="offer.category_id" :endpointProp="endpoint" />
+        <PillComponent v-for="tag in offer.tags" :text="tag.name" type="secondary" :id="tag.id" :endpointProp="endpoint" :key="tag.id" />
       </AdvertListItem>
     </div>
 </template>

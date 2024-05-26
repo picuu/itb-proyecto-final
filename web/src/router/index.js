@@ -23,7 +23,8 @@ const router = createRouter({
       path: '/offers/category/:categoryId',
       name: 'offers-by-category',
       component: () => import("@/views/OffersByCategoryView.vue"),
-      props: true
+      props: true,
+      alias: ['/offer/category/:categoryId']
     },
     {
       path: '/requests',
@@ -31,16 +32,21 @@ const router = createRouter({
       component: () => import('../views/RequestsView.vue')
     },
     {
+      path: '/requests/category/:categoryId',
+      name: 'requests-by-category',
+      component: () => import("@/views/RequestsByCategoryView.vue"),
+      props: true,
+      alias: ['/request/category/:categoryId']
+    },
+    {
       path: '/offers/:advertId',
       name: 'advert-details',
       component: () => import('../views/AdvertDetailsView.vue'),
       props: true,
-      children: [
-        {
-          path: 'details',
-          component: () => import('../views/AdvertDetailsView.vue'),
-          alias: ['/requests/:advertId', '/requests/:advertId/details', '']
-        }
+      alias: [
+        '/offer/:advertId',
+        '/request/:advertId',
+        '/requests/:advertId',
       ]
     },
     {
