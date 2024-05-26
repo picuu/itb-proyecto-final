@@ -10,7 +10,7 @@
     }
     //get advert by id
     function getAdvertById($conn, $id) {
-        $result_offer = mysqli_query($conn, "SELECT * FROM advert WHERE isRequest = '0' AND id = '$id'");
+        $result_offer = mysqli_query($conn, "SELECT * FROM advert WHERE id = '$id'");
         
         $offer = mysqli_fetch_assoc($result_offer);
         $result_category = mysqli_query($conn, "SELECT c.name, c.id FROM advert a JOIN category c ON (a.category_id = c.id) WHERE a.id = '$id'");
