@@ -41,10 +41,15 @@
         $loc_longitude = $data['loc_longitude'];
         $max_subscribers = $data['max_subscribers'];
         $publish_date = $data['publish_date'];
+        $tags = $data['tags'];
 
         $result = mysqli_query($conn, "INSERT INTO advert (id, owner_id, category_id, title, image, description, isRequest, price, availability, loc_name, loc_latitude, loc_longitude, max_subscribers, publish_date) VALUES (default, '$owner_id', '$category_id', '$title', '$image', '$description', '$isRequest', '$price', '$availability', '$loc_name', '$loc_latitude', '$loc_longitude', '$max_subscribers', '$publish_date')");
 
         if ($result) {
+            $advert_id = mysqli_insert_id($conn);
+            foreach ($tags as $tag_id) {
+                mysqli_query($conn, "INSERT INTO advert_tags (advert_id, tag_id) VALUES ('$advert_id', '$tag_id')");
+            }
             $response = array('status' => 'success');
         } else {
             $response = array('status' => 'error');
