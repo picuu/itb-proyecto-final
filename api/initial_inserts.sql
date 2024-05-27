@@ -19,9 +19,9 @@ INSERT INTO `tag` (`id`, `name`) VALUES
 
 -- Inserts para la tabla `advert`
 INSERT INTO `advert` (`id`, `owner_id`, `category_id`, `title`, `image`, `description`, `isRequest`, `price`, `availability`, `loc_name`, `loc_latitude`, `loc_longitude`, `max_subscribers`, `publish_date`) VALUES
-(1, 1, 1, 'Clases de Matemáticas', 'image1.jpg', 'Ofrezco clases de matemáticas para estudiantes de secundaria.', 0, 50, '{"lunes": "10:00-12:00", "miércoles": "14:00-16:00"}', 'Madrid', 40.416775, -3.703790, 5, '2024-05-23 09:13:36'),
-(2, 2, 2, 'Sesión de Yoga', 'image2.jpg', 'Ofrezco sesiones de yoga para principiantes.', 1, 30, '{"martes": "09:00-10:00", "jueves": "18:00-19:00"}', 'Barcelona', 41.385064, 2.173404, 10, '2024-05-23 09:13:36'),
-(3, 2, 4, 'Busco alguien para pasear mis perros', 'image2.jpg', 'Busco alguien a que le gusten los animales para que pueda pasear mis perros las mañanas de los viernes, ya que trabajo y no puedo.', 0, 30, '{"viernes": "09:00-10:00"}', 'Barcelona', 41.385064, 2.173404, 1, '2024-05-26 22:05:00');
+(1, 1, 1, 'Clases de Matemáticas', 'image1.jpg', 'Ofrezco clases de matemáticas para estudiantes de secundaria.', 0, 50, '[1714633200000,1715238000000,1716300000000,1716472800000,1716904800000,1717077600000]', 'Madrid', 40.416775, -3.703790, 5, '2024-05-23 09:13:36'),
+(2, 2, 2, 'Sesión de Yoga', 'image2.jpg', 'Ofrezco sesiones de yoga para principiantes.', 1, 30, '[1715065200000,1715670000000,1716274800000,1716879600000,1714665600000,1715270400000,1715875200000,1716480000000,1717084800000]', 'Barcelona', 41.385064, 2.173404, 10, '2024-05-23 09:13:36'),
+(3, 2, 4, 'Busco alguien para pasear mis perros', 'image2.jpg', 'Busco alguien a que le gusten los animales para que pueda pasear mis perros las mañanas de los viernes, ya que trabajo y no puedo.', 0, 30, '[1714717800000,1715322600000,1715927400000,1716532200000,1717137000000]', 'Barcelona', 41.385064, 2.173404, 1, '2024-05-26 22:05:00');
 
 -- Inserts para la tabla `advert_tags`
 INSERT INTO `advert_tags` (`advert_id`, `tag_id`) VALUES
