@@ -15,6 +15,10 @@ export default {
     checkLogin() {
       if (localStorage.getItem("authInfo")) this.isLogged = true
       else this.isLogged = false
+    },
+    logout() {
+      localStorage.removeItem("authInfo")
+      this.$router.push('/')
     }
   },
   created() {
@@ -40,7 +44,7 @@ export default {
         </div>
         <div>
           <template v-if="isLogged">
-            <a href="/logout">Log out</a>
+            <a @click="logout">Log out</a>
           </template>
           <template v-else>
             <RouterLink to="/login">Login</RouterLink>
@@ -96,5 +100,9 @@ nav {
 a {
   color: var(--color-text-bright);
   text-decoration: none;
+}
+
+a:hover {
+  cursor: pointer;
 }
 </style>
