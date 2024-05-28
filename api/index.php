@@ -179,7 +179,8 @@
             } else if ($uri[0] == "auth" && $uri[1] == "login") {
                 echo login($conn);
             } else if ($uri[0] == "auth" && $uri[1] == "register") {
-                echo register($conn);
+                $data = json_decode(file_get_contents('php://input'), true);
+                echo register($conn, $data);
             }
             else {
                 paginaError();
@@ -204,6 +205,18 @@
             else if ($uri[0] == "request" && $uri[1] == "category") {
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     echo getRequestsByCategory($conn, $uri[2]);
+                }
+            }
+
+            else if ($uri[0] == "offer" && $uri[1] == "tag") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    echo getOffersByTag($conn, $uri[2]);
+                }
+            }
+
+            else if ($uri[0] == "request" && $uri[1] == "tag") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    echo getRequestsByTag($conn, $uri[2]);
                 }
             }
 

@@ -27,6 +27,13 @@ const router = createRouter({
       alias: ['/offer/category/:categoryId']
     },
     {
+      path: '/offers/tag/:tagId',
+      name: 'offers-by-tag',
+      component: () => import("@/views/OffersByTagView.vue"),
+      props: true,
+      alias: ['/offer/tag/:tagId']
+    },
+    {
       path: '/requests',
       name: 'requests',
       component: () => import('../views/RequestsView.vue')
@@ -37,6 +44,13 @@ const router = createRouter({
       component: () => import("@/views/RequestsByCategoryView.vue"),
       props: true,
       alias: ['/request/category/:categoryId']
+    },
+    {
+      path: '/requests/tag/:tagId',
+      name: 'requests-by-tag',
+      component: () => import("@/views/RequestsByTagView.vue"),
+      props: true,
+      alias: ['/request/tag/:tagId']
     },
     {
       path: '/offers/:advertId',
