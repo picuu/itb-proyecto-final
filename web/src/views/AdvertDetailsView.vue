@@ -1,5 +1,6 @@
 <script>
 import HeaderComponent from '@/components/HeaderComponent.vue'
+import LayoutSection from '@/sections/LayoutSection.vue'
 import AdvertDetails from '@/components/AdvertDetails.vue'
 
 export default {
@@ -12,6 +13,7 @@ export default {
   },
   components: {
     HeaderComponent,
+    LayoutSection,
     AdvertDetails
   }
 }

@@ -1,11 +1,16 @@
 <script>
+import { RouterLink } from 'vue-router';
+import { validateSession, formatTime } from '@/helpers'
+import CalendarOutput from './CalendarOutput.vue';
+
 export default {
   name: 'AdvertDetails',
   props: {
-    advertId: {
-      type: String,
-      default: '0'
-    }
+    advertId: { type: String, default: '0' }
+  },
+  components: {
+    RouterLink,
+    CalendarOutput
   },
   data() {
     return {
@@ -33,8 +38,21 @@ export default {
         category: {
           id: '',
           name: ''
-        }
-      }
+        },
+        owner: {
+          id: '',
+          name: '',
+          surname: '',
+          image: '',
+          email: '',
+          phone: '',
+          password: '',
+          balance: '',
+          isAdmin: ''
+        },
+      },
+      availability: Array,
+      timePrice: ''
     }
   },
   methods: {
@@ -42,122 +60,234 @@ export default {
       const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`)
       const data = await res.json()
       return data
+    },
+
+    convertCoinsToTime(coins) {
+      const hours = parseInt(coins / 60)
+      const minutes = coins % 60
+
+      return formatTime(`${hours}:${minutes}`)
     }
   },
   async created() {
     this.advert = await this.getAdvert()
+    this.availability = JSON.parse(this.advert.availability)
+    this.timePrice = this.convertCoinsToTime(this.advert.price)
+  },
+  computed: {
+    validateSession
   }
 }
 </script>
 
 <template>
-  <div class="content">
-    <div class="offer-detail">
-      <div class="offer-detail-header">
-        <div class="offer-image">
-          <img :src="advert.image" :alt="advert.title" />
+  <span>
+    <div class="content">
+      <section class="left-section">
+        <img :src="advert.image" :alt="advert.title" />
+
+        <dl class="properties">
+          <div class="property">
+            <dt>Location</dt>
+            <dd>{{ advert.loc_name }}</dd>
+          </div>
+
+          <div class="property">
+            <dt>Category</dt>
+            <dd>{{ advert.category.name }}</dd>
+          </div>
+
+          <div class="property">
+            <dt>Tags</dt>
+            <dd class="tags">
+              <RouterLink :to="'/tag/' + tag.id" v-for="tag in advert.tags" class="tag" :key="tag.id">
+                {{ tag.name }}
+              </RouterLink>
+            </dd>
+          </div>
+
+          <div class="property">
+            <dt>Duration</dt>
+            <dd class="duration-property">
+              <span>{{ timePrice }}</span>
+              <span>=</span>
+              <span>{{ advert.price }} TC's</span>
+            </dd>
+          </div>
+        </dl>
+
+        
+      </section>
+      <section class="right-section">
+        <header>
+          <h3>{{ advert.title }}</h3>
+          <div class="owner">
+            <p>
+              Added by
+              <RouterLink :to="'/users/' + advert.owner_id" :title="advert.owner.name + ' ' + advert.owner.surname">
+                {{ advert.owner.name }}
+              </RouterLink>
+              on {{ advert.publish_date }}
+            </p>
+          </div>
+        </header>
+        
+        <div class="advert-info">
+          <main>
+            <div class="enroll">
+              <template v-if="validateSession">
+                <button>Take up this offer</button>
+              </template>
+              <template v-else>
+                <button disabled>Take up this offer</button>
+                <span class="login-reminder">Please, <RouterLink to="/login">sign in</RouterLink> or <RouterLink to="/sign-up">register</RouterLink> to take up this offer.</span>
+              </template>
+            </div>
+  
+            <p class="description">{{ advert.description }}</p>
+  
+            <article class="location">
+              <h4>Location</h4>
+              <a href="#">{{ advert.loc_name }}</a>
+            </article>
+          </main>
+
+          <div class="calendar-container">
+            <article class="calendar">
+                <!-- {{ advert.availability }} -->
+                <CalendarOutput :availability="availability" />
+              </article>
+          </div>
         </div>
-        <div class="offer-info">
-          <h1>{{ advert.title }}</h1>
-          <div class="offer-meta">
-            <span>Added by {{ advert.owner_id }}</span>
-            <span>{{ advert.publish_date }}</span>
-          </div>
-          <div class="offer-actions">
-            <button @click="takeOffer">Take up this offer</button>
-          </div>
-          <div class="offer-location">
-            <strong>Location: </strong><a :href="advert.locationLink">{{ advert.loc_name }}</a>
-          </div>
-          <div class="offer-tags">
-            <div v-for="tag in advert.tags" :key="tag" class="tag">{{ tag.name }}</div>
-          </div>
-        </div>
-      </div>
-      <div class="offer-description">
-        <p>{{ advert.description }}</p>
-      </div>
+
+
+      </section>
     </div>
-  </div>
+  </span>
 </template>
 
 <style scoped>
-.offer-detail {
+.content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+.left-section,
+.right-section,
+.properties,
+header,
+main,
+.enroll {
   display: flex;
   flex-direction: column;
-  background-color: #1e1e1e;
-  color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  gap: 1rem;
 }
 
-.offer-detail-header {
+.left-section {
+  gap: 1.5rem;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: rgba(200 200 200 / .05);
+}
+
+.properties {
+  gap: .75rem;
+}
+
+.property, .tags {
   display: flex;
-  gap: 20px;
+  align-items: center;
+  gap: 1rem;
 }
 
-.offer-image img {
-  max-width: 200px;
-  border-radius: 10px;
+.property dt {
+  width: 100px;
+  font-weight: 600;
 }
 
-.offer-info {
-  flex: 1;
-}
-
-.offer-info h1 {
-  font-size: 1.75rem;
-  margin-bottom: 10px;
-}
-
-.offer-meta {
-  font-size: 0.875rem;
-  color: #aaaaaa;
-  margin-bottom: 20px;
-}
-
-.offer-meta span {
-  display: block;
-}
-
-.offer-actions button {
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 20px;
-}
-
-.offer-actions button:hover {
-  background-color: #0056b3;
-}
-
-.offer-location a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.offer-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
+.tags {
+  gap: .25rem;
 }
 
 .tag {
-  background-color: #333333;
-  color: #ffffff;
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: .25rem .6rem;
+  background-color: var(--color-background-soft);
+  border-radius: 6px;
   font-size: 0.875rem;
+  color: var(--color-text-bright);
+  text-decoration: none;
 }
 
-.offer-description {
-  margin-top: 20px;
-  font-size: 1rem;
-  line-height: 1.5;
+.duration-property {
+  display: flex;
+  gap: .25rem;
+}
+
+.advert-info {
+  display: grid;
+  grid-template-columns: 6fr 4fr;
+  gap: 2rem;
+}
+
+header {
+  gap: .25rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+  color: var(--color-heading);
+}
+
+main {
+  padding: 0;
+}
+
+.enroll {
+  gap: .5rem;
+}
+
+button {
+  width: fit-content;
+  background-color: #007bff;
+  border: none;
+  padding: .65rem 1.25rem;
+  border-radius: 6px;
+}
+
+button[disabled] {
+  background-color: rgba(0 123 255 / .5);
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+a {
+  color: rgb(35, 130, 240);
+}
+
+.description {
+  max-width: 70ch;
+  margin-block: 1rem;
+}
+
+.location {
+  max-width: 70ch;
+  width: 100%;
+  padding: 1rem .6rem;
+  background-color: rgba(50 50 220 / .1);
+  border-left: 4px solid rgba(25 25 200);
+  border-radius: 4px;
+}
+
+.calendar-container {
+  margin-left: auto;
 }
 </style>
