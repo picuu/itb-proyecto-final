@@ -42,7 +42,7 @@ a {
   height: 100%;
   border: none;
   border-radius: 8px;
-  color: rgba(255, 255, 255, .85);
+  color: var(--color-heading);
   text-decoration: none;
   -webkit-transition: background-image 0.2s ease-in-out;
   transition: background-image 0.2s ease-in-out;
@@ -65,10 +65,10 @@ h3, p {
 }
 
 h3 {
-  color: rgba(255, 255, 255, .85);
+  color: var(--color-heading);
 }
 
 p {
-  color: rgba(255, 255, 255, .55);
+  color: var(--color-text);
 }
 </style>

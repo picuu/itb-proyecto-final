@@ -1,20 +1,20 @@
 <script>
-import { IconMessageQuestion } from '@tabler/icons-vue'
+import { IconHeartHandshake } from '@tabler/icons-vue'
 import LayoutSection from '@/sections/LayoutSection.vue'
 import AdvertList from '@/components/AdvertList.vue'
 import HeaderComponent from '../components/HeaderComponent.vue'
 
 export default {
-  name: 'OffersByCategoryView',
+  name: 'OffersByTagView',
   props: {
-    categoryId: {
+    tagId: {
       type: String,
       default: "0"
     }
   },
   components: {
     LayoutSection,
-    IconMessageQuestion,
+    IconHeartHandshake,
     AdvertList,
     HeaderComponent
   },
@@ -24,10 +24,10 @@ export default {
     }
   },
   created() {
-    if (this.categoryId && this.categoryId != "") {
-      this.endpoint = "/request/category/" + this.categoryId
+    if (this.tagId && this.tagId != "") {
+      this.endpoint = "/offer/tag/" + this.tagId
     } else {
-      this.endpoint = "/request/"
+      this.endpoint = "/offer/"
     }
   }
 }
@@ -40,8 +40,8 @@ export default {
     <main class="content-grid">
       <LayoutSection>
         <h2>
-          <IconMessageQuestion size="36" />
-          Requests by category
+          <IconHeartHandshake size="36" />
+          Offers by tag
         </h2>
     
         <AdvertList :endpoint="endpoint" />

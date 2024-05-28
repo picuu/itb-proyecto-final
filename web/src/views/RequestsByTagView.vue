@@ -5,9 +5,9 @@ import AdvertList from '@/components/AdvertList.vue'
 import HeaderComponent from '../components/HeaderComponent.vue'
 
 export default {
-  name: 'OffersByCategoryView',
+  name: 'RequestsByTagView',
   props: {
-    categoryId: {
+    tagId: {
       type: String,
       default: "0"
     }
@@ -24,8 +24,8 @@ export default {
     }
   },
   created() {
-    if (this.categoryId && this.categoryId != "") {
-      this.endpoint = "/request/category/" + this.categoryId
+    if (this.tagId && this.tagId != "") {
+      this.endpoint = "/request/tag/" + this.tagId
     } else {
       this.endpoint = "/request/"
     }
@@ -41,7 +41,7 @@ export default {
       <LayoutSection>
         <h2>
           <IconMessageQuestion size="36" />
-          Requests by category
+          Requests by tag
         </h2>
     
         <AdvertList :endpoint="endpoint" />

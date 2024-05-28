@@ -41,7 +41,7 @@ export default {
       <LayoutSection>
         <h2>
           <IconHeartHandshake size="36" />
-          Offers
+          Offers by category
         </h2>
     
         <AdvertList :endpoint="endpoint" />
