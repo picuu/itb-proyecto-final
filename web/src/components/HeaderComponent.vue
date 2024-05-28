@@ -78,7 +78,7 @@ header {
 
 img {
   display: block;
-  height: 16px;
+  height: 24px;
 }
 
 .menu-icon {

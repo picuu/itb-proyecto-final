@@ -110,7 +110,7 @@ a:hover {
 
 img {
   display: block;
-  width: 50px;
+  width: 70px;
 }
 
 .right-side {
