@@ -22,11 +22,11 @@ export default {
 <template>
   <div>
     <HeaderComponent />
-    
+
     <main class="content-grid">
       <LayoutSection>
         <h2>Advert Details</h2>
-        
+
         <AdvertDetails :advertId="advertId" />
       </LayoutSection>
     </main>
