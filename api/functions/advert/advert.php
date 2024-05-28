@@ -15,8 +15,10 @@
         $offer = mysqli_fetch_assoc($result_offer);
         $result_category = mysqli_query($conn, "SELECT c.name, c.id FROM advert a JOIN category c ON (a.category_id = c.id) WHERE a.id = '$id'");
         $result_tags = mysqli_query($conn, "SELECT t.* FROM advert_tags at JOIN tag t ON (at.tag_id = t.id) WHERE advert_id = '$id'");
+        $result_owner = mysqli_query($conn, "SELECT u.* FROM user u JOIN advert a ON (a.owner_id = u.id) WHERE a.id = '$id'");
 
         $offer['category'] = mysqli_fetch_assoc($result_category);
+        $offer['owner'] = mysqli_fetch_assoc($result_owner);
 
         $tags = array();
         while ($tag = mysqli_fetch_assoc($result_tags)) {
