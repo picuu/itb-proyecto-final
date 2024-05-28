@@ -160,7 +160,7 @@ export default {
       const data = {
         name: this.registerName,
         surname: this.registerSurname,
-        image: this.registerProfileImage,
+        image: this.registerProfileImage.name,
         email: this.registerEmail,
         phone: this.registerPhone,
         password: this.registerPassword,
@@ -185,9 +185,10 @@ export default {
       console.log(json_res);
 
       if (json_res.status === 'success') {
-        console.info("Usuario registrado exitosamente");
+        console.info("Successfully registered user");
+        this.$router.push(`/user/${json_res.id}`);
       } else {
-        console.warn("Error en el registro:", json_res.message);
+        console.warn("Registration error:", json_res.message);
       }
     }
   },
