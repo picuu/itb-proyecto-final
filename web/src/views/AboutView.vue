@@ -67,8 +67,7 @@ export default {
 </template>
 
 <style scoped>
-
-
+/* General Layout */
 .layout-section {
   width: 90%;
   max-width: 1200px;
@@ -81,11 +80,15 @@ export default {
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .bottom-section {
   width: 100%;
   margin-top: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .img {
@@ -98,56 +101,77 @@ export default {
 .img img {
   width: 80%;
   max-width: 200px;
+  border-radius: 50%;
+  border: 4px solid #333;
 }
 
 .content {
   flex: 2;
 }
 
+/* Typography */
 p {
-  margin: 0.5rem 0;
-  line-height: 1.5;
+  display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
 }
 
 h2 {
-  text-align: center;
-  margin: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block: 1rem;
   color: var(--color-heading);
   font-size: 2rem;
   font-weight: 500;
 }
 
+/* Team Section */
 .our {
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-wrap: wrap;
-  margin-top: 2rem;
+  margin: 2rem 0;
 }
 
 .team-member {
   text-align: center;
   margin: 1rem;
   flex-basis: 20%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .team-member img {
   width: 100%;
   max-width: 150px;
   border-radius: 50%;
+  border: 3px solid #333;
 }
 
 .team-member h3 {
   margin: 0.5rem 0 0.2rem;
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
 }
 
 .team-member p {
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin: 0.2rem 0 0.5rem;
+  color: #777;
 }
 
+/* Social Links */
 .social-links {
   display: flex;
   justify-content: center;
@@ -156,6 +180,11 @@ h2 {
 
 .social-links a {
   text-decoration: none;
-  color: var(--color-heading);
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #007BFF;
 }
 </style>
