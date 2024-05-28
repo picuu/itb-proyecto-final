@@ -1,17 +1,18 @@
 <script>
 export default {
-  name: "CalendarComponent",
+  name: "CalendarInput",
   data() {
     return {
       selectedYear: "",
       selectedMonth: "",
       selectedDay: "",
       selectedTime: "",
-      availability: [],
+      availability: new Set(),
       currentMonth: {},
       currentMonthIndex: "",
       calendar: [],
-      firstDayStyles: ""
+      firstDayStyles: "",
+      error: false
     }
   },
 
@@ -43,28 +44,36 @@ export default {
     updateSelectedDay(dayNum) {
       this.selectedDay = dayNum
 
-      const dayNums = document.querySelectorAll(".day-num")
-      dayNums.forEach(day => {
-        day.style.outline = "none"
-      })
+      const prevSelectedDay = document.querySelector(".selected-day")
+      if (prevSelectedDay) prevSelectedDay.classList.remove("selected-day")
 
 
       const selectedDay = document.querySelector("#day-" + dayNum)
-      selectedDay.style.outline = "1px solid #09f"
+      selectedDay.classList.add("selected-day")
     },
 
     addAvaliableDate() {
-      if (!this.selectedDay || !this.selectedTime) return console.error("Hora o día no seleccionado")
+      if (!this.selectedDay || !this.selectedTime) {
+        this.error = true
+        console.error("Hora o día no seleccionado")
+        return
+      }
+
+      this.error = false
 
       const newDate = new Date(this.selectedYear, this.selectedMonth, this.selectedDay, this.selectedTime.split(":")[0], this.selectedTime.split(":")[1])
 
-      this.availability.push(newDate.valueOf())
+      this.availability.add(newDate.valueOf())
     },
 
     goPreviousMonth() {
       if (this.currentMonthIndex > 0) {
         this.currentMonthIndex--
         this.setCurrentMonth()
+        
+        this.selectedDay = ""
+        const prevSelectedDay = document.querySelector(".selected-day")
+        if (prevSelectedDay) prevSelectedDay.classList.remove("selected-day")
       }
     },
 
@@ -72,6 +81,10 @@ export default {
       if (this.currentMonthIndex < 11) {
         this.currentMonthIndex++
         this.setCurrentMonth()
+
+        this.selectedDay = ""
+        const prevSelectedDay = document.querySelector(".selected-day")
+        if (prevSelectedDay) prevSelectedDay.classList.remove("selected-day")
       }
     }
   },
@@ -130,15 +143,25 @@ export default {
 
         <button type="submit">Confirm</button>
       </form>
+
+      <template v-if="error">
+        <span class="error">Enter a time and date before continuing</span>
+      </template>
     </article>
 </template>
 
 <style scoped>
+article {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
 ol {
-  margin-bottom: 1rem;
   width: 60%;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  justify-items: center;
   gap: .5rem;
   list-style: none;
 }
@@ -148,6 +171,7 @@ li {
 }
 
 .month-name {
+  width: 100%;
   grid-column-start: 1;
   grid-column-end: 8;
   display: flex;
@@ -169,8 +193,14 @@ li {
   color: var(--color-text-bright);
 }
 
-li:not(.day-name, .month-name):focus {
-  border: 1px solid white;
+.day-num {
+  width: fit-content;
+  padding: .25rem .5rem;
+}
+
+.selected-day {
+  outline: 1px solid var(--color-border-hover);
+  border-radius: 6px;
 }
 
 li:not(.day-name):hover {
@@ -190,7 +220,17 @@ form label {
 }
 
 form button {
+  padding: .5rem 1.25rem;
   width: fit-content;
+  background-color: rgba(255 255 255 / .1);
+  border: 1px solid var(--color-border-hover);
+  border-radius: 6px;
+  transition: background-color .2s ease-in-out;
+}
+
+form button:hover {
+  cursor: pointer;
+  background-color: var(--color-border-hover);
 }
 
 input[type=time] {
@@ -213,5 +253,14 @@ input[type=time]::-webkit-datetime-edit-text {
 input[type=time]::-webkit-datetime-edit-hour-field,
 input[type=time]::-webkit-datetime-edit-minute-field  {
   padding: .25rem 0;
+}
+
+.error {
+  width: 60%;
+  padding: .5rem 1rem;
+  background-color: rgba(200 50 50 / .1);
+  border: 1px solid rgba(200 50 50 / .15);
+  border-radius: 6px;
+  text-align: center;
 }
 </style>
