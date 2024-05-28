@@ -18,7 +18,7 @@ export default {
       <div class="layout-section">
         <div class="top-section">
           <div class="img">
-            <img alt="Time Bank logo" src="@/assets/img/about.png" />
+            <img alt="Time Bank logo" src="@/assets/img/logo.svg" />
           </div>
           <section class="content">
             <div class="aboutUs">
