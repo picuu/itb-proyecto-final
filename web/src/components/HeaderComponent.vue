@@ -1,14 +1,17 @@
 <script>
 import { RouterLink } from 'vue-router'
+import { IconMenu2 } from '@tabler/icons-vue';
 
 export default {
   name: 'FooterComponent',
   components: {
-    RouterLink
+    RouterLink,
+    IconMenu2
   },
   data() {
     return {
-      isLogged: false
+      isLogged: false,
+      isMenuOpen: false
     }
   },
   methods: {
@@ -17,16 +20,17 @@ export default {
       else this.isLogged = false
     },
     logout() {
+      this.isLogged = false
       localStorage.removeItem("authInfo")
       this.$router.push('/')
+    },
+    toggleMenu() {
+      this.isMenuOpen = !this.isMenuOpen
     }
   },
   created() {
     this.checkLogin()
   },
-  updated() {
-    this.checkLogin()
-  }
 }
 </script>
 
@@ -36,20 +40,29 @@ export default {
       <img alt="Time Bank logo" src="@/assets/img/logo.svg" />
 
       <nav>
-        <div>
-          <RouterLink to="/">Home</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
-          <RouterLink to="/offers">Offers</RouterLink>
-          <RouterLink to="/requests">Requests</RouterLink>
-        </div>
-        <div>
-          <template v-if="isLogged">
-            <a @click="logout">Log out</a>
-          </template>
-          <template v-else>
-            <RouterLink to="/login">Login</RouterLink>
-            <RouterLink to="/sign-up">Sign Up</RouterLink>
-          </template>
+        <div class="menu">
+          <span class="dropdown" @click="toggleMenu">
+            <IconMenu2 size="32" stroke="1.5" />
+          </span>
+
+          <div :class="['nav', {'hidden': !isMenuOpen}]" >
+            <div class="navigation">
+              <RouterLink to="/">Home</RouterLink>
+              <RouterLink to="/about">About</RouterLink>
+              <RouterLink to="/offers">Offers</RouterLink>
+              <RouterLink to="/requests">Requests</RouterLink>
+            </div>
+  
+            <div class="auth-nav">
+              <template v-if="isLogged">
+                <a @click="logout">Log out</a>
+              </template>
+              <template v-else>
+                <RouterLink to="/login">Login</RouterLink>
+                <RouterLink to="/sign-up">Sign Up</RouterLink>
+              </template>
+            </div>
+          </div>
         </div>
       </nav>
     </div>
@@ -81,20 +94,28 @@ img {
   height: 24px;
 }
 
-.menu-icon {
+.dropdown {
   display: none;
 }
 
+.menu {
+  position: relative;
+}
+
 nav,
-nav > div {
+.menu,
+.nav,
+.navigation,
+.auth-nav {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 2rem;
 }
 
-nav {
-  justify-content: space-between;
-  width: 100%;
+.auth-nav {
+  margin-left: auto;
+  justify-content: flex-end;
 }
 
 a {
@@ -104,5 +125,53 @@ a {
 
 a:hover {
   cursor: pointer;
+}
+
+@media screen and (width < 601px) {
+  .wrapper {
+    flex-direction: row-reverse;
+  }
+
+  .dropdown {
+    display: block;
+    height: 32px;
+  }
+
+  .menu {
+    width: fit-content
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .nav {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100vw;
+    padding: .75rem 1.25rem;
+    margin-top: 3.25rem;
+    background-color: rgba(25 25 35);
+    border-radius: 6px;
+  }
+  
+  a {
+    width: 100%;
+    padding: .5rem 1rem;
+    text-align: center;
+  }
+  
+  .nav,
+  .navigation,
+  .auth-nav {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .navigation a,
+  .auth-nav a:not(:last-of-type){
+    border-bottom: 1px solid var(--color-border-hover);
+  }
 }
 </style>

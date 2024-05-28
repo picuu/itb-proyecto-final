@@ -18,7 +18,7 @@ export default {
     <HeaderComponent />
 
     <main class="content-grid">
-      <SectionHero class="full-width" />
+      <SectionHero />
       <SectionHomeCards />
     </main>
   </div>

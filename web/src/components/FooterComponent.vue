@@ -18,7 +18,7 @@ export default {
     <section class="grid-section">
       <div class="left-side">
         <img alt="Time Bank logo" src="@/assets/img/logo.svg" />
-        <p>Trade <span class="bold">time</span>, build <span class="bold">community</span>.</p>
+        <p class="slogan">Trade <span class="bold">time</span>, build <span class="bold">community</span>.</p>
         <ul>
           <li>
             <a href="http://github.com/picuu/itb-proyecto-final" target="_blank" rel="noopener noreferrer">
@@ -72,7 +72,7 @@ export default {
 
 <style scoped>
 footer {
-  padding-bottom: 3rem;
+  padding-block: 4rem 3rem;
 }
 
 .grid-section {
@@ -137,5 +137,50 @@ img {
 
 .owner {
   color: var(--color-text-bright);
+}
+
+@media screen and (width < 769px) {
+  .grid-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .left-side {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  img {
+    width: 40px;
+  }
+
+  .right-side {
+    width: 100%;
+    justify-items: center;
+  }
+  
+  .second-section {
+    text-align: center;
+  }
+}
+
+@media screen and (width < 401px) {
+  .right-side nav span {
+    display: none;
+  }
+}
+
+@media screen and (width < 301px) {
+  .slogan,
+  .right-side {
+    display: none;
+  }
+
+  .left-side {
+    align-items: flex-end;
+  }
 }
 </style>

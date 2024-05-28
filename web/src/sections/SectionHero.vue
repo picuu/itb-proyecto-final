@@ -35,6 +35,7 @@ span {
   margin-bottom: 3rem;
   font-size: 3rem;
   font-weight: 800;
+  color: var(--color-heading);
   text-wrap: balance;
 }
 

@@ -69,4 +69,14 @@ h3 a:hover {
   gap: 1rem;
   margin-top: auto;
 }
+
+@media screen and (width < 769px) {
+  img {
+    display: none;
+  }
+
+  .pills {
+    flex-wrap: wrap;
+  }
+}
 </style>

@@ -1,89 +1,91 @@
 <template>
-  <div class="container">
-    <div class="tabs">
-      <button :class="{ active: activeTab === 'login' }" @click="activeTab = 'login'">Login</button>
-      <button :class="{ active: activeTab === 'register' }" @click="activeTab = 'register'">Register</button>
-    </div>
-
-    <template v-if="activeTab == 'login'">
-      <form @submit.prevent="handleLogin">
-        <div class="input-group">
-          <label for="loginEmail">
-            <span>Email address</span>
-            <input type="email" name="loginEmail" id="loginEmail" placeholder="username@example.com"
-              v-model="loginEmail" required>
+  <div class="wrapper">
+    <div class="container">
+      <div class="tabs">
+        <button :class="{ active: activeTab === 'login' }" @click="activeTab = 'login'">Login</button>
+        <button :class="{ active: activeTab === 'register' }" @click="activeTab = 'register'">Register</button>
+      </div>
+  
+      <template v-if="activeTab == 'login'">
+        <form @submit.prevent="handleLogin">
+          <div class="input-group">
+            <label for="loginEmail">
+              <span>Email address</span>
+              <input type="email" name="loginEmail" id="loginEmail" placeholder="username@example.com"
+                v-model="loginEmail" required>
+            </label>
+  
+            <label for="loginPassword">
+              <span>Password</span>
+              <input type="password" name="loginPassword" id="loginPassword" v-model="loginPassword" required>
+            </label>
+          </div>
+  
+          <button type="submit">Sign in</button>
+        </form>
+  
+        <p class="register-reminder">Not a member? <a @click.prevent="activeTab = 'register'">Register</a></p>
+      </template>
+  
+      <template v-if="activeTab == 'register'">
+        <form @submit.prevent="handleRegister">
+          <div class="input-group">
+            <label for="registerName">
+              <span>Name</span>
+              <input type="text" name="registerName" id="registerName" placeholder="John" v-model="registerName" required>
+            </label>
+  
+            <label for="registerSurname">
+              <span>Surname</span>
+              <input type="text" name="registerSurname" id="registerSurname" placeholder="Doe Sins"
+                v-model="registerSurname" required>
+            </label>
+          </div>
+  
+          <div class="input-group">
+            <label for="registerEmail">
+              <span>Email address</span>
+              <input type="email" name="registerEmail" id="registerEmail" placeholder="username@example.com"
+                v-model="registerEmail" required>
+            </label>
+  
+            <label for="registerPhone">
+              <span>Phone</span>
+              <input type="text" name="registerPhone" id="registerPhone" placeholder="600102030" v-model="registerPhone"
+                required>
+            </label>
+          </div>
+  
+          <div class="input-group">
+            <label for="registerPassword">
+              <span>Password</span>
+              <input type="password" name="registerPassword" id="registerPassword" v-model="registerPassword" required>
+            </label>
+  
+            <label for="registerPasswordRepeat">
+              <span>Repeat password</span>
+              <input type="password" name="registerPasswordRepeat" id="registerPasswordRepeat"
+                v-model="registerPasswordRepeat" required>
+            </label>
+          </div>
+  
+          <label for="registerProfileImage">
+            <span>Profile image</span>
+            <input type="file" name="registerProfileImage" id="registerProfileImage" @change="handleFileChange">
           </label>
-
-          <label for="loginPassword">
-            <span>Password</span>
-            <input type="password" name="loginPassword" id="loginPassword" v-model="loginPassword" required>
-          </label>
-        </div>
-
-        <button type="submit">Sign in</button>
-      </form>
-
-      <p class="register-reminder">Not a member? <a @click.prevent="activeTab = 'register'">Register</a></p>
-    </template>
-
-    <template v-if="activeTab == 'register'">
-      <form @submit.prevent="handleRegister">
-        <div class="input-group">
-          <label for="registerName">
-            <span>Name</span>
-            <input type="text" name="registerName" id="registerName" placeholder="John" v-model="registerName" required>
-          </label>
-
-          <label for="registerSurname">
-            <span>Surname</span>
-            <input type="text" name="registerSurname" id="registerSurname" placeholder="Doe Sins"
-              v-model="registerSurname" required>
-          </label>
-        </div>
-
-        <div class="input-group">
-          <label for="registerEmail">
-            <span>Email address</span>
-            <input type="email" name="registerEmail" id="registerEmail" placeholder="username@example.com"
-              v-model="registerEmail" required>
-          </label>
-
-          <label for="registerPhone">
-            <span>Phone</span>
-            <input type="text" name="registerPhone" id="registerPhone" placeholder="600102030" v-model="registerPhone"
+  
+          <label for="registerTermsCheck" class="checkbox-group">
+            <input type="checkbox" name="registerTermsCheck" id="registerTermsCheck" v-model="registerTermsCheck"
               required>
+            <span>I have read and agree to the terms</span>
           </label>
-        </div>
-
-        <div class="input-group">
-          <label for="registerPassword">
-            <span>Password</span>
-            <input type="password" name="registerPassword" id="registerPassword" v-model="registerPassword" required>
-          </label>
-
-          <label for="registerPasswordRepeat">
-            <span>Repeat password</span>
-            <input type="password" name="registerPasswordRepeat" id="registerPasswordRepeat"
-              v-model="registerPasswordRepeat" required>
-          </label>
-        </div>
-
-        <label for="registerProfileImage">
-          <span>Profile image</span>
-          <input type="file" name="registerProfileImage" id="registerProfileImage" @change="handleFileChange">
-        </label>
-
-        <label for="registerTermsCheck" class="checkbox-group">
-          <input type="checkbox" name="registerTermsCheck" id="registerTermsCheck" v-model="registerTermsCheck"
-            required>
-          <span>I have read and agree to the terms</span>
-        </label>
-
-        <button type="submit">Sign in</button>
-      </form>
-
-      <p class="register-reminder">Already have an account? <a @click.prevent="activeTab = 'login'">Login</a></p>
-    </template>
+  
+          <button type="submit">Sign in</button>
+        </form>
+  
+        <p class="register-reminder">Already have an account? <a @click.prevent="activeTab = 'login'">Login</a></p>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -198,7 +200,7 @@ export default {
 
 <style scoped>
 .container {
-  width: calc(85% - 400px);
+  max-width: 600px;
   margin-inline: auto;
   display: flex;
   flex-direction: column;
@@ -292,5 +294,22 @@ form button:hover {
 .checkbox-group:hover,
 .checkbox-group input:hover {
   cursor: pointer;
+}
+
+@media screen and (width < 481px) {
+  .input-group {
+    flex-direction: column;
+  }
+}
+
+@media screen and (width < 401px) {
+  .tabs button {
+    padding-block: 1rem .25rem;
+    padding-inline: calc(1.1rem + 5vw);
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--color-border-hover);
+    color: var(--color-text);
+  }
 }
 </style>

@@ -263,4 +263,15 @@ input[type=time]::-webkit-datetime-edit-minute-field  {
   border-radius: 6px;
   text-align: center;
 }
+
+@media screen and (width < 341px) {
+  ol {
+    gap: .25rem;
+  }
+
+  .day-num {
+    width: fit-content;
+    padding: .15rem .25rem;
+  }
+}
 </style>

@@ -174,7 +174,6 @@ export default {
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 3rem;
-  margin-bottom: 4rem;
 }
 
 .left-section,
@@ -292,5 +291,66 @@ a {
 
 .calendar-container {
   margin-left: auto;
+}
+
+@media screen and (width < 1025px) {
+  .advert-info {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-container {
+    margin: 0;
+    max-width: 80%;
+  }
+}
+
+@media screen and (width < 689px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+
+  .left-section {
+    flex-direction: row;
+  }
+
+  img {
+    width: 50%;
+  }
+
+  .property dt {
+    width: 80px;
+  }
+
+  .calendar-container {
+    margin-inline: auto;
+  }
+}
+
+@media screen and (width < 560px) and (width >= 360px) {
+  .property {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .property dt {
+    width: fit-content;
+  }
+}
+
+@media screen and (width < 360px) {
+  img {
+    display: none;
+  }
+
+  .left-section {
+    grid-row: 2;
+  }
+}
+
+@media screen and (width < 481px) {
+  .calendar-container {
+    margin-inline: 0;
+  }
 }
 </style>

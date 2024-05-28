@@ -33,8 +33,18 @@ div {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   justify-items: center;
-  width: calc(100% - 300px);
   margin-inline: auto;
   padding-bottom: 2rem;
+}
+
+@media screen and (width < 481px) {
+  div {
+    grid-template-columns: 1fr;
+  }
+
+  div > * {
+    width: fit-content;
+    padding: 0 2.5rem;
+  }
 }
 </style>
