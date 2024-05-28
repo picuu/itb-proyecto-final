@@ -36,7 +36,6 @@
         $image = $data['image'];
         $description = $data['description'];
         $isRequest = $data['isRequest'];
-        $price = $data['price'];
         $availability = $data['availability'];
         $loc_name = $data['loc_name'];
         $loc_latitude = $data['loc_latitude'];
