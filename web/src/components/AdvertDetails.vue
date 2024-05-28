@@ -1,6 +1,7 @@
 <script>
 import { RouterLink } from 'vue-router';
 import { validateSession, formatTime } from '@/helpers'
+import { advert } from '@/types';
 import CalendarOutput from './CalendarOutput.vue';
 
 export default {
@@ -14,43 +15,7 @@ export default {
   },
   data() {
     return {
-      advert: {
-        id: '',
-        owner_id: '',
-        category_id: '0',
-        title: '',
-        image: '',
-        description: '',
-        isRequest: '',
-        price: '',
-        availability: '',
-        loc_name: '',
-        loc_latitude: '',
-        loc_longitude: '',
-        max_subscribers: '',
-        publish_date: '',
-        tags: [
-          {
-            id: '0',
-            name: ''
-          }
-        ],
-        category: {
-          id: '',
-          name: ''
-        },
-        owner: {
-          id: '',
-          name: '',
-          surname: '',
-          image: '',
-          email: '',
-          phone: '',
-          password: '',
-          balance: '',
-          isAdmin: ''
-        },
-      },
+      advert,
       availability: Array,
       timePrice: ''
     }
@@ -100,7 +65,7 @@ export default {
           <div class="property">
             <dt>Tags</dt>
             <dd class="tags">
-              <RouterLink :to="'/tag/' + tag.id" v-for="tag in advert.tags" class="tag" :key="tag.id">
+              <RouterLink :to="'/advert/tag/' + tag.id" v-for="tag in advert.tags" class="tag" :key="tag.id">
                 {{ tag.name }}
               </RouterLink>
             </dd>
@@ -124,7 +89,7 @@ export default {
           <div class="owner">
             <p>
               Added by
-              <RouterLink :to="'/users/' + advert.owner_id" :title="advert.owner.name + ' ' + advert.owner.surname">
+              <RouterLink :to="'/user/' + advert.owner_id" :title="advert.owner.name + ' ' + advert.owner.surname">
                 {{ advert.owner.name }}
               </RouterLink>
               on {{ advert.publish_date }}
