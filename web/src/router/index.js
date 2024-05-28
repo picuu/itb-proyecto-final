@@ -75,6 +75,12 @@ const router = createRouter({
       name: "user-profile",
       component: () => import("../views/UserProfileView.vue"),
       props: true
+    },
+    {
+      path: '/update-advert/:advertId',
+      name: "update-advert",
+      component: () => import("../views/UpdateAdvertFormView.vue"),
+      props: true
     }
   ]
 })

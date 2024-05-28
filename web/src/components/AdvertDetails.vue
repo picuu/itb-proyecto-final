@@ -163,6 +163,9 @@ export default {
 
       </section>
     </div>
+    <p>
+      <RouterLink :to="'/update-advert/' + advert.id">Update Advert  </RouterLink>
+    </p>
   </span>
 </template>
 
