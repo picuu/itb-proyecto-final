@@ -186,6 +186,7 @@ export default {
 
       if (json_res.status === 'success') {
         console.info("Successfully registered user");
+        localStorage.setItem("authInfo", JSON.stringify(json_res));
         this.$router.push(`/user/${json_res.id}`);
       } else {
         console.warn("Registration error:", json_res.message);

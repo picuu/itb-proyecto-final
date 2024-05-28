@@ -178,8 +178,9 @@
                 //crear
             } else if ($uri[0] == "auth" && $uri[1] == "login") {
                 echo login($conn);
+            } else if ($uri[0] == "auth" && $uri[1] == "register") {
+                echo register($conn);
             }
-            
             else {
                 paginaError();
             }
