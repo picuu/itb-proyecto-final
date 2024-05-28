@@ -32,24 +32,31 @@ export default {
             <div class="who">
               <h2>What we do</h2>
               <p>Our goal is to develop a comprehensive web application called "Banco del Tiempo" (Time Bank), where people can share knowledge and exchange their time. This time bank allows users to offer and receive services without the need for money, promoting a more equitable and collaborative approach.
-                On our platform, users can post offers and services, sign up for others' offers, and view and leave reviews. There will also be administrator users with special permissions to manage the community.
+                On our platform, users can post offers and services, sign up for others' offers, and view and leave reviews.</p>
+              <p>There will also be administrator users with special permissions to manage the community.
                 Unlike other time banks, which are often simple web portals, we aim to create a complete and attractive application that truly fulfills its functions and promotes a different way of helping and learning.</p>
             </div>
           </section>
         </div>
         <section class="our">
           <div class="team-member">
-            <img alt="Team member" src="@/assets/img/about.png" />
+            <a href="https://github.com/JacomarGS">
+              <img alt="Team member" src="@/assets/img/about.png" />
+            </a>
             <h3>Jaco González</h3>
             <p>Backend dev</p>
           </div>
           <div class="team-member">
-            <img alt="Team member" src="@/assets/img/about.png" />
+            <a href="https://github.com/devThalia">
+              <img alt="Team member" src="@/assets/img/about.png" />
+            </a>
             <h3>Thalia Bravo</h3>
             <p>SQL dev</p>
           </div>
           <div class="team-member">
-            <img alt="Team member" src="@/assets/img/about.png" />
+            <a href="https://carloscapo.com">
+              <img alt="Team member" src="@/assets/img/carlosCapo.png" />
+            </a>
             <h3>Carlos Capó</h3>
             <p>Frontend dev</p>
           </div>
