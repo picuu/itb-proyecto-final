@@ -1,90 +1,3 @@
-<script>
-import { RouterLink } from 'vue-router';
-import { validateSession, formatTime } from '@/helpers'
-
-export default {
-    name: 'UpdateAdvert',
-    props: {
-        advertId: {
-            type: String,
-            default: '0'
-        }
-    },
-    components: {
-        RouterLink
-    },
-    data() {
-        return {
-            selectedField: '',
-            fieldName: '',
-            formData: {
-                title: '',
-                description: '',
-                loc_name: '',
-                image: '',
-                max_subscribers: 0,
-                tags: []
-            },
-            tags: [],
-            imageFile: null,
-            imagePreview: ''
-        };
-    },
-    methods: {
-        loadForm() {
-            this.fieldName = this.selectedField.charAt(0).toUpperCase() + this.selectedField.slice(1);
-        },
-        handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                this.imageFile = file;
-                this.imagePreview = URL.createObjectURL(file);
-            }
-        },
-        async updateAdvert() {
-            const formData = new FormData();
-            formData.append('title', this.formData.title);
-            formData.append('description', this.formData.description);
-            formData.append('loc_name', this.formData.loc_name);
-            formData.append('max_subscribers', this.formData.max_subscribers);
-            formData.append('tags', JSON.stringify(this.formData.tags));
-
-            if (this.imageFile) {
-                formData.append('image', this.imageFile);
-            }
-
-            try {
-                const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`, {
-                    method: 'PUT',
-                    body: formData
-                });
-                const result = await response.json();
-                if (result.status === 'success') {
-                    alert('Anuncio actualizado con éxito');
-                } else {
-                    alert('Error al actualizar el anuncio');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error al actualizar el anuncio');
-            }
-        },
-        async getTags() {
-            try {
-                const response = await fetch('http://localhost/itb-proyecto-final/api/index.php/tag');
-                const result = await response.json();
-                this.tags = result.data;
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-    },
-    mounted() {
-        this.tags=this.getTags();
-    }
-}
-</script>
-
 <template>
     <div>
         <select v-model="selectedField" @change="loadForm">
@@ -111,7 +24,7 @@ export default {
 
                 <div v-if="selectedField === 'loc_name'">
                     <label for="loc_name">New location:</label>
-                    <input type="text" v-model="formData.loc_name" />
+                    <MapComp @mapDataUpdate="saveMapData" />
                 </div>
 
                 <div v-if="selectedField === 'image'">
@@ -124,7 +37,7 @@ export default {
                 </div>
 
                 <div v-if="selectedField === 'max_subscribers'">
-                    <label for="max_subscribers">New number of subscriberss:</label>
+                    <label for="max_subscribers">New number of subscribers:</label>
                     <input type="number" v-model="formData.max_subscribers" />
                 </div>
 
@@ -140,6 +53,102 @@ export default {
         </div>
     </div>
 </template>
+
+<script>
+import { RouterLink } from 'vue-router';
+import MapComp from '@/components/MapComp.vue';
+
+export default {
+    name: 'UpdateAdvert',
+    props: {
+        advertId: {
+            type: String,
+            default: '0'
+        }
+    },
+    components: {
+        RouterLink,
+        MapComp
+    },
+    data() {
+        return {
+            selectedField: '',
+            fieldName: '',
+            formData: {
+                title: '',
+                description: '',
+                loc_name: '',
+                image: '',
+                max_subscribers: 0,
+                tags: [],
+                loc_latitude: null,
+                loc_longitude: null
+            },
+            tags: [],
+            imageFile: null,
+            imagePreview: ''
+        };
+    },
+    methods: {
+        loadForm() {
+            this.fieldName = this.selectedField.charAt(0).toUpperCase() + this.selectedField.slice(1);
+        },
+        handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                this.imageFile = file;
+                this.imagePreview = URL.createObjectURL(file);
+            }
+        },
+        async updateAdvert() {
+            const formData = new FormData();
+            formData.append('title', this.formData.title);
+            formData.append('description', this.formData.description);
+            formData.append('loc_name', this.formData.loc_name);
+            formData.append('loc_latitude', this.formData.loc_latitude);
+            formData.append('loc_longitude', this.formData.loc_longitude);
+            formData.append('max_subscribers', this.formData.max_subscribers);
+            formData.append('tags', JSON.stringify(this.formData.tags));
+
+            if (this.imageFile) {
+                formData.append('image', this.imageFile);
+            }
+
+            try {
+                const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`, {
+                    method: 'PUT',
+                    body: formData
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    alert('Anuncio actualizado con éxito');
+                } else {
+                    alert('Error al actualizar el anuncio');
+                }
+            } catch (error) {
+                alert('Error al actualizar el anuncio');
+            }
+        },
+        async getTags() {
+            try {
+                const response = await fetch('http://localhost/itb-proyecto-final/api/index.php/tag');
+                const result = await response.json();
+                this.tags = result.data;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        },
+        saveMapData(data) {
+            this.formData.loc_name = data.name;
+            this.formData.loc_latitude = data.latitude;
+            this.formData.loc_longitude = data.longitude;
+        }
+    },
+    mounted() {
+        this.getTags();
+    }
+}
+</script>
 
 <style scoped>
 h2 {
@@ -182,7 +191,6 @@ button {
     font-size: 1rem;
 }
 
-
 button {
     width: fit-content;
     background-color: #007bff;
@@ -196,5 +204,4 @@ div {
     flex-direction: column;
     gap: 1rem;
 }
-
 </style>
