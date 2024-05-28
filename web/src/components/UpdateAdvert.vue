@@ -115,19 +115,30 @@ export default {
             }
 
             try {
-                const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`, {
-                    method: 'PUT',
-                    body: formData
-                });
+            const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`, {
+                method: 'PUT',
+                body: formData
+            });
+
+            // Verifica si la respuesta es JSON
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
                 const result = await response.json();
+                console.log('API Response:', result); // Depura la respuesta de la API
                 if (result.status === 'success') {
                     alert('Anuncio actualizado con éxito');
                 } else {
-                    alert('Error al actualizar el anuncio');
+                    alert('Error al actualizar el anuncio: ' + result.message);
                 }
-            } catch (error) {
-                alert('Error al actualizar el anuncio');
+            } else {
+                // Maneja respuestas no JSON
+                console.error('Respuesta no JSON recibida:', response);
+                alert('Error al actualizar el anuncio: respuesta no válida del servidor');
             }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al actualizar el anuncio');
+        }
         },
         async getTags() {
             try {
