@@ -18,13 +18,14 @@
     function addUser($conn, $data) {
         $name = $data['name'];
         $surname = $data['surname'];
+        $image = $data['image'];
         $email = $data['email'];
         $phone = $data['phone'];
         $password = md5($data['password']);
-        $balance = $data['balance'];
-        $isAdmin = $data['isAdmin'];
+        $balance = $data['balance'] ?? 0;
+        $isAdmin = $data['isAdmin'] ?? 0;
 
-        $result = mysqli_query($conn, "INSERT INTO user (id, name, surname, email, phone, password, balance, isAdmin) VALUES (default, '$name', '$surname', '$email', '$phone', '$password', '$balance', '$isAdmin')");
+        $result = mysqli_query($conn, "INSERT INTO user (id, name, surname, image, email, phone, password, balance, isAdmin) VALUES (default, '$name', '$surname', '$image', '$email', '$phone', '$password', '$balance', '$isAdmin')");
         if ($result) {
             $response = array('status' => 'success');
         } else {
