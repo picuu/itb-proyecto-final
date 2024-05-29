@@ -41,7 +41,7 @@ export default {
         <section class="our">
           <div class="team-member">
             <a href="https://github.com/JacomarGS">
-              <img alt="Team member" src="@/assets/img/about.png" />
+              <img alt="Team member" src="@/assets/img/jacoimg.jpg" />
             </a>
             <h3>Jaco González</h3>
             <p>Backend dev</p>
