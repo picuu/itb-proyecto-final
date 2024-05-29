@@ -35,9 +35,9 @@ INSERT INTO `tag` (`id`, `name`) VALUES
 
 -- Inserts para la tabla `advert`
 INSERT INTO `advert` (`id`, `owner_id`, `category_id`, `title`, `image`, `description`, `isRequest`, `price`, `availability`, `loc_name`, `loc_latitude`, `loc_longitude`, `max_subscribers`, `publish_date`) VALUES
-(1, 1, 1, 'Clases de Matemáticas', DEFAULT, 'Ofrezco clases de matemáticas para estudiantes de secundaria.', 0, 50, '[1714633200000,1715238000000,1716300000000,1716472800000,1716904800000,1717077600000]', 'Madrid', 40.416775, -3.703790, 5, 1716449760),
-(2, 2, 8, 'Sesión de Yoga', DEFAULT, 'Ofrezco sesiones de yoga para principiantes.', 0, 30, '[1715065200000,1715670000000,1716274800000,1716879600000,1714665600000,1715270400000,1715875200000,1716480000000,1717084800000,1717493400000,1718098200000,1718703000000,1719307800000,1717666200000,1718271000000,1718875800000,1719480600000]', 'Barcelona', 41.385064, 2.173404, 10, 1716538380),
-(3, 2, 4, 'Busco alguien para pasear mis perros', DEFAULT, 'Busco alguien a que le gusten los animales para que pueda pasear mis perros las mañanas de los viernes, ya que trabajo y no puedo.', 1, 30, '[1714717800000,1715322600000,1715927400000,1716532200000,1717137000000]', 'Barcelona', 41.385064, 2.173404, 1, 1716753900);
+(1, 1, 1, 'Clases de Matemáticas', DEFAULT, 'Ofrezco clases de matemáticas para estudiantes de secundaria.', 0, 50, '1714633200000,1715238000000,1716300000000,1716472800000,1716904800000,1717077600000', 'Madrid', 40.416775, -3.703790, 5, 1716449760),
+(2, 2, 8, 'Sesión de Yoga', DEFAULT, 'Ofrezco sesiones de yoga para principiantes.', 0, 30, '1715065200000,1715670000000,1716274800000,1716879600000,1714665600000,1715270400000,1715875200000,1716480000000,1717084800000,1717493400000,1718098200000,1718703000000,1719307800000,1717666200000,1718271000000,1718875800000,1719480600000', 'Barcelona', 41.385064, 2.173404, 10, 1716538380),
+(3, 2, 4, 'Busco alguien para pasear mis perros', DEFAULT, 'Busco alguien a que le gusten los animales para que pueda pasear mis perros las mañanas de los viernes, ya que trabajo y no puedo.', 1, 30, '1714717800000,1715322600000,1715927400000,1716532200000,1717137000000', 'Barcelona', 41.385064, 2.173404, 1, 1716753900);
 
 -- Inserts para la tabla `advert_tags`
 INSERT INTO `advert_tags` (`advert_id`, `tag_id`) VALUES

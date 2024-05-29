@@ -36,7 +36,7 @@ CREATE TABLE `advert` (
   `description` text NOT NULL,
   `isRequest` tinyint(1) NOT NULL,
   `price` bigint(20) NOT NULL,
-  `availability` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`availability`)),
+  `availability` longtext NOT NULL,
   `loc_name` varchar(45) NOT NULL,
   `loc_latitude` float NOT NULL,
   `loc_longitude` float NOT NULL,
