@@ -8,11 +8,11 @@ import { validateSession } from '@/helpers'
 
 
 export default {
-  name: 'OffersView',
+  name: 'RequestsView',
   components: {
     RouterLink,
     LayoutSection,
-    IconHeartHandshake,
+    IconMessageQuestion,
     AdvertList,
     HeaderComponent,
   },

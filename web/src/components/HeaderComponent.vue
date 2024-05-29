@@ -5,7 +5,7 @@ import { validateSession } from '@/helpers'
 import { IconMenu2, IconUser } from '@tabler/icons-vue'
 
 export default {
-  name: 'FooterComponent',
+  name: 'HeaderComponent',
   components: {
     RouterLink,
     IconMenu2,
