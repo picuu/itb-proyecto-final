@@ -12,13 +12,19 @@ export default {
   },
   components: {
     RouterLink
+  },
+  computed: {
+    getAdvertImagePath() {
+      if (this.image == "default.webp") return "/" + this.image
+      return this.image
+    }
   }
 }
 </script>
 
 <template>
   <article>
-    <img :src="image" :alt="title" />
+    <img :src="getAdvertImagePath" :alt="title" />
     <div class="offer-info">
       <h3><RouterLink :to="(isRequest ? '/requests/' : '/offers/') + id">{{ title }}</RouterLink></h3>
       <p>{{ description }}</p>

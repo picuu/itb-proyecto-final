@@ -34,7 +34,12 @@ export default {
     this.timePrice = formatTime(convertCoinsToTime(this.advert.price)) + 'h'
   },
   computed: {
-    validateSession
+    validateSession,
+
+    getAdvertImagePath() {
+      if (this.advert.image == "default.webp") return "/" + this.advert.image
+      return this.advert.image
+    }
   }
 }
 </script>
@@ -43,7 +48,7 @@ export default {
   <span>
     <div class="content">
       <section class="left-section">
-        <img :src="advert.image" :alt="advert.title" />
+        <img :src="getAdvertImagePath" :alt="advert.title" />
 
         <dl class="properties">
           <div class="property">
