@@ -36,6 +36,7 @@
         $image = $data['image'];
         $description = $data['description'];
         $isRequest = $data['isRequest'];
+        $price = $data['price'];
         $availability = $data['availability'];
         $loc_name = $data['loc_name'];
         $loc_latitude = $data['loc_latitude'];
@@ -48,8 +49,8 @@
 
         if ($result) {
             $advert_id = mysqli_insert_id($conn);
-            foreach ($tags as $tag_id) {
-                mysqli_query($conn, "INSERT INTO advert_tags (advert_id, tag_id) VALUES ('$advert_id', '$tag_id')");
+            foreach ($tags as $tag) {
+                mysqli_query($conn, "INSERT INTO advert_tags (advert_id, tag_id) VALUES ('$advert_id', '$tag[id]')");
             }
             $response = array('status' => 'success');
         } else {

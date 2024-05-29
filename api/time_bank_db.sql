@@ -32,7 +32,7 @@ CREATE TABLE `advert` (
   `owner_id` bigint(20) UNSIGNED NOT NULL,
   `category_id` bigint(20) UNSIGNED NOT NULL,
   `title` varchar(45) NOT NULL,
-  `image` varchar(20) NOT NULL,
+  `image` text NOT NULL DEFAULT 'default.webp',
   `description` text NOT NULL,
   `isRequest` tinyint(1) NOT NULL,
   `price` bigint(20) NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `advert` (
   `loc_latitude` float NOT NULL,
   `loc_longitude` float NOT NULL,
   `max_subscribers` smallint(6) NOT NULL,
-  `publish_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `publish_date` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -65,10 +65,10 @@ CREATE TABLE `booking` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `advert_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
-  `booking_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `booking_date` bigint NOT NULL,
   `valoration_score` smallint(6) NOT NULL,
   `valoration_comment` text NOT NULL,
-  `valoration_date` timestamp NOT NULL DEFAULT current_timestamp()
+  `valoration_date` bigint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -103,7 +103,7 @@ CREATE TABLE `user` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(45) NOT NULL,
   `surname` varchar(90) NOT NULL,
-  `image` varchar(45) NOT NULL DEFAULT 'default-profile.webp',
+  `image` text NOT NULL DEFAULT 'default-profile.webp',
   `email` varchar(45) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `password` varchar(35) NOT NULL,
