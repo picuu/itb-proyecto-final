@@ -36,4 +36,20 @@
         }
         return json_encode($response);
     }
+
+    // get bookings by advert
+    function getBookingsByAdvert($conn, $advert_id) {
+        $result_bookings = mysqli_query($conn, "SELECT * FROM booking WHERE advert_id = '$advert_id' order by id");
+
+        $bookings = array();
+        while ($booking = mysqli_fetch_assoc($result_bookings)) {
+            $result_owner = mysqli_query($conn, "SELECT u.* FROM user u JOIN advert a ON (a.owner_id = u.id) WHERE a.id = '$booking[advert_id]'");
+            $owner = mysqli_fetch_assoc($result_owner);
+
+            $booking["owner"] = $owner;
+            $bookings[] = $booking;
+        }
+
+        return json_encode($bookings);
+    }
 ?>

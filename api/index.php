@@ -193,33 +193,45 @@
         case 4:
             header("Content-Type: application/json");
 
+            // get adverts by category
             if ($uri[0] == "offer" && $uri[2] == "category") {
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     echo getAdvertCategory($conn, $uri[1]);
                 }
             }
 
+            // get offers by category
             else if ($uri[0] == "offer" && $uri[1] == "category") {
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     echo getOffersByCategory($conn, $uri[2]);
                 }
             }
 
+            // get requests by category
             else if ($uri[0] == "request" && $uri[1] == "category") {
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     echo getRequestsByCategory($conn, $uri[2]);
                 }
             }
-
+            
+            // get offers by tag
             else if ($uri[0] == "offer" && $uri[1] == "tag") {
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     echo getOffersByTag($conn, $uri[2]);
                 }
             }
 
+            // get requests by tag
             else if ($uri[0] == "request" && $uri[1] == "tag") {
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     echo getRequestsByTag($conn, $uri[2]);
+                }
+            }
+
+            // get bookings by advert
+            else if ($uri[0] == "advert" && $uri[2] == "booking") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    echo getBookingsByAdvert($conn, $uri[1]);
                 }
             }
 
