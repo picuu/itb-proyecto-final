@@ -4,6 +4,7 @@ import { IconMessageQuestion } from '@tabler/icons-vue'
 import LayoutSection from '@/sections/LayoutSection.vue'
 import AdvertList from '@/components/AdvertList.vue'
 import HeaderComponent from '../components/HeaderComponent.vue'
+import { validateSession } from '@/helpers'
 
 
 export default {
@@ -11,10 +12,33 @@ export default {
   components: {
     RouterLink,
     LayoutSection,
-    IconMessageQuestion,
+    IconHeartHandshake,
     AdvertList,
-    HeaderComponent
-  }
+    HeaderComponent,
+  },
+  data() {
+    return {
+      isLogged: false,
+      isMenuOpen: false,
+      userId: null,
+    }
+  },
+  created() {
+    this.checkLogin();
+  },
+  methods: {
+    checkLogin() {
+      const authInfo = validateSession();
+      console.log(authInfo);
+      if (authInfo) {
+        this.isLogged = true;
+        this.userId = authInfo.id;
+      } else {
+        this.isLogged = false;
+        this.userId = null;
+      }
+    },
+  },
 }
 </script>
 
@@ -30,7 +54,9 @@ export default {
         </h2>
     
         <AdvertList endpoint="/request/" />
-        <RouterLink to="/new-advert-form">Add New Advert</RouterLink>
+        <template v-if="isLogged">
+          <RouterLink to="/new-advert-form">Add New Advert</RouterLink>
+        </template>
       </LayoutSection>
     </main>
   </div>
