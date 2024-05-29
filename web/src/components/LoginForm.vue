@@ -5,7 +5,7 @@
         <button :class="{ active: activeTab === 'login' }" @click="activeTab = 'login'">Login</button>
         <button :class="{ active: activeTab === 'register' }" @click="activeTab = 'register'">Register</button>
       </div>
-  
+
       <template v-if="activeTab == 'login'">
         <form @submit.prevent="handleLogin">
           <div class="input-group">
@@ -14,75 +14,76 @@
               <input type="email" name="loginEmail" id="loginEmail" placeholder="username@example.com"
                 v-model="loginEmail" required>
             </label>
-  
+
             <label for="loginPassword">
               <span>Password</span>
               <input type="password" name="loginPassword" id="loginPassword" v-model="loginPassword" required>
             </label>
           </div>
-  
+
           <button type="submit">Sign in</button>
         </form>
-  
+
         <p class="register-reminder">Not a member? <a @click.prevent="activeTab = 'register'">Register</a></p>
       </template>
-  
+
       <template v-if="activeTab == 'register'">
         <form @submit.prevent="handleRegister">
           <div class="input-group">
             <label for="registerName">
               <span>Name</span>
-              <input type="text" name="registerName" id="registerName" placeholder="John" v-model="registerName" required>
+              <input type="text" name="registerName" id="registerName" placeholder="John" v-model="registerName"
+                required>
             </label>
-  
+
             <label for="registerSurname">
               <span>Surname</span>
               <input type="text" name="registerSurname" id="registerSurname" placeholder="Doe Sins"
                 v-model="registerSurname" required>
             </label>
           </div>
-  
+
           <div class="input-group">
             <label for="registerEmail">
               <span>Email address</span>
               <input type="email" name="registerEmail" id="registerEmail" placeholder="username@example.com"
                 v-model="registerEmail" required>
             </label>
-  
+
             <label for="registerPhone">
               <span>Phone</span>
               <input type="text" name="registerPhone" id="registerPhone" placeholder="600102030" v-model="registerPhone"
                 required>
             </label>
           </div>
-  
+
           <div class="input-group">
             <label for="registerPassword">
               <span>Password</span>
               <input type="password" name="registerPassword" id="registerPassword" v-model="registerPassword" required>
             </label>
-  
+
             <label for="registerPasswordRepeat">
               <span>Repeat password</span>
               <input type="password" name="registerPasswordRepeat" id="registerPasswordRepeat"
                 v-model="registerPasswordRepeat" required>
             </label>
           </div>
-  
+
           <label for="registerProfileImage">
-            <span>Profile image</span>
-            <input type="file" name="registerProfileImage" id="registerProfileImage" @change="handleFileChange">
+            <span>Choose your avatar</span>
+            <AvatarCarousel v-model="registerProfileImage" @avatar-selected="handleAvatarSelected" />
           </label>
-  
+
           <label for="registerTermsCheck" class="checkbox-group">
             <input type="checkbox" name="registerTermsCheck" id="registerTermsCheck" v-model="registerTermsCheck"
               required>
             <span>I have read and agree to the terms</span>
           </label>
-  
+
           <button type="submit">Sign in</button>
         </form>
-  
+
         <p class="register-reminder">Already have an account? <a @click.prevent="activeTab = 'login'">Login</a></p>
       </template>
     </div>
@@ -90,8 +91,13 @@
 </template>
 
 <script>
+import AvatarCarousel from "@/components/AvatarCarousel.vue";
+
 export default {
   name: "LoginForm",
+  components: {
+    AvatarCarousel
+  },
   props: {
     activeTabProp: {
       type: String,
@@ -106,7 +112,7 @@ export default {
       loginCheck: true,
       registerName: '',
       registerSurname: '',
-      registerProfileImage: null,
+      registerProfileImage: '',
       registerEmail: '',
       registerPhone: '',
       registerPassword: '',
@@ -118,6 +124,11 @@ export default {
     };
   },
   methods: {
+    // Función para actualizar 'registerProfileImage' con el valor transmitido por el evento 'avatar-selected'
+    handleAvatarSelected(avatar) {
+      this.registerProfileImage = avatar;
+      console.log(this.registerProfileImage);
+    },
     // Función que permite al usuario logearse
     async handleLogin() {
       const data = {
@@ -148,10 +159,6 @@ export default {
         console.warn("credenciales incorrectas");
       }
     },
-    // Función que permite almacenar un archivo subido por el usuario en el data
-    handleFileChange(event) {
-      this.registerProfileImage = event.target.files[0];
-    },
     // Función que permite al usuario registrarse
     async handleRegister() {
       if (this.registerPassword !== this.registerPasswordRepeat) {
@@ -162,7 +169,7 @@ export default {
       const data = {
         name: this.registerName,
         surname: this.registerSurname,
-        image: this.registerProfileImage.name,
+        image: this.registerProfileImage,
         email: this.registerEmail,
         phone: this.registerPhone,
         password: this.registerPassword,

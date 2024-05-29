@@ -11,18 +11,28 @@ export default {
   data() {
     return {
       isLogged: false,
-      isMenuOpen: false
+      isMenuOpen: false,
+      userId: null
     }
   },
   methods: {
     checkLogin() {
-      if (localStorage.getItem("authInfo")) this.isLogged = true
-      else this.isLogged = false
+      const authInfo = localStorage.getItem("authInfo");
+      console.log(authInfo);
+      if (authInfo) {
+        const parsedAuthInfo = JSON.parse(authInfo);
+        this.isLogged = true;
+        this.userId = parsedAuthInfo.id;
+      } else {
+        this.isLogged = false;
+        this.userId = null;
+      }
     },
     logout() {
-      this.isLogged = false
-      localStorage.removeItem("authInfo")
-      this.$router.push('/')
+      this.isLogged = false;
+      this.userId = null;
+      localStorage.removeItem("authInfo");
+      this.$router.push('/');
     },
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen
@@ -45,17 +55,18 @@ export default {
             <IconMenu2 size="32" stroke="1.5" />
           </span>
 
-          <div :class="['nav', {'hidden': !isMenuOpen}]" >
+          <div :class="['nav', { 'hidden': !isMenuOpen }]">
             <div class="navigation">
               <RouterLink to="/">Home</RouterLink>
               <RouterLink to="/about">About</RouterLink>
               <RouterLink to="/offers">Offers</RouterLink>
               <RouterLink to="/requests">Requests</RouterLink>
             </div>
-  
+
             <div class="auth-nav">
               <template v-if="isLogged">
                 <a @click="logout">Log out</a>
+                <RouterLink :to="`/user/${userId}`">My profile</RouterLink>
               </template>
               <template v-else>
                 <RouterLink to="/login">Login</RouterLink>
@@ -155,13 +166,13 @@ a:hover {
     background-color: rgba(25 25 35);
     border-radius: 6px;
   }
-  
+
   a {
     width: 100%;
     padding: .5rem 1rem;
     text-align: center;
   }
-  
+
   .nav,
   .navigation,
   .auth-nav {
@@ -170,7 +181,7 @@ a:hover {
   }
 
   .navigation a,
-  .auth-nav a:not(:last-of-type){
+  .auth-nav a:not(:last-of-type) {
     border-bottom: 1px solid var(--color-border-hover);
   }
 }

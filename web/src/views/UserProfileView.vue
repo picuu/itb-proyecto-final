@@ -3,9 +3,12 @@ import HeaderComponent from '../components/HeaderComponent.vue';
 import UserProfile from '../components/UserProfile.vue';
 import LayoutSection from '../sections/LayoutSection.vue';
 export default {
-  name: "LoginView",
+  name: "UserProfileView",
   props: {
-    userId: String
+    userId: {
+      type: String,
+      required: true
+    }  
   },
   components: { HeaderComponent, LayoutSection, UserProfile }
 };
