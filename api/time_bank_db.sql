@@ -37,7 +37,7 @@ CREATE TABLE `advert` (
   `isRequest` tinyint(1) NOT NULL,
   `price` bigint(20) NOT NULL,
   `availability` longtext NOT NULL,
-  `loc_name` varchar(45) NOT NULL,
+  `loc_name` tinytext NOT NULL,
   `loc_latitude` float NOT NULL,
   `loc_longitude` float NOT NULL,
   `max_subscribers` smallint(6) NOT NULL,

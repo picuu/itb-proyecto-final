@@ -52,7 +52,7 @@
             foreach ($tags as $tag) {
                 mysqli_query($conn, "INSERT INTO advert_tags (advert_id, tag_id) VALUES ('$advert_id', '$tag[id]')");
             }
-            $response = array('status' => 'success');
+            $response = array('status' => 'success', 'advert_id' => $advert_id);
         } else {
             $response = array('status' => 'error');
         }
