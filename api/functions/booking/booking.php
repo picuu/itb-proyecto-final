@@ -17,15 +17,14 @@
 //add booking
     function addBooking($conn, $data){
         $data = json_decode(file_get_contents('php://input'), true);
-        $id = $data['id'];
-        $publisher_id = $data['publisher_id'];
-        $enrolled_id = $data['enrolled_id'];
         $advert_id = $data['advert_id'];
-        $date = $data['date'];
+        $user_id = $data['user_id'];
+        $booking_date = $data['booking_date'];
 
-        $result = mysqli_query($conn, "INSERT INTO booking (id, publisher_id, enrolled_id, advert_id, date) VALUES ('$id', '$publisher_id', '$enrolled_id', '$advert_id', '$date')");
+        $result = mysqli_query($conn, "INSERT INTO booking VALUES (DEFAULT, '$advert_id', '$user_id', '$booking_date', NULL, NULL, NULL)");
         if ($result) {
-            $response = array('status' => 'success');
+            $booking_id = mysqli_insert_id($conn);
+            $response = array('status' => 'success', 'booking_id' => $booking_id);
         } else {
             $response = array('status' => 'error');
         }
