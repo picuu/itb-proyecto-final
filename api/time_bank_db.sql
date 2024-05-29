@@ -65,10 +65,10 @@ CREATE TABLE `booking` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `advert_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
-  `booking_date` bigint NOT NULL,
-  `valoration_score` smallint(6) NOT NULL,
-  `valoration_comment` text NOT NULL,
-  `valoration_date` bigint NOT NULL
+  `booking_date` bigint(20) NOT NULL,
+  `valoration_score` smallint(6) DEFAULT NULL,
+  `valoration_comment` text DEFAULT NULL,
+  `valoration_date` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

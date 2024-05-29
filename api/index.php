@@ -77,7 +77,10 @@
                 // mostrar todas las reservas
 
                 // crear nueva reserva
-                
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    $data = json_decode(file_get_contents('php://input'), true);
+                    echo addBooking($conn, $data);
+                }
             } elseif($uri[0]=="category") {
                 // mostrar todas las categorías
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {

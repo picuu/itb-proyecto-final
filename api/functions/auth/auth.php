@@ -29,7 +29,7 @@ function register($conn, $data) {
   $email = $data['email'];
   $phone = $data['phone'];
   $password = md5($data['password']);
-  $balance = $data['balance'] ?? 0;
+  $balance = 360;
   $isAdmin = $data['isAdmin'] ?? 0;
 
   $q = "INSERT INTO user VALUES (default, '$name', '$surname', '$image', '$email', '$phone', '$password', '$balance', '$isAdmin')";

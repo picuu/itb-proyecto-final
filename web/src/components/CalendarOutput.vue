@@ -70,7 +70,7 @@ export default {
       this.selectedDay = dayNum
       const selectedTimeIndex = this.currentMonth.availableDays.indexOf(dayNum)
       const selectedTime = this.currentMonth.availableTime[selectedTimeIndex]
-      this.selectedTime = this.formatTime(selectedTime) + 'h'
+      this.selectedTime = formatTime(selectedTime) + 'h'
 
       const prevSelectedDay = document.querySelector(".selected-day")
       if (prevSelectedDay) prevSelectedDay.classList.remove("selected-day")
@@ -78,6 +78,15 @@ export default {
 
       const selectedDay = document.querySelector("#day-" + dayNum)
       selectedDay.classList.add("selected-day")
+
+      const newDate = new Date(
+        this.selectedYear,
+        this.selectedMonth,
+        this.selectedDay,
+        parseInt(selectedTime.split(":")[0]),
+        parseInt(selectedTime.split(":")[1])
+      )
+      this.$emit('availabilityDataUpdate', newDate.valueOf())
     },
 
     goPreviousMonth() {
@@ -117,9 +126,7 @@ export default {
     isAvailable(day) {
       if (this.currentMonth.availableDays.some(d => d == day)) return true
       return false
-    },
-
-    formatTime
+    }
   },
 
   computed: {
