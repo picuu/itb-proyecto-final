@@ -1,5 +1,6 @@
 <script>
 import { RouterLink } from 'vue-router'
+import { user } from '@/types'
 import { validateSession } from '@/helpers'
 import { IconMenu2, IconUser } from '@tabler/icons-vue'
 
@@ -10,13 +11,16 @@ export default {
     IconMenu2,
     IconUser
   },
+
   data() {
     return {
       isLogged: false,
       isMenuOpen: false,
-      userId: null
+      userId: null,
+      user
     }
   },
+
   methods: {
     checkLogin() {
       const authInfo = validateSession()
@@ -29,18 +33,32 @@ export default {
         this.userId = null;
       }
     },
+
     logout() {
       this.isLogged = false;
       this.userId = null;
       localStorage.removeItem("authInfo");
       this.$router.push('/');
     },
+
     toggleMenu() {
       this.isMenuOpen = !this.isMenuOpen
+    },
+
+    async getUser() {
+      try {
+        const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${this.userId}`)
+        const data = await res.json()
+        this.user = data
+      } catch (e) {
+        console.error("Error fetching user:", e)
+      }
     }
   },
+
   created() {
     this.checkLogin()
+    if (this.isLogged) this.getUser()
   },
 }
 </script>
@@ -67,6 +85,7 @@ export default {
             <div class="auth-nav">
               <template v-if="isLogged">
                 <a @click="logout">Log out</a>
+                <span class="balance">{{ user.balance }} TC's</span>
                 <RouterLink :to="`/user/${userId}`">
                   <IconUser size="20" />
                   Profile
@@ -133,7 +152,8 @@ nav,
   justify-content: flex-end;
 }
 
-a {
+a,
+.balance {
   display: flex;
   align-items: center;
   gap: .25rem;
