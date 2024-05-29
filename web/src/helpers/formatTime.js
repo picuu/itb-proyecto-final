@@ -5,5 +5,5 @@ export function formatTime(time) {
   if (hour.length == 1) hour = '0' + hour
   if (minutes.length == 1) minutes = '0' + minutes
 
-  return `${hour}:${minutes}h`
+  return `${hour}:${minutes}`
 }
