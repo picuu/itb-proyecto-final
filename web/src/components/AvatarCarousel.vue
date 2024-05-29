@@ -129,15 +129,16 @@ export default {
 
 .avatars {
   display: flex;
+  align-items: center;
   gap: 1rem;
 }
 
-.avatar {
+.avatar:hover {
   cursor: pointer;
 }
 
 .avatar.selected {
-  border: 2px solid white;
+  outline: 2px solid var(--color-heading);
 }
 
 .avatar img {
