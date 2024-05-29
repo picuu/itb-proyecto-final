@@ -25,12 +25,12 @@ INSERT INTO `tag` (`id`, `name`) VALUES
 (3, 'Computing'),
 (4, 'Drawing'),
 (5, 'Writing and narrative'),
-(6, 'Math')
+(6, 'Math'),
 (7, 'Kids'),
 (8, 'Old people'),
 (9, 'Kitchen'),
 (10, 'Pets'),
-(11, 'Handicrafts')
+(11, 'Handicrafts'),
 (12, 'Hairdressing');
 
 -- Inserts para la tabla `advert`
