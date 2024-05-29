@@ -4,6 +4,10 @@ import L from 'leaflet'
 
 export default {
   name: 'MapComp',
+  props: {
+    lat: { type: String, default: "41.44163" },
+    lng: { type: String, default: "2.17727" }
+  },
 
   data() {
     return {
@@ -16,12 +20,12 @@ export default {
   },
   methods: {
     initMap() {
-      const map = L.map('map').setView([41.44163, 2.17727], 13)
+      const map = L.map('map').setView([parseFloat(this.lat), parseFloat(this.lng)], 13)
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map)
 
-      const marker = L.marker([41.44163, 2.17727]).addTo(map)
+      const marker = L.marker([parseFloat(this.lat), parseFloat(this.lng)]).addTo(map)
 
       map.on('click', (e) => {
         const { lat, lng } = e.latlng
