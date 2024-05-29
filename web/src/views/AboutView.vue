@@ -48,7 +48,7 @@ export default {
           </div>
           <div class="team-member">
             <a href="https://github.com/devThalia">
-              <img alt="Team member" src="@/assets/img/about.png" />
+              <img alt="Team member" src="@/assets/img/thaliaBravo2.png" />
             </a>
             <h3>Thalia Bravo</h3>
             <p>SQL dev</p>
