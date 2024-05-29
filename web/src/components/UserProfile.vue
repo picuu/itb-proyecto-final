@@ -25,8 +25,7 @@ export default {
         const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}`);
         const userData = await response.json();
         const image = await import(`../assets/profileAvatarCollection/${userData.image}`);
-
-        // Asignar valores individuales de userData a this.user
+        
         this.user.name = userData.name;
         this.user.surname = userData.surname;
         this.user.email = userData.email;
