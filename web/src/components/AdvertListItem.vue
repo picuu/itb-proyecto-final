@@ -26,7 +26,7 @@ export default {
   <article>
     <img :src="getAdvertImagePath" :alt="title" />
     <div class="offer-info">
-      <h3><RouterLink :to="(isRequest ? '/requests/' : '/offers/') + id">{{ title }}</RouterLink></h3>
+      <h3><RouterLink :to="(isRequest == 1 ? '/requests/' : '/offers/') + id">{{ title }}</RouterLink></h3>
       <p>{{ description }}</p>
       <div class="pills">
         <slot />
