@@ -3,9 +3,9 @@ INSERT INTO `user` (`id`, `name`, `surname`, `image`, `email`, `phone`, `passwor
 (1, 'Juan', 'Pérez', 'default-profile.webp', 'juan.perez@example.com', '123456789', 'a94652aa97c7211ba8954dd15a3cf838', 100, 0),
 (2, 'Ana', 'Gómez', 'default-profile.webp', 'ana.gomez@example.com', '987654321', '276b6c4692e78d4799c12ada515bc3e4', 200, 0),
 (3, 'Admin', 'User', 'default-profile.webp', 'admin@example.com', '555555555', '21232f297a57a5a743894a0e4a801fc3', 500, 1),
-(4, 'Carlos', 'Capó Forcada', 'avatar38.svg?t=1716983144252', 'carlos.capo@itb.cat', '600141414', 'dc599a9972fde3045dab59dbd1ae170b', 0, 0),
-(6, 'Jacomar', 'Gonzalez', 'avatar44.svg?t=1716983144394', 'jacomar.gonzalez@itb.cat', '600123456', '57cc7b7ba980c987f258a924f358e5b2', 0, 0),
-(28, 'Thalia', 'Soler', 'avatar46.svg?t=1716983144427', 'thalia.soler@itb.cat', '600123456', '36901c4c04d8dc5e9ba18789c12fce85', 0, 0);
+(4, 'Carlos', 'Capó Forcada', 'avatar38.svg?t=1716983144252', 'carlos.capo@itb.cat', '600141414', 'dc599a9972fde3045dab59dbd1ae170b', 360, 0),
+(6, 'Jacomar', 'Gonzalez', 'avatar44.svg?t=1716983144394', 'jacomar.gonzalez@itb.cat', '600123456', '57cc7b7ba980c987f258a924f358e5b2', 360, 0),
+(28, 'Thalia', 'Soler', 'avatar46.svg?t=1716983144427', 'thalia.soler@itb.cat', '600123456', '36901c4c04d8dc5e9ba18789c12fce85', 360, 0);
 
 -- Inserts para la tabla `category`
 INSERT INTO `category` (`id`, `name`) VALUES
