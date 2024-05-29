@@ -64,6 +64,8 @@ export default {
       const newDate = new Date(this.selectedYear, this.selectedMonth, this.selectedDay, this.selectedTime.split(":")[0], this.selectedTime.split(":")[1])
 
       this.availability.add(newDate.valueOf())
+
+      this.$emit('availabilityDataUpdate', newDate.valueOf())
     },
 
     goPreviousMonth() {
@@ -152,6 +154,7 @@ export default {
 
 <style scoped>
 article {
+  width: min-content;
   display: flex;
   flex-direction: column;
   gap: .5rem;
@@ -208,6 +211,7 @@ li:not(.day-name):hover {
 }
 
 form {
+  width: fit-content;
   display: flex;
   flex-direction: column;
   gap: .5rem;
@@ -256,7 +260,7 @@ input[type=time]::-webkit-datetime-edit-minute-field  {
 }
 
 .error {
-  width: 60%;
+  width: fit-content;
   padding: .5rem 1rem;
   background-color: rgba(200 50 50 / .1);
   border: 1px solid rgba(200 50 50 / .15);
