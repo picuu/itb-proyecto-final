@@ -1,7 +1,7 @@
 <script>
 import { RouterLink } from 'vue-router';
 import { validateSession, formatTime, formatTimestamp } from '@/helpers'
-import { advert } from '@/types';
+import { advert, user, booking } from '@/types';
 import CalendarOutput from './CalendarOutput.vue';
 import { convertCoinsToTime } from '@/helpers/convertCoinsToTime';
 
@@ -18,10 +18,13 @@ export default {
   data() {
     return {
       advert,
+      user,
+      bookings: Array(booking),
       availability: Array,
       timePrice: '',
       selectedDate: '',
-      errorMessage: null
+      errorMessage: null,
+      isLogged: false
     }
   },
 
@@ -45,10 +48,15 @@ export default {
       const authInfo = validateSession()
       if (!authInfo) return console.error("Auth info not found")
 
+      this.getUser()
+      if (parseInt(this.user.balance) < parseInt(this.advert.price)) return alert("You cannot subscribe to this offer, you dont have enough TC's")
+
       const bookingData = {
         advert_id: this.advertId,
         user_id: authInfo.id,
-        booking_date: new Date().valueOf()
+        booking_date: new Date().valueOf(),
+        advert_owner_id: this.advert.owner_id,
+        advert_price: this.advert.price
       }
 
       console.log(bookingData)
@@ -63,11 +71,7 @@ export default {
           body: JSON.stringify(bookingData)
         })
 
-        console.log("res", res)
-
         const data = await res.json()
-
-        console.log("data", data)
         
         if (data && data.status && data.status == "success") {
           console.info("Booking created successfully")
@@ -84,13 +88,27 @@ export default {
       const dateTime = formatTimestamp(this.selectedDate)
       const proceed = confirm(`Are you shure? You are going to subscribe to this offer the ${dateTime}h`)
       return proceed
-    }
-  },
+    },
 
-  async created() {
-    this.advert = await this.getAdvert()
-    this.availability = this.advert.availability.split(",")
-    this.timePrice = formatTime(convertCoinsToTime(this.advert.price)) + 'h'
+    async getUser() {
+      try {
+        const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${this.userId}`)
+        const data = await res.json()
+        this.user = data
+      } catch (e) {
+        console.error("Error fetching user:", e)
+      }
+    },
+
+    async getAdvertBookings() {
+      try {
+        const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}/booking`)
+        const data = await res.json()
+        this.bookings = data
+      } catch (e) {
+        console.error("Error fetching advert bookings:", e)
+      }
+    }
   },
 
   computed: {
@@ -99,7 +117,20 @@ export default {
     getAdvertImagePath() {
       if (this.advert.image == "default.webp") return "/" + this.advert.image
       return this.advert.image
+    },
+
+    isAdvertOwner() {
+      if (!this.isLogged) return false
+      if (this.bookings.some(booking => booking.owner.id == this.user.id)) return true
+      return false
     }
+  },
+
+  async created() {
+    this.isLogged = validateSession()
+    this.advert = await this.getAdvert()
+    this.availability = this.advert.availability.split(",")
+    this.timePrice = formatTime(convertCoinsToTime(this.advert.price)) + 'h'
   }
 }
 </script>
@@ -160,7 +191,8 @@ export default {
           <main>
             <div class="enroll">
               <template v-if="validateSession">
-                <button @click="subscribeToOffer()">Take up this offer</button>
+                <button v-if="isAdvertOwner" title="You own this advert" disabled>Take up this offer</button>
+                <button v-else @click="subscribeToOffer()">Take up this offer</button>
               </template>
               <template v-else>
                 <button disabled>Take up this offer</button>
