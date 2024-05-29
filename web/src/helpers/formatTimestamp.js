@@ -10,5 +10,5 @@ export function formatTimestamp(timestamp) {
   const year = date.getFullYear()
   const time = formatTime(`${date.getHours()}:${date.getMinutes()}`)
 
-  return `${day}/${month}/${year} ${time}`
+  return `${day}/${month}/${year} at ${time}`
 }

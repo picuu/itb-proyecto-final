@@ -1,6 +1,6 @@
 <script>
 import { RouterLink } from 'vue-router';
-import { validateSession, formatTime } from '@/helpers'
+import { validateSession, formatTime, formatTimestamp } from '@/helpers'
 import { advert } from '@/types';
 import CalendarOutput from './CalendarOutput.vue';
 import { convertCoinsToTime } from '@/helpers/convertCoinsToTime';
@@ -14,25 +14,85 @@ export default {
     RouterLink,
     CalendarOutput
   },
+
   data() {
     return {
       advert,
       availability: Array,
-      timePrice: ''
+      timePrice: '',
+      selectedDate: '',
+      errorMessage: null
     }
   },
+
   methods: {
     async getAdvert() {
       const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`)
       const data = await res.json()
       return data
+    },
+
+    updateSelectedDate(data) {
+      this.selectedDate = data
+    },
+
+    async subscribeToOffer() {
+      this.errorMessage = null
+      if (!this.selectedDate || this.selectedDate == "") return this.errorMessage = "You must select a day first"
+
+      if (!this.proceedConfirmation()) return
+      
+      const authInfo = validateSession()
+      if (!authInfo) return console.error("Auth info not found")
+
+      const bookingData = {
+        advert_id: this.advertId,
+        user_id: authInfo.id,
+        booking_date: new Date().valueOf()
+      }
+
+      console.log(bookingData)
+
+      try {
+        const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/booking`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify(bookingData)
+        })
+
+        console.log("res", res)
+
+        const data = await res.json()
+
+        console.log("data", data)
+        
+        if (data && data.status && data.status == "success") {
+          console.info("Booking created successfully")
+          this.$router.push(`/user/${authInfo.id}#bookings`)
+        } else {
+          console.error("Error sending booking data to the server")
+        }
+      } catch (e) {
+        console.error("Error fetching booking:", e)
+      }
+    },
+
+    proceedConfirmation() {
+      const dateTime = formatTimestamp(this.selectedDate)
+      const proceed = confirm(`Are you shure? You are going to subscribe to this offer the ${dateTime}h`)
+      return proceed
     }
   },
+
   async created() {
     this.advert = await this.getAdvert()
     this.availability = this.advert.availability.split(",")
     this.timePrice = formatTime(convertCoinsToTime(this.advert.price)) + 'h'
   },
+
   computed: {
     validateSession,
 
@@ -64,7 +124,7 @@ export default {
           <div class="property">
             <dt>Tags</dt>
             <dd class="tags">
-              <RouterLink :to="'/advert/tag/' + tag.id" v-for="tag in advert.tags" class="tag" :key="tag.id">
+              <RouterLink :to="(advert.isRequest ? '/requests/tag/' : '/offers/tag/') + tag.id" v-for="tag in advert.tags" class="tag" :key="tag.id">
                 {{ tag.name }}
               </RouterLink>
             </dd>
@@ -100,12 +160,14 @@ export default {
           <main>
             <div class="enroll">
               <template v-if="validateSession">
-                <button>Take up this offer</button>
+                <button @click="subscribeToOffer()">Take up this offer</button>
               </template>
               <template v-else>
                 <button disabled>Take up this offer</button>
                 <span class="login-reminder">Please, <RouterLink to="/login">sign in</RouterLink> or <RouterLink to="/sign-up">register</RouterLink> to take up this offer.</span>
               </template>
+
+              <article v-if="errorMessage" class="error">{{ errorMessage }}</article>
             </div>
   
             <p class="description">{{ advert.description }}</p>
@@ -119,7 +181,7 @@ export default {
           <div class="calendar-container">
             <article class="calendar">
                 <!-- {{ advert.availability }} -->
-                <CalendarOutput :availability="availability" />
+                <CalendarOutput @availability-data-update="updateSelectedDate" :availability="availability" />
               </article>
           </div>
         </div>
@@ -255,6 +317,14 @@ a {
 
 .calendar-container {
   margin-left: auto;
+}
+
+.error {
+  padding: .5rem 1rem;
+  background-color: rgba(200 50 50 / .1);
+  border: 1px solid rgba(200 50 50 / .15);
+  border-radius: 6px;
+  text-align: center;
 }
 
 @media screen and (width < 1025px) {
