@@ -1,4 +1,6 @@
 <script>
+import { formatTime } from '@/helpers';
+
 export default {
   name: "CalendarInput",
   props: {
@@ -68,7 +70,7 @@ export default {
       this.selectedDay = dayNum
       const selectedTimeIndex = this.currentMonth.availableDays.indexOf(dayNum)
       const selectedTime = this.currentMonth.availableTime[selectedTimeIndex]
-      this.selectedTime = this.formatTime(selectedTime)
+      this.selectedTime = this.formatTime(selectedTime) + 'h'
 
       const prevSelectedDay = document.querySelector(".selected-day")
       if (prevSelectedDay) prevSelectedDay.classList.remove("selected-day")
@@ -102,7 +104,7 @@ export default {
 
     getAvailableDays() {
       return this.availability.map(timestamp => {
-        const date = new Date(timestamp)
+        const date = new Date(parseInt(timestamp))
 
         const day = date.getDate()
         const month = date.getMonth()
@@ -117,15 +119,7 @@ export default {
       return false
     },
 
-    formatTime(time) {
-      let hour = time.split(":")[0]
-      let minutes = time.split(":")[1]
-
-      if (hour.length == 1) hour = '0' + hour
-      if (minutes.length == 1) minutes = '0' + minutes
-
-      return `${hour}:${minutes}h`
-    }
+    formatTime
   },
 
   computed: {
@@ -135,8 +129,8 @@ export default {
   },
 
   watch: {
-    availability(oldData, newData) {
-      if (newData.length >= 1) {
+    availability(newData, oldData) {
+      if (oldData.length >= 1) {
         try {
           this.availableDays = this.getAvailableDays()
           

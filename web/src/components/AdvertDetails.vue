@@ -3,6 +3,7 @@ import { RouterLink } from 'vue-router';
 import { validateSession, formatTime } from '@/helpers'
 import { advert } from '@/types';
 import CalendarOutput from './CalendarOutput.vue';
+import { convertCoinsToTime } from '@/helpers/convertCoinsToTime';
 
 export default {
   name: 'AdvertDetails',
@@ -25,19 +26,12 @@ export default {
       const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`)
       const data = await res.json()
       return data
-    },
-
-    convertCoinsToTime(coins) {
-      const hours = parseInt(coins / 60)
-      const minutes = coins % 60
-
-      return formatTime(`${hours}:${minutes}`)
     }
   },
   async created() {
     this.advert = await this.getAdvert()
-    this.availability = JSON.parse(this.advert.availability)
-    this.timePrice = this.convertCoinsToTime(this.advert.price)
+    this.availability = this.advert.availability.split(",")
+    this.timePrice = formatTime(convertCoinsToTime(this.advert.price)) + 'h'
   },
   computed: {
     validateSession
