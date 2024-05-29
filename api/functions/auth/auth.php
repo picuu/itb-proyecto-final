@@ -32,16 +32,18 @@ function register($conn, $data) {
   $balance = $data['balance'] ?? 0;
   $isAdmin = $data['isAdmin'] ?? 0;
 
-  $result = mysqli_query($conn, "INSERT INTO user (id, name, surname, image, email, phone, password, balance, isAdmin) VALUES (default, '$name', '$surname', '$image', '$email', '$phone', '$password', '$balance', '$isAdmin')");
+  $q = "INSERT INTO user VALUES (default, '$name', '$surname', '$image', '$email', '$phone', '$password', '$balance', '$isAdmin')";
+  $result = mysqli_query($conn, $q);
+  
+  $res = array();
   if ($result) {
-    $response = array();
-    $response['token'] = base64_encode(random_bytes(32));
-    $data = mysqli_fetch_assoc($result);
-    $response['isAdmin'] = $data['isAdmin'];
-    $response['id'] = $data['id'];
+      $res['token'] = base64_encode(random_bytes(32));
+      $res['isAdmin'] = $data['isAdmin'];
+      $res['id'] = mysqli_insert_id($conn);
   } else {
-      $response = array('status' => 'error');
+    $res['status'] = 'error';
   }
-  return json_encode($response);
+  
+  return json_encode($res);
 }
 ?>

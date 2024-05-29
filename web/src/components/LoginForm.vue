@@ -22,6 +22,10 @@
           </div>
 
           <button type="submit">Sign in</button>
+
+          <template v-if="loginError">
+            <article class="error">{{ loginError }}</article>
+          </template>
         </form>
 
         <p class="register-reminder">Not a member? <a @click.prevent="activeTab = 'register'">Register</a></p>
@@ -82,6 +86,10 @@
           </label>
 
           <button type="submit">Sign in</button>
+
+          <template v-if="registrationError">
+            <article class="error">{{ registrationError }}</article>
+          </template>
         </form>
 
         <p class="register-reminder">Already have an account? <a @click.prevent="activeTab = 'login'">Login</a></p>
@@ -110,6 +118,7 @@ export default {
       loginEmail: '',
       loginPassword: '',
       loginCheck: true,
+      loginError: null,
       registerName: '',
       registerSurname: '',
       registerProfileImage: '',
@@ -131,6 +140,8 @@ export default {
     },
     // Función que permite al usuario logearse
     async handleLogin() {
+      this.loginError = null
+
       const data = {
         user_email: this.loginEmail,
         user_password: this.loginPassword
@@ -157,10 +168,12 @@ export default {
         this.$router.push(`/user/${json_res.id}`)
       } else {
         console.warn("credenciales incorrectas");
+        this.loginError = 'Incorrect credentials'
       }
     },
     // Función que permite al usuario registrarse
     async handleRegister() {
+      this.registrationError = null
       if (this.registerPassword !== this.registerPasswordRepeat) {
         this.registrationError = "Passwords do not match.";
         return;
@@ -180,7 +193,7 @@ export default {
 
       console.log('Register:', data);
 
-      const res = await fetch("http://localhost/itb-proyecto-final/api/index.php/user", {
+      const res = await fetch("http://localhost/itb-proyecto-final/api/index.php/auth/register", {
         method: "POST",
         headers: {
           "Accept": "application/json",
@@ -193,7 +206,7 @@ export default {
 
       console.log(json_res);
 
-      if (json_res.status === 'success') {
+      if (json_res && typeof json_res == "object" && json_res.token) {
         console.info("Successfully registered user");
         localStorage.setItem("authInfo", JSON.stringify(json_res));
         this.$router.push(`/user/${json_res.id}`);
@@ -302,6 +315,16 @@ form button:hover {
 .checkbox-group input:hover {
   cursor: pointer;
 }
+
+.error {
+  width: 60%;
+  padding: .5rem 1rem;
+  background-color: rgba(200 50 50 / .1);
+  border: 1px solid rgba(200 50 50 / .15);
+  border-radius: 6px;
+  text-align: center;
+}
+
 
 @media screen and (width < 481px) {
   .input-group {

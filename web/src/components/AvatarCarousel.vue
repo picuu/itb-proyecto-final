@@ -1,13 +1,13 @@
 <template>
   <div class="avatar-carousel">
-    <button @click="prevGroup" :disabled="currentGroup === 0">Prev</button>
+    <button type="button" @click="prevGroup" :disabled="currentGroup === 0">Prev</button>
     <div class="avatars">
       <div v-for="(avatar, index) in currentAvatars" :key="index" :class="{ selected: selectedAvatar === avatar }"
         @click="selectAvatar(avatar)" class="avatar">
         <img :src="avatar" alt="Avatar" />
       </div>
     </div>
-    <button @click="nextGroup" :disabled="currentGroup === totalGroups - 1">Next</button>
+    <button type="button" @click="nextGroup" :disabled="currentGroup === totalGroups - 1">Next</button>
   </div>
 </template>
 

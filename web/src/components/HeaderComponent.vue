@@ -1,12 +1,14 @@
 <script>
 import { RouterLink } from 'vue-router'
-import { IconMenu2 } from '@tabler/icons-vue';
+import { validateSession } from '@/helpers'
+import { IconMenu2, IconUser } from '@tabler/icons-vue'
 
 export default {
   name: 'FooterComponent',
   components: {
     RouterLink,
-    IconMenu2
+    IconMenu2,
+    IconUser
   },
   data() {
     return {
@@ -17,12 +19,11 @@ export default {
   },
   methods: {
     checkLogin() {
-      const authInfo = localStorage.getItem("authInfo");
+      const authInfo = validateSession()
       console.log(authInfo);
       if (authInfo) {
-        const parsedAuthInfo = JSON.parse(authInfo);
         this.isLogged = true;
-        this.userId = parsedAuthInfo.id;
+        this.userId = authInfo.id;
       } else {
         this.isLogged = false;
         this.userId = null;
@@ -66,7 +67,10 @@ export default {
             <div class="auth-nav">
               <template v-if="isLogged">
                 <a @click="logout">Log out</a>
-                <RouterLink :to="`/user/${userId}`">My profile</RouterLink>
+                <RouterLink :to="`/user/${userId}`">
+                  <IconUser size="20" />
+                  Profile
+                </RouterLink>
               </template>
               <template v-else>
                 <RouterLink to="/login">Login</RouterLink>
@@ -130,6 +134,9 @@ nav,
 }
 
 a {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
   color: var(--color-text-bright);
   text-decoration: none;
 }
