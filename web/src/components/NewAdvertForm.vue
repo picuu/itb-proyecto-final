@@ -1,6 +1,6 @@
 <script>
 import { IconBackspace } from '@tabler/icons-vue'
-import { convertTimeToCoins, formatTime, validateSession } from '@/helpers';
+import { convertTimeToCoins, formatTimestamp, validateSession } from '@/helpers';
 import CalendarInput from '@/components/CalendarInput.vue'
 import MapComp from '@/components/MapComp.vue'
 
@@ -87,18 +87,7 @@ export default {
       this.availability.delete(timestamp)
     },
 
-    formatTimestamp(timestamp) {
-      if (!timestamp || isNaN(timestamp)) return ''
-
-      const date = new Date(timestamp)
-
-      const day = date.getDate()
-      const month = date.getMonth() + 1
-      const year = date.getFullYear()
-      const time = formatTime(`${date.getHours()}:${date.getMinutes()}`)
-
-      return `${day}/${month}/${year} ${time}`
-    },
+    formatTimestamp,
 
     // Función que se ejecuta cuando el componente MapComp lanza el evento 'map-data-update'
     saveMapData(data) {
