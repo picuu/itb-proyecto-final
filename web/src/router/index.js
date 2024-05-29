@@ -53,12 +53,13 @@ const router = createRouter({
       alias: ['/request/tag/:tagId']
     },
     {
-      path: '/offers/:advertId',
+      path: '/advert/:advertId',
       name: 'advert-details',
       component: () => import('../views/AdvertDetailsView.vue'),
       props: true,
       alias: [
         '/offer/:advertId',
+        '/offers/:advertId',
         '/request/:advertId',
         '/requests/:advertId',
       ]
@@ -66,7 +67,7 @@ const router = createRouter({
     {
       path: '/new-advert-form',
       name: 'new-advert-form',
-      component: () => import('../views/NewAdvertFormView.vue')
+      component: () => import('../views/NewAdvertView.vue')
     },
     {
       path: '/login',
