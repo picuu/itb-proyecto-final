@@ -89,6 +89,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-input, button, textarea {
+input, button, textarea, select, option {
   font-family: 'Onest Variable';
 }
