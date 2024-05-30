@@ -62,6 +62,12 @@
                     $addANewAdvert = addAdvert($conn, $data);
                     echo $addANewAdvert;
                 }
+
+                //eliminar anuncio
+                if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+                    $id = $uri[1];
+                    echo deleteAdvert($conn, $id);
+                }
             } elseif ($uri[0] == "offer") {
                 // mostrar todas las ofertas
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -173,7 +179,6 @@
                     echo getCategoryById($conn, $id);
                 }
                 //crear
-               
             } elseif ($uri[0]=="tag") {
                 // mostrar un tag concreto
 

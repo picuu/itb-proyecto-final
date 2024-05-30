@@ -1,10 +1,11 @@
 <script>
 import HeaderComponent from '@/components/HeaderComponent.vue'
 import LayoutSection from '@/sections/LayoutSection.vue'
-import UserList from '@/components/UserList.vue'
+import AdvertAdminList from '@/components/AdvertAdminList.vue'
+import AdminUserList from '@/components/AdminUserList.vue'
 
 export default {
-    name: 'UserManagementView',
+    name: 'AdminView',
     props: {
         advertId: {
             type: String,
@@ -14,7 +15,8 @@ export default {
     components: {
         HeaderComponent,
         LayoutSection,
-        UserList
+        AdminUserList,
+        AdvertAdminList
     }
 }
 </script>
@@ -31,8 +33,8 @@ export default {
 
             <LayoutSection> 
                 <h2>Adverts</h2>
-                    <AdminAdvertList />
-            </LayoutSection>
+                    <AdvertAdminList />
+            </LayoutSection> 
         </main>
     </div>
 </template>

@@ -100,7 +100,7 @@ const router = createRouter({
     {
       path: '/admin',
       name: "admin-panel",
-      component: () => import("../views/AdminUserList.vue"),
+      component: () => import("../views/AdminView.vue"),
       props: true
     }
   ]

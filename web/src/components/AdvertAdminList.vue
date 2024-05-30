@@ -1,54 +1,57 @@
 <script>
-import { user } from '@/types'
+import { advertType } from '@/types'
 
 export default {
-    name: 'UserList',
+    name: 'AdvertAdminList',
     components: {},
     data() {
         return {
-            users: Array(user),
+            adverts: Array(advert),
             userId: null,
             showUpdateForm: false
         }
     },
 
     methods: {
-        async getUsers() {
+        async getAdvert() {
             try {
-                const res = await fetch('http://localhost/itb-proyecto-final/api/index.php/user')
+                const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`)
                 const data = await res.json()
-                this.users = data
-            } catch (e) {
-                console.error("Error fetching users:", e)
+                this.advert = data
+                this.advertDurationTime = formatTime(convertCoinsToTime(data.price))
+                this.availabilitySet = new Set(data.availability.split(","))
+                if (Array.from(this.availabilitySet.keys())[0].length == 0) this.availabilitySet.clear()
+            } catch (error) {
+                console.error('Error fetching the advert:', error)
             }
         },
 
-        async getUser() {
+        async getAdverts() {
             try {
-                const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${this.userId}`)
+                const res = await fetch('http://localhost/itb-proyecto-final/api/index.php/advert')
                 const data = await res.json()
-                this.user = data
+                this.adverts = data
             } catch (e) {
-                console.error("Error fetching user:", e)
+                console.error("Error fetching adverts:", e)
             }
         },
 
-        async deleteUser(userId) {
-            // fetch con method delete
+        deleteAdvert(){
             try {
-                const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}`, {
+                const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`, {
                     method: 'DELETE'
                 })
                 const data = await res.json()
-                this.users = this.users.filter(user => user.id !== userId)
+                this.adverts = this.adverts.filter(advert => advert.id !== this.advertId)
             } catch (e) {
-                console.error("Error deleting user:", e)
+                console.error("Error deleting advert:", e)
             }
         },
+        }
 
-        getUserRole(isAdmin) {
-            if (isAdmin == 1) return "admin"
-            return "user"
+        getAdvertType(type) {
+            if (isRequest == 1) return "Request"
+            return "Offer"
         },
 
         toggleUpdateForm() {
@@ -56,44 +59,39 @@ export default {
         }
     },
     created() {
-        this.getUsers()
+        this.getAdverts()
     }
-}
 </script>
 
 <template>
     <div>
-        <template v-if="!showUpdateForm">
-            <div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="user in users" :key="user.id">
-                            <td>{{ user.id }}</td>
-                            <td>{{ user.name }}</td>
-                            <td>{{ user.email }}</td>
-                            <td>{{ getUserRole(user.isAdmin) }}</td>
-                            <td>
-                                <button @click="toggleUpdateForm">Update</button>
-                                <button @click="deleteUser(user.id)">Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </template>
-        <template v-else>
-            // componente del formulario de actualizar usuario (jaco)
-            <button @click="toggleUpdateForm">Cancel</button>
-        </template>
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                    <th>Tags</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="advert in adverts" :key="advert.id">
+                    <td data-label="Id">{{ advert.id }}</td>
+                    <td data-label="Title">{{ advert.title }}</td>
+                    <td data-label="Type">{{ getAdvertType(advert.type) }}</td>
+                    <td data-label="Price">{{ advert.price }}</td>
+                    <td data-label="Category">{{ advert.category }}</td>
+                    <td data-label="Tags">{{ advert.tags }}</td>
+                    <td data-label="Actions">
+                        <button @click="deleteAdvert(advert.id)">Delete</button>
+                        <button @click="toggleUpdateForm">Update</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
