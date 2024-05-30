@@ -78,8 +78,8 @@ export default {
                         <td data-label="Price">{{ advert.price }}</td>
                         <td data-label="Category">{{ advert.category.name }}</td>
                         <td data-label="Actions">
-                            <button @click="deleteAdvert(advert.id)">Delete</button>
                             <button @click="toggleUpdateForm(id)">Update</button>
+                            <button @click="deleteAdvert(advert.id)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -160,7 +160,6 @@ button:hover {
 button:focus {
     outline: none;
 }
-
 button:first-child {
     background-color: #007bff;
     margin-right: 0.5rem;
