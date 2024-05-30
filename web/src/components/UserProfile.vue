@@ -89,18 +89,75 @@ export default {
               "Content-Type": "application/json"
             }
           })
-          .then(response => response.json())
-          .then(data => {
-            if (data.status === 'success') {
-              console.log("User account deleted successfully");
-              this.$router.push('/');
-            } else {
-              console.error("Error deleting user account");
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === 'success') {
+                console.log("User account deleted successfully");
+                this.$router.push('/');
+              } else {
+                console.error("Error deleting user account");
+              }
+            })
+            .catch(error => {
+              console.error("Error deleting user account:", error);
+            });
+        }
+      }
+    },
+    redirectToUpdateAdvertForm(advertId) {
+      this.$router.push({ name: 'update-advert', params: { advertId: advertId } });
+    },
+    deleteAdvert(advertId) {
+      if (confirm("Are you sure you want to delete this advert?")) {
+        const authInfo = JSON.parse(localStorage.getItem("authInfo"));
+        if (authInfo && authInfo.id) {
+          const userId = authInfo.id;
+          fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${advertId}`, {
+            method: "DELETE",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
             }
           })
-          .catch(error => {
-            console.error("Error deleting user account:", error);
-          });
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === 'success') {
+                console.log("Advert deleted successfully");
+                this.adverts = this.adverts.filter(advert => advert.id !== advertId);
+              } else {
+                console.error("Error deleting advert");
+              }
+            })
+            .catch(error => {
+              console.error("Error deleting advert:", error);
+            });
+        }
+      }
+    },
+    deleteBooking(bookingId) {
+      if (confirm("Are you sure you want to delete this booking?")) {
+        const authInfo = JSON.parse(localStorage.getItem("authInfo"));
+        if (authInfo && authInfo.id) {
+          const userId = authInfo.id;
+          fetch(`http://localhost/itb-proyecto-final/api/index.php/booking/${bookingId}`, {
+            method: "DELETE",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            }
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === 'success') {
+                console.log("Booking deleted successfully");
+                this.bookings = this.bookings.filter(booking => booking.id !== bookingId);
+              } else {
+                console.error("Error deleting booking");
+              }
+            })
+            .catch(error => {
+              console.error("Error deleting booking:", error);
+            });
         }
       }
     }
@@ -176,6 +233,10 @@ export default {
                 <td>{{ advert.price }}</td>
                 <td>{{ convertCoinsToTime(advert.price) }}</td>
                 <td>{{ formatTimestamp(advert.publish_date) }}</td>
+                <td>
+                  <button @click="redirectToUpdateAdvertForm(advert.id)">Update</button>
+                  <button @click="confirmDeleteAdvert(advert.id)">Delete</button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -228,6 +289,9 @@ export default {
                 <td>{{ formatTimestamp(booking.booking_date) }}</td>
                 <td>{{ booking.price }}</td>
                 <td>{{ convertCoinsToTime(booking.price) }}</td>
+                <td>
+                  <button @click="deleteBooking(booking.id)">Delete</button>
+                </td>
               </tr>
             </tbody>
           </table>

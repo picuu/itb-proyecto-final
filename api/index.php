@@ -174,7 +174,13 @@
                 // mostrar una reserva concreta
 
                 // crear
-                
+
+                //borrar una reserva
+                if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+                    $id = $uri[1];
+                    $deleteBooking = deleteBooking($conn, $id);
+                    echo $deleteBooking;
+                }
             } elseif ($uri[0]=="category") {
                 // mostrar una categoría concreta
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
