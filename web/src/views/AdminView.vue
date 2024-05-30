@@ -49,4 +49,9 @@ h2 {
     font-size: 2rem;
     font-weight: 500;
 }
+
+
+section{
+    margin-bottom: 1rem
+}
 </style>
