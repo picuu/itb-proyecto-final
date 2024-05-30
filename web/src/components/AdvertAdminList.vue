@@ -1,9 +1,10 @@
 <script>
 import { advert } from '@/types'
+import UpdateAdvert from './UpdateAdvert.vue';
 
 export default {
     name: 'AdvertAdminList',
-    components: {},
+    components: {UpdateAdvert},
     data() {
         return {
             adverts: Array(advert),
@@ -86,7 +87,8 @@ export default {
             </table>
         </template>
         <template v-else>
-            // UpdateAdvertForm (pasar la id del advert)
+            <UpdateAdvert />
+            <button @click="toggleUpdateForm">Cancel</button>
         </template>
     </div>
 </template>
@@ -151,6 +153,7 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 0.5rem;
 }
 
 button:hover {
