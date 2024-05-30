@@ -1,9 +1,10 @@
 <script>
 import { user } from '@/types'
+import UpdateUserProfileForm from './UpdateUserProfileForm.vue';
 
 export default {
     name: 'AdminUserList',
-    components: {},
+    components: {UpdateUserProfileForm},
     data() {
         return {
             users: Array(user),
@@ -91,7 +92,7 @@ export default {
             </div>
         </template>
         <template v-else>
-            // componente del formulario de actualizar usuario (jaco)
+            <UpdateUserProfileForm />
             <button @click="toggleUpdateForm">Cancel</button>
         </template>
     </div>
@@ -157,6 +158,7 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: 0.5rem;
 }
 
 button:hover {
