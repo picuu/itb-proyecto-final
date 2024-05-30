@@ -1,8 +1,11 @@
 <script>
-import { booking } from '@/types';
+import UpdateUserProfileForm from './UpdateUserProfileForm.vue';
 
 export default {
   name: "UserProfile",
+  components: {
+    UpdateUserProfileForm
+  },
   data() {
     return {
       user: {
@@ -13,7 +16,8 @@ export default {
         image: ''
       },
       adverts: [],
-      bookings: []
+      bookings: [],
+      showUpdateUserProfileForm: false
     };
   },
   created() {
@@ -25,6 +29,9 @@ export default {
     }
   },
   methods: {
+    editProfile() {
+      this.showUpdateUserProfileForm = true;
+    },
     async fetchUserData(userId) {
       try {
         const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}`);
@@ -49,7 +56,7 @@ export default {
         console.error("Error fetching user adverts:", error);
       }
     },
-    async fetchUserBookings(userId) { 
+    async fetchUserBookings(userId) {
       try {
         const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/booking/user/${userId}`);
         const bookingsData = await response.json();
@@ -85,57 +92,69 @@ export default {
           <dt>Phone</dt>
           <dd>{{ user.phone }}</dd>
         </div>
+
+        <div class="buttons">
+          <button @click="editProfile">Edit profile</button>
+          <button @click="deleteAccount">Delete account</button>
+        </div>
       </dl>
     </section>
 
     <section class="right-section">
-      <header>
-        <h3>Your currently published adverts</h3>
-      </header>
-      <table class="underheader-lines">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Type</th>
-            <th>Price</th>
-            <th>Location</th>
-            <th>Publish Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="advert in adverts" :key="advert.id">
-            <td>{{ advert.title }}</td>
-            <td>{{ advert.isRequest === "1" ? 'Request' : 'Offer' }}</td>
-            <td>{{ advert.price }}</td>
-            <td>{{ advert.loc_name }}</td>
-            <td>{{ new Date(advert.publish_date).toLocaleDateString() }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <br>
-      <header>
-        <h3>Your bookings</h3>
+      <div class="adverts">
+        <header>
+          <h3>Your currently published adverts</h3>
+        </header>
         <table class="underheader-lines">
-        <thead>
-          <tr>
-            <th>Advert Title</th>
-            <th>Booking Date</th>
-            <th>Valoration Score</th>
-            <th>Valoration Comment</th>
-            <th>Valoration Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="booking in bookings" :key="booking.id">
-            <td>{{ booking.title }}</td>
-            <td>{{ new Date(booking.booking_date).toLocaleDateString() }}</td>
-            <td>{{ booking.valoration_score }}</td>
-            <td>{{ booking.valoration_comment }}</td>
-            <td>{{ new Date(booking.valoration_date).toLocaleDateString() }}</td>
-          </tr>
-        </tbody>
-      </table>
-      </header>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Price</th>
+              <th>Location</th>
+              <th>Publish Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="advert in adverts" :key="advert.id">
+              <td>{{ advert.title }}</td>
+              <td>{{ advert.isRequest === "1" ? 'Request' : 'Offer' }}</td>
+              <td>{{ advert.price }}</td>
+              <td>{{ advert.loc_name }}</td>
+              <td>{{ new Date(advert.publish_date).toLocaleDateString() }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br>
+      <div class="bookings">
+        <header>
+          <h3>Your bookings</h3>
+        </header>
+        <table class="underheader-lines">
+          <thead>
+            <tr>
+              <th>Advert Title</th>
+              <th>Booking Date</th>
+              <th>Valoration Score</th>
+              <th>Valoration Comment</th>
+              <th>Valoration Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="booking in bookings" :key="booking.id">
+              <td>{{ booking.title }}</td>
+              <td>{{ new Date(booking.booking_date).toLocaleDateString() }}</td>
+              <td>{{ booking.valoration_score }}</td>
+              <td>{{ booking.valoration_comment }}</td>
+              <td>{{ new Date(booking.valoration_date).toLocaleDateString() }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section v-if="showUpdateUserProfileForm" class="update-profile-form">
+      <UpdateUserProfileForm />
     </section>
   </div>
 </template>
@@ -185,7 +204,8 @@ table.underheader-lines {
   border-collapse: collapse;
 }
 
-table.underheader-lines th, table.underheader-lines td {
+table.underheader-lines th,
+table.underheader-lines td {
   border-bottom: 1px;
   padding: 8px;
   text-align: left;
@@ -193,5 +213,20 @@ table.underheader-lines th, table.underheader-lines td {
 
 table.underheader-lines th {
   font-weight: bold;
+}
+
+.adverts.bookings {
+  gap: 2rem;
+  padding: 1.5rem;
+  background-image: linear-gradient(322deg, #ffffff05, #ffffff08);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  backdrop-filter: blur(12px);
+}
+
+.buttons {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
 }
 </style>
