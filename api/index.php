@@ -235,6 +235,23 @@
                 }
             }
 
+            // get bookings by user id
+            else if ($uri[0] == "booking" && $uri[1] == "user") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $owner_id = $uri[2];
+                    $getBookingsByUserId = getBookingsByUserId($conn, $owner_id);
+                    echo $getBookingsByUserId;
+                }
+            }
+
+            // mostrar anuncios por id de usuario
+            else if ($uri[0] == "advert" && $uri[1] == "user") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $owner_id = $uri[2];
+                    $getAdvertsByUserId = getAdvertsByUserId($conn, $owner_id);
+                    echo $getAdvertsByUserId;
+                }
+            }
 
     }
 

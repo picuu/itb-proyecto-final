@@ -1,6 +1,6 @@
 <?php
 //get all adverts
-    function getAdverts($conn){
+    function getAdverts($conn) {
         $result = mysqli_query($conn, "SELECT * FROM advert ORDER BY id");
         $advertisements = array();
         while ($row = mysqli_fetch_assoc($result)) {
@@ -8,7 +8,16 @@
         }
         return json_encode($advertisements);
     }
-    //get advert by id
+//get all adverts by user id
+    function getAdvertsByUserId($conn, $owner_id) {
+        $result = mysqli_query($conn, "SELECT a.title, a.isRequest, a.price, a.loc_name, a.publish_date FROM advert a WHERE a.owner_id = '$owner_id' ORDER BY a.publish_date");
+        $advertisements = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $advertisements[] = $row;
+        }
+        return json_encode($advertisements);
+    }
+//get advert by id
     function getAdvertById($conn, $id) {
         $result_offer = mysqli_query($conn, "SELECT * FROM advert WHERE id = '$id'");
         
