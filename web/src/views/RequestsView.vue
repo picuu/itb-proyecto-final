@@ -77,11 +77,6 @@ export default {
         <template v-if="isLogged">
           <RouterLink to="/new-advert-form">Add New Request</RouterLink>
         </template>
-        <div v-for="request in requests" :key="request.id">
-          <template v-if="isLogged && userId == request.owner_id">
-            <button @click="deleteRequest(request.id)">Delete</button>
-          </template>
-        </div>
       </LayoutSection>
     </main>
   </div>
