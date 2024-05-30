@@ -11,7 +11,7 @@
 
 //get all bookings by user id
     function getBookingsByUserId($conn, $owner_id) {
-        $result = mysqli_query($conn, "SELECT b.id, b.advert_id, a.title, a.price, b.booking_date FROM advert a, booking b WHERE a.id = b.advert_id AND b.user_id = '$owner_id' ORDER BY b.booking_date");
+        $result = mysqli_query($conn, "SELECT b.id, b.advert_id, a.title, a.price, b.booking_date, a.isRequest FROM advert a, booking b WHERE a.id = b.advert_id AND b.user_id = '$owner_id' ORDER BY b.booking_date");
         $bookings = array();
         while ($row = mysqli_fetch_assoc($result)) {
             $bookings[] = $row;
@@ -85,9 +85,28 @@
         return json_encode($services);
     }
 // delete a booking
-    function deleteBooking($conn, $id){
-        $result = mysqli_query($conn, "DELETE FROM booking WHERE id='$id'");
-        if ($result) {
+    function deleteBooking($conn, $booking_id){
+        $data = json_decode(file_get_contents('php://input'), true);
+        $isRequest = $data['isRequest'];
+        $user_id = $data['user_id'];
+        $advert_id = $data['advert_id'];
+        $price = $data['price'];
+        $result_delete = "a";
+
+        $result_delete = mysqli_query($conn, "DELETE FROM booking WHERE id='$booking_id'");
+
+        $result_advert = mysqli_query($conn, "SELECT owner_id FROM advert WHERE id = '$advert_id'");
+        $owner_id = mysqli_fetch_assoc($result_advert)['owner_id'];
+
+        if ($isRequest == "1") {
+            mysqli_query($conn, "UPDATE user u SET u.balance = (u.balance - $price) WHERE u.id = '$user_id'");
+            mysqli_query($conn, "UPDATE user u SET u.balance = (u.balance + $price) WHERE u.id = '$owner_id'");
+        } else {
+            mysqli_query($conn, "UPDATE user u SET u.balance = (u.balance + $price) WHERE u.id = '$user_id'");
+            mysqli_query($conn, "UPDATE user u SET u.balance = (u.balance - $price) WHERE u.id = '$owner_id'");
+        }
+
+        if ($result_delete) {
             $response = array('status' => 'success');
         } else {
             $response = array('status' => 'error');

@@ -143,22 +143,31 @@ export default {
         }
       }
     },
-    deleteBooking(bookingId) {
+    deleteBooking(bookingId, advert_id, price, isRequest) {
       if (confirm("Are you sure you want to delete this booking?")) {
         const authInfo = JSON.parse(localStorage.getItem("authInfo"));
         if (authInfo && authInfo.id) {
+          const data = {
+            user_id: this.userId,
+            advert_id,
+            price,
+            isRequest
+          }
+
           fetch(`http://localhost/itb-proyecto-final/api/index.php/booking/${bookingId}`, {
             method: "DELETE",
             headers: {
               "Accept": "application/json",
               "Content-Type": "application/json"
-            }
+            },
+            body: JSON.stringify(data)
           })
             .then(response => response.json())
             .then(data => {
               if (data.status === 'success') {
                 console.log("Booking deleted successfully");
                 this.bookings = this.bookings.filter(booking => booking.id !== bookingId);
+                location.reload()
               } else {
                 console.error("Error deleting booking");
               }
@@ -307,7 +316,7 @@ export default {
                 <td>{{ booking.price }}</td>
                 <td>{{ convertCoinsToTime(booking.price) }}</td>
                 <td>
-                  <button @click="deleteBooking(booking.id)">Delete</button>
+                  <button @click="deleteBooking(booking.id, booking.advert_id, booking.price, booking.isRequest)">Cancel</button>
                 </td>
               </tr>
             </tbody>
