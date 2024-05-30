@@ -6,7 +6,6 @@ import AdvertList from '@/components/AdvertList.vue'
 import HeaderComponent from '../components/HeaderComponent.vue'
 import { validateSession } from '@/helpers'
 
-
 export default {
   name: 'RequestsView',
   components: {
@@ -21,10 +20,12 @@ export default {
       isLogged: false,
       isMenuOpen: false,
       userId: null,
+      requests: [], 
     }
   },
   created() {
     this.checkLogin();
+    this.getRequests(); 
   },
   methods: {
     checkLogin() {
@@ -37,6 +38,25 @@ export default {
         this.isLogged = false;
         this.userId = null;
       }
+    },
+    getRequests() {
+      fetch('http://localhost/itb-proyecto-final/api/index.php/request/')
+        .then((res) => res.json())
+        .then((data) => {
+          this.requests = data;
+        })
+        .catch((e) => console.error('Error fetching requests:', e));
+    },
+    deleteRequest(id) {
+      fetch(`http://localhost/itb-proyecto-final/api/index.php/request/${id}`, {
+        method: 'DELETE',
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          this.getRequests();
+        })
+        .catch((e) => console.error('Error deleting request:', e));
     },
   },
 }
@@ -57,6 +77,11 @@ export default {
         <template v-if="isLogged">
           <RouterLink to="/new-advert-form">Add New Advert</RouterLink>
         </template>
+        <div v-for="request in requests" :key="request.id">
+          <template v-if="isLogged && userId == request.owner_id">
+            <button @click="deleteRequest(request.id)">Delete</button>
+          </template>
+        </div>
       </LayoutSection>
     </main>
   </div>

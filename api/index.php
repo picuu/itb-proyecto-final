@@ -73,6 +73,12 @@
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     echo getRequests($conn);
                 }
+
+                //eliminar demanda
+                if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+                    $id = $uri[1];
+                    echo deleteRequest($conn, $id);
+                }
             } elseif($uri[0]=="booking") {
                 // mostrar todas las reservas
 
@@ -81,6 +87,7 @@
                     $data = json_decode(file_get_contents('php://input'), true);
                     echo addBooking($conn, $data);
                 }
+
             } elseif($uri[0]=="category") {
                 // mostrar todas las categorías
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {

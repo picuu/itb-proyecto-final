@@ -72,4 +72,9 @@
 
     return json_encode($offers);
   }
+
+  function deleteRequest($conn, $id) {
+    $result = mysqli_query($conn, "DELETE FROM advert WHERE id = '$id'");
+    return $result;
+  }
 ?>
