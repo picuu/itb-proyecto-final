@@ -11,7 +11,7 @@
 
 //get all bookings by user id
     function getBookingsByUserId($conn, $owner_id) {
-        $result = mysqli_query($conn, "SELECT a.title, a.price, b.id, b.booking_date FROM advert a, booking b WHERE a.id = b.advert_id AND b.user_id = '$owner_id' ORDER BY b.booking_date");
+        $result = mysqli_query($conn, "SELECT b.id, b.advert_id, a.title, a.price, b.booking_date FROM advert a, booking b WHERE a.id = b.advert_id AND b.user_id = '$owner_id' ORDER BY b.booking_date");
         $bookings = array();
         while ($row = mysqli_fetch_assoc($result)) {
             $bookings[] = $row;

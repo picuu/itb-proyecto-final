@@ -1,5 +1,5 @@
 <script>
-import UpdateUserProfileForm from './UpdateUserProfileForm.vue';
+import UpdateUserProfileForm from '@/components/UpdateUserProfileForm.vue';
 import { convertCoinsToTime, formatTimestamp, validateSession } from '@/helpers';
 
 export default {
@@ -21,6 +21,7 @@ export default {
       },
       adverts: [],
       bookings: [],
+      services: [],
       showUpdateUserProfileForm: false,
       isLogged: false
     };
@@ -32,6 +33,7 @@ export default {
 
     if (this.isLogged && this.isLogged.id == this.userId) {
       this.fetchUserBookings(this.userId);
+      this.fetchServices(this.userId)
     }
   },
   methods: {
@@ -112,7 +114,6 @@ export default {
       if (confirm("Are you sure you want to delete this advert?")) {
         const authInfo = JSON.parse(localStorage.getItem("authInfo"));
         if (authInfo && authInfo.id) {
-          const userId = authInfo.id;
           fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${advertId}`, {
             method: "DELETE",
             headers: {
@@ -139,7 +140,6 @@ export default {
       if (confirm("Are you sure you want to delete this booking?")) {
         const authInfo = JSON.parse(localStorage.getItem("authInfo"));
         if (authInfo && authInfo.id) {
-          const userId = authInfo.id;
           fetch(`http://localhost/itb-proyecto-final/api/index.php/booking/${bookingId}`, {
             method: "DELETE",
             headers: {
@@ -161,6 +161,15 @@ export default {
             });
         }
       }
+    },
+    async fetchServices(userId) {
+      try {
+        const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}/services`);
+        const data = await response.json();
+        this.services = data;
+      } catch (error) {
+        console.error("Error fetching pending services:", error);
+      }
     }
   },
   computed: {
@@ -170,8 +179,8 @@ export default {
     },
 
     isOwnProfile() {
-      console.log(this.isLogged.id)
-      console.log(this.userId)
+      // console.log(this.isLogged.id)
+      // console.log(this.userId)
       if (this.isLogged) return this.isLogged.id == this.userId
       return false
     }
@@ -204,7 +213,7 @@ export default {
             <dd>{{ user.phone }}</dd>
           </div>
 
-          <div class="buttons">
+          <div v-if="isOwnProfile" class="buttons">
             <button type="button" @click="toggleEditProfile" class="edit-btn">Edit profile</button>
             <button type="button" @click="deleteAccount" class="delete-btn">Delete account</button>
           </div>
@@ -212,9 +221,9 @@ export default {
       </section>
 
       <section class="right-section">
-        <div v-if="isOwnProfile" class="adverts">
+        <section v-if="isOwnProfile" class="adverts">
           <header>
-            <h3>Your currently published adverts</h3>
+            <h3 id="adverts">Your currently published adverts</h3>
           </header>
           <table v-if="adverts.length > 0" class="underheader-lines">
             <thead>
@@ -229,7 +238,7 @@ export default {
             </thead>
             <tbody>
               <tr v-for="advert in adverts" :key="advert.id">
-                <td>{{ advert.title }}</td>
+                <td><RouterLink :to="'/advert/' + advert.id">{{ advert.title }}</RouterLink></td>
                 <td>{{ advert.isRequest === "1" ? 'Request' : 'Offer' }}</td>
                 <td>{{ advert.price }}</td>
                 <td>{{ convertCoinsToTime(advert.price) }}</td>
@@ -242,10 +251,10 @@ export default {
             </tbody>
           </table>
           <p v-else>You haven't published any advert yet</p>
-        </div>
-        <div v-else class="adverts">
+        </section>
+        <section v-else class="adverts">
           <header>
-            <h3>Published adverts</h3>
+            <h3 id="adverts">Published adverts</h3>
           </header>
           <table v-if="adverts.length > 0" class="underheader-lines">
             <thead>
@@ -259,7 +268,7 @@ export default {
             </thead>
             <tbody>
               <tr v-for="advert in adverts" :key="advert.id">
-                <td>{{ advert.title }}</td>
+                <td><RouterLink :to="'/advert/' + advert.id">{{ advert.title }}</RouterLink></td>
                 <td>{{ advert.isRequest === "1" ? 'Request' : 'Offer' }}</td>
                 <td>{{ advert.price }}</td>
                 <td>{{ convertCoinsToTime(advert.price) }}</td>
@@ -268,9 +277,9 @@ export default {
             </tbody>
           </table>
           <p v-else>{{ user.name }} hasn't published any advert yet</p>
-        </div>
-        <br>
-        <div v-if="isOwnProfile" class="bookings">
+        </section>
+        
+        <section v-if="isOwnProfile" class="bookings">
           <header>
             <h3 id="bookings">Your bookings</h3>
           </header>
@@ -286,18 +295,42 @@ export default {
             </thead>
             <tbody>
               <tr v-for="booking in bookings" :key="booking.id">
-                <td>{{ booking.title }}</td>
+                <td><RouterLink :to="'/advert/' + booking.advert_id">{{ booking.title }}</RouterLink></td>
                 <td>{{ formatTimestamp(booking.booking_date) }}</td>
                 <td>{{ booking.price }}</td>
                 <td>{{ convertCoinsToTime(booking.price) }}</td>
-                <td>
-                  <button @click="deleteBooking(booking.id)">Delete</button>
-                </td>
               </tr>
             </tbody>
           </table>
           <p v-else>You dont have any booking yet</p>
-        </div>
+        </section>
+
+        <section v-if="isOwnProfile" class="services">
+          <header>
+            <h3 id="services">Pending services</h3>
+          </header>
+          <table v-if="services.length > 0" class="underheader-lines">
+            <thead>
+              <tr>
+                <th>Advert title</th>
+                <th>Subscribed User</th>
+                <th>Date</th>
+                <th>TCs</th>
+                <th>Duration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="service in services" :key="service.id">
+                <td><RouterLink :to="'/advert/' + service.advert_id">{{ service.title }}</RouterLink></td>
+                <td>{{ service.user_name }}</td>
+                <td>{{ formatTimestamp(service.booking_date) }}</td>
+                <td>{{ service.price }}</td>
+                <td>{{ convertCoinsToTime(service.price) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p v-else>Nobody has booked any of your adverts :_(</p>
+        </section>
       </section>
     </div>
     <section v-else class="update-profile-form">
@@ -320,6 +353,10 @@ export default {
 
 .right-section {
   flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-left: auto;
 }
 
 img {
@@ -363,15 +400,6 @@ table.underheader-lines th {
   font-weight: bold;
 }
 
-.adverts.bookings {
-  gap: 2rem;
-  padding: 1.5rem;
-  background-image: linear-gradient(322deg, #ffffff05, #ffffff08);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  backdrop-filter: blur(12px);
-}
-
 .buttons {
   display: flex;
   gap: 2rem;
@@ -379,7 +407,8 @@ table.underheader-lines th {
 }
 
 .adverts,
-.bookings {
+.bookings,
+.services {
   display: flex;
   flex-direction: column;
   gap: .5rem;
