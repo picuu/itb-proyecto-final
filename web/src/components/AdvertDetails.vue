@@ -1,9 +1,9 @@
 <script>
 import { RouterLink } from 'vue-router';
-import { validateSession, formatTime, formatTimestamp } from '@/helpers'
+import { validateSession, formatTime, formatTimestamp, convertCoinsToTime } from '@/helpers'
 import { advert, user, booking } from '@/types';
-import CalendarOutput from './CalendarOutput.vue';
-import { convertCoinsToTime } from '@/helpers/convertCoinsToTime';
+import CalendarOutput from '@/components/CalendarOutput.vue';
+import MapComp from '@/components/MapComp.vue';
 
 export default {
   name: 'AdvertDetails',
@@ -12,7 +12,8 @@ export default {
   },
   components: {
     RouterLink,
-    CalendarOutput
+    CalendarOutput,
+    MapComp
   },
 
   data() {
@@ -24,7 +25,9 @@ export default {
       timePrice: '',
       selectedDate: '',
       errorMessage: null,
-      isLogged: false
+      isLogged: false,
+      isMapAvailable: false,
+      map: { lat: "", lng: "" }
     }
   },
 
@@ -32,6 +35,7 @@ export default {
     async getAdvert() {
       const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`)
       const data = await res.json()
+      this.loading = false
       return data
     },
 
@@ -110,6 +114,12 @@ export default {
       }
     },
 
+    showMap() {
+      this.map.lat = this.advert.loc_latitude
+      this.map.lng = this.advert.loc_longitude
+      this.isMapAvailable = true
+    },
+
     formatTimestamp
   },
 
@@ -145,6 +155,7 @@ export default {
     this.availability = this.advert.availability.split(",")
     this.timePrice = formatTime(convertCoinsToTime(this.advert.price)) + 'h'
     if (this.isLogged) this.getAdvertBookings()
+    if (this.isLogged) this.showMap()
   }
 }
 </script>
@@ -228,7 +239,12 @@ export default {
   
             <article class="location">
               <h4>Location</h4>
-              <a href="#">{{ advert.loc_name }}</a>
+              <template v-if="isMapAvailable">
+                <MapComp class="map" :lat="advert.loc_latitude" :lng="advert.loc_longitude" />
+              </template>
+              <template v-else>
+                <p>You must be registered to see the location</p>
+              </template>
             </article>
           </main>
 
@@ -359,11 +375,23 @@ a {
 }
 
 .location {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
   max-width: 70ch;
   width: 100%;
   padding: 1rem .6rem;
   background-color: rgba(50 50 220 / .1);
   border-left: 4px solid rgba(25 25 200);
+  border-radius: 4px;
+}
+
+.location h4 {
+  font-weight: 600;
+}
+
+.map {
+  height: 200px;
   border-radius: 4px;
 }
 

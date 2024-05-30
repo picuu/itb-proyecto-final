@@ -52,7 +52,11 @@ export default {
 </script>
 
 <template>
-  <div id="map" style="height: 400px"></div>
+  <div id="map"></div>
 </template>
 
-<style scoped></style>
+<style scoped>
+div {
+  height: 400px;
+}
+</style>
