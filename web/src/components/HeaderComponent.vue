@@ -194,7 +194,8 @@ a:hover {
     border-radius: 6px;
   }
 
-  a {
+  a,
+  .balance {
     width: 100%;
     padding: .5rem 1rem;
     text-align: center;
@@ -208,7 +209,8 @@ a:hover {
   }
 
   .navigation a,
-  .auth-nav a:not(:last-of-type) {
+  .auth-nav a:not(:last-of-type),
+  .auth-nav .balance {
     border-bottom: 1px solid var(--color-border-hover);
   }
 }
