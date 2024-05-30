@@ -41,10 +41,8 @@
         $email = $data['email'];
         $phone = $data['phone'];
         $password = md5($data['password']);
-        $balance = $data['balance'] ?? 0;
-        $isAdmin = $data['isAdmin'] ?? 0;
 
-        $result = mysqli_query($conn, "UPDATE user SET name='$name', surname='$surname', image='$image', email='$email', phone='$phone', password='$password', balance='$balance', isAdmin='$isAdmin' WHERE id='$id'");
+        $result = mysqli_query($conn, "UPDATE user SET name='$name', surname='$surname', image='$image', email='$email', phone='$phone', password='$password' WHERE id='$id'");
         if ($result) {
             $response = array('status' => 'success');
         } else {

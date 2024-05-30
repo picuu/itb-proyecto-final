@@ -15,8 +15,6 @@ export default {
             registerPhone: '',
             registerPassword: '',
             registerPasswordRepeat: '',
-            registerBalance: 0,
-            registerIsAdmin: 0,
             registrationError: null,
         };
     },
@@ -43,9 +41,7 @@ export default {
                     email: this.registerEmail,
                     phone: this.registerPhone,
                     password: this.registerPassword,
-                    password_repeat: this.registerPasswordRepeat,
-                    balance: this.registerBalance,
-                    isAdmin: this.registerIsAdmin
+                    password_repeat: this.registerPasswordRepeat
                 };
 
                 console.log('Register:', data);
