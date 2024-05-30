@@ -29,5 +29,13 @@ export default {
 </template>
 
 <style scoped>
-
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block: 2rem;
+  color: var(--color-heading);
+  font-size: 2rem;
+  font-weight: 500;
+}
 </style>

@@ -129,7 +129,7 @@ export default {
       <br>
       <div class="bookings">
         <header>
-          <h3>Your bookings</h3>
+          <h3 id="bookings">Your bookings</h3>
         </header>
         <table class="underheader-lines">
           <thead>
@@ -228,5 +228,20 @@ table.underheader-lines th {
   display: flex;
   gap: 2rem;
   margin-top: 2rem;
+}
+
+.adverts, .bookings {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: 1rem;
+  background-image: linear-gradient(322deg, #ffffff05, #ffffff08);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  backdrop-filter: blur(12px);
+}
+
+h3 {
+  color: var(--color-heading)
 }
 </style>
