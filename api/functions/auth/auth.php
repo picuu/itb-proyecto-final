@@ -32,17 +32,23 @@ function register($conn, $data) {
   $balance = 360;
   $isAdmin = $data['isAdmin'] ?? 0;
 
-  $q = "INSERT INTO user VALUES (default, '$name', '$surname', '$image', '$email', '$phone', '$password', '$balance', '$isAdmin')";
-  $result = mysqli_query($conn, $q);
-  
-  $res = array();
-  if ($result) {
-      $res['token'] = base64_encode(random_bytes(32));
-      $res['isAdmin'] = $data['isAdmin'];
-      $res['id'] = mysqli_insert_id($conn);
+  $result = mysqli_query($conn, "SELECT * FROM user WHERE email = '$email'");
+  if (mysqli_num_rows($result) == 0) {
+    $q = "INSERT INTO user VALUES (default, '$name', '$surname', '$image', '$email', '$phone', '$password', '$balance', '$isAdmin')";
+    $result_register = mysqli_query($conn, $q);
+    
+    $res = array();
+    if ($result_register) {
+        $res['token'] = base64_encode(random_bytes(32));
+        $res['isAdmin'] = $data['isAdmin'];
+        $res['id'] = mysqli_insert_id($conn);
+    } else {
+      $res['status'] = 'error';
+    }
   } else {
-    $res['status'] = 'error';
+    $res = array('status' => 'error', 'code' => '409', 'message' => 'This email is already in use');
   }
+
   
   return json_encode($res);
 }

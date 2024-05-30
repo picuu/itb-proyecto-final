@@ -56,7 +56,7 @@
 
             <label for="registerPhone">
               <span>Phone</span>
-              <input type="text" name="registerPhone" id="registerPhone" placeholder="600102030" v-model="registerPhone"
+              <input type="number" name="registerPhone" id="registerPhone" placeholder="600102030" minlength="9" maxlength="9" v-model="registerPhone"
                 required>
             </label>
           </div>
@@ -212,6 +212,10 @@ export default {
         this.$router.push(`/user/${json_res.id}`);
       } else {
         console.warn("Registration error:", json_res.message);
+
+        if (json_res && json_res.status && json_res.code == 409) {
+          this.registrationError = "The given email is already in use"
+        }
       }
     }
   },
