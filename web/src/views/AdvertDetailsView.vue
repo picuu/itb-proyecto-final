@@ -47,10 +47,6 @@ export default {
         <h2>Advert Details</h2>
 
         <AdvertDetails :advertId="advertId" />
-
-        <template v-if="isLogged">
-          <RouterLink :to="'/update-advert/' + advertId">Update Advert</RouterLink>
-        </template>
       </LayoutSection>
     </main>
   </div>
@@ -65,17 +61,5 @@ h2 {
   color: var(--color-heading);
   font-size: 2rem;
   font-weight: 500;
-}
-
-a {
-  display: block;
-  width: fit-content;
-  padding: .65rem 1.25rem;
-  margin-top: 2rem;
-  background-color: #007bff;
-  border: none;
-  border-radius: 6px;
-  color: var(--color-heading);
-  text-decoration: none;
 }
 </style>

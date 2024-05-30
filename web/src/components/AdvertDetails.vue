@@ -40,6 +40,7 @@ export default {
     },
 
     updateSelectedDate(data) {
+      this.errorMessage = null
       this.selectedDate = data
     },
 
@@ -180,7 +181,7 @@ export default {
           <div class="property">
             <dt>Tags</dt>
             <dd class="tags">
-              <RouterLink :to="(advert.isRequest ? '/requests/tag/' : '/offers/tag/') + tag.id" v-for="tag in advert.tags" class="tag" :key="tag.id">
+              <RouterLink :to="(advert.isRequest == 1 ? '/requests/tag/' : '/offers/tag/') + tag.id" v-for="tag in advert.tags" class="tag" :key="tag.id">
                 {{ tag.name }}
               </RouterLink>
             </dd>
@@ -196,8 +197,9 @@ export default {
           </div>
         </dl>
 
-        
+        <RouterLink v-if="isAdvertOwner" :to="'/update-advert/' + advertId" class="update-advert-btn">Update Advert</RouterLink>
       </section>
+
       <section class="right-section">
         <header>
           <h3>{{ advert.title }}</h3>
@@ -324,6 +326,18 @@ img {
 .duration-property {
   display: flex;
   gap: .25rem;
+}
+
+.update-advert-btn {
+  display: block;
+  width: fit-content;
+  padding: .65rem 1.25rem;
+  margin-top: 2rem;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  color: var(--color-heading);
+  text-decoration: none;
 }
 
 .advert-info {
