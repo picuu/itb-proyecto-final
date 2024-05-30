@@ -35,6 +35,15 @@ export default {
 
         async deleteUser(userId) {
             // fetch con method delete
+            try {
+                const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}`, {
+                    method: 'DELETE'
+                })
+                const data = await res.json()
+                this.users = this.users.filter(user => user.id !== userId)
+            } catch (e) {
+                console.error("Error deleting user:", e)
+            }
         },
 
         getUserRole(isAdmin) {
