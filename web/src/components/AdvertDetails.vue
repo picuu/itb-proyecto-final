@@ -54,7 +54,7 @@ export default {
       const bookingData = {
         advert_id: this.advertId,
         user_id: authInfo.id,
-        booking_date: new Date().valueOf(),
+        booking_date: this.selectedDate,
         advert_owner_id: this.advert.owner_id,
         advert_price: this.advert.price
       }
@@ -121,8 +121,19 @@ export default {
 
     isAdvertOwner() {
       if (!this.isLogged) return false
-      if (this.bookings.some(booking => booking.owner.id == this.user.id)) return true
+      if (this.advert.owner_id == this.isLogged.id) return true
       return false
+    },
+
+    isDateAvailable() {
+      console.log(this.selectedDate)
+      if (!this.selectedDate || this.selectedDate == "") return true
+
+      const notReserved = !this.bookings.some(booking => booking.booking_date == this.selectedDate)
+      const timeAvailable = this.selectedDate >= new Date().valueOf()
+
+      return notReserved && timeAvailable
+
     }
   },
 
@@ -131,6 +142,7 @@ export default {
     this.advert = await this.getAdvert()
     this.availability = this.advert.availability.split(",")
     this.timePrice = formatTime(convertCoinsToTime(this.advert.price)) + 'h'
+    if (this.isLogged) this.getAdvertBookings()
   }
 }
 </script>
@@ -192,7 +204,15 @@ export default {
             <div class="enroll">
               <template v-if="validateSession">
                 <button v-if="isAdvertOwner" title="You own this advert" disabled>Take up this offer</button>
-                <button v-else @click="subscribeToOffer()">Take up this offer</button>
+                <template v-else>
+                  <template v-if="!isDateAvailable">
+                    <button title="Date unavailable" disabled>Take up this offer</button>
+                    <article class="error">The selected date is unavailable</article>
+                  </template>
+                  <template v-else>
+                    <button @click="subscribeToOffer()">Take up this offer</button>
+                  </template>
+                </template>
               </template>
               <template v-else>
                 <button disabled>Take up this offer</button>
