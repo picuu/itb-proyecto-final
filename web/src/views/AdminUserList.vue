@@ -29,7 +29,7 @@ export default {
                     <AdminUserList />
             </LayoutSection>
 
-            <LayoutSection>
+            <LayoutSection> 
                 <h2>Adverts</h2>
                     <AdminAdvertList />
             </LayoutSection>
