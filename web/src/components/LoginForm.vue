@@ -182,7 +182,7 @@ export default {
       const data = {
         name: this.registerName,
         surname: this.registerSurname,
-        image: this.registerProfileImage,
+        image: this.registerProfileImage != "" ? this.registerProfileImage : "default-profile.webp",
         email: this.registerEmail,
         phone: this.registerPhone,
         password: this.registerPassword,
