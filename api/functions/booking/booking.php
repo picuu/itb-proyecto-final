@@ -63,4 +63,17 @@
 
         return json_encode($bookings);
     }
+
+    // get bookings that are made to any advert of an specific user
+    function getUserPendingServices($conn, $user_id) {
+        $q = "SELECT b.id, b.booking_date, b.advert_id, u.name AS user_name, a.title, a.price FROM user u JOIN booking b ON (u.id = b.user_id) JOIN advert a ON (b.advert_id = a.id) WHERE a.owner_id = '$user_id' order by b.id DESC";
+        $result = mysqli_query($conn, $q);
+
+        $services = array();
+        while ($service = mysqli_fetch_assoc($result)) {
+            $services[] = $service;
+        }
+
+        return json_encode($services);
+    }
 ?>

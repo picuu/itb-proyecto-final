@@ -50,11 +50,6 @@
                     $addANewUser = addUser($conn, $data);
                     echo $addANewUser;
                 }
-                // borrar usuario
-                if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
-                    $id = $uri[1];
-                    echo deleteUser($conn, $id);
-                }
             } elseif($uri[0]=="advert") {
                 // mostrar todos los anuncios
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -92,6 +87,9 @@
                 }
             } elseif($uri[0]=="booking") {
                 // mostrar todas las reservas
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    echo getBookings($conn);
+                }
 
                 // crear nueva reserva
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -258,6 +256,14 @@
                     $owner_id = $uri[2];
                     $getBookingsByUserId = getBookingsByUserId($conn, $owner_id);
                     echo $getBookingsByUserId;
+                }
+            }
+
+            // get bookings that are made to any advert of an specific user
+            else if ($uri[0] == "user" && $uri[2] == "services") {
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $user_id = $uri[1];
+                    echo getUserPendingServices($conn, $user_id);
                 }
             }
 
