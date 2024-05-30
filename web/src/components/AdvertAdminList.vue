@@ -1,5 +1,5 @@
 <script>
-import { advertType } from '@/types'
+import { advert } from '@/types'
 
 export default {
     name: 'AdvertAdminList',
@@ -8,24 +8,12 @@ export default {
         return {
             adverts: Array(advert),
             userId: null,
-            showUpdateForm: false
+            showUpdateForm: false,
+            selectedAdvert: advert
         }
     },
 
     methods: {
-        async getAdvert() {
-            try {
-                const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`)
-                const data = await res.json()
-                this.advert = data
-                this.advertDurationTime = formatTime(convertCoinsToTime(data.price))
-                this.availabilitySet = new Set(data.availability.split(","))
-                if (Array.from(this.availabilitySet.keys())[0].length == 0) this.availabilitySet.clear()
-            } catch (error) {
-                console.error('Error fetching the advert:', error)
-            }
-        },
-
         async getAdverts() {
             try {
                 const res = await fetch('http://localhost/itb-proyecto-final/api/index.php/advert')
@@ -36,62 +24,72 @@ export default {
             }
         },
 
-        deleteAdvert(){
+        async deleteAdvert(){
             try {
                 const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`, {
                     method: 'DELETE'
                 })
                 const data = await res.json()
-                this.adverts = this.adverts.filter(advert => advert.id !== this.advertId)
+
+                if (data && data.status && data.status == "success") {
+                    this.adverts = this.adverts.filter(advert => advert.id !== this.advertId)
+                }
             } catch (e) {
                 console.error("Error deleting advert:", e)
             }
         },
-        }
+        
 
         getAdvertType(type) {
-            if (isRequest == 1) return "Request"
+            if (type == 1) return "Request"
             return "Offer"
         },
 
-        toggleUpdateForm() {
+        toggleUpdateForm(id) {
             this.showUpdateForm = !this.showUpdateForm
+            this.selectedAdvert = this.getAdvert(id)
         }
     },
     created() {
         this.getAdverts()
     }
+}
 </script>
 
 <template>
     <div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Title</th>
-                    <th>Type</th>
-                    <th>Price</th>
-                    <th>Category</th>
-                    <th>Tags</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="advert in adverts" :key="advert.id">
-                    <td data-label="Id">{{ advert.id }}</td>
-                    <td data-label="Title">{{ advert.title }}</td>
-                    <td data-label="Type">{{ getAdvertType(advert.type) }}</td>
-                    <td data-label="Price">{{ advert.price }}</td>
-                    <td data-label="Category">{{ advert.category }}</td>
-                    <td data-label="Tags">{{ advert.tags }}</td>
-                    <td data-label="Actions">
-                        <button @click="deleteAdvert(advert.id)">Delete</button>
-                        <button @click="toggleUpdateForm">Update</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <template v-if="!showUpdateForm">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Price</th>
+                        <th>Category</th>
+                        <th>Tags</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="advert in adverts" :key="advert.id">
+                        <td data-label="Id">{{ advert.id }}</td>
+                        <td data-label="Title">{{ advert.title }}</td>
+                        <td data-label="Type">{{ getAdvertType(advert.type) }}</td>
+                        <td data-label="Price">{{ advert.price }}</td>
+                        <td data-label="Category">{{ advert.category }}</td>
+                        <td data-label="Tags">{{ advert.tags }}</td>
+                        <td data-label="Actions">
+                            <button @click="deleteAdvert(advert.id)">Delete</button>
+                            <button @click="toggleUpdateForm(id)">Update</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </template>
+        <template v-else>
+            // UpdateAdvertForm (pasar la id del advert)
+        </template>
     </div>
 </template>
 
