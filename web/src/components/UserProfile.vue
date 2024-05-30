@@ -1,5 +1,6 @@
 <script>
 import UpdateUserProfileForm from './UpdateUserProfileForm.vue';
+import { convertCoinsToTime, formatTimestamp } from '@/helpers';
 
 export default {
   name: "UserProfile",
@@ -29,6 +30,8 @@ export default {
     }
   },
   methods: {
+    convertCoinsToTime,
+    formatTimestamp,
     editProfile() {
       this.showUpdateUserProfileForm = true;
     },
@@ -65,95 +68,103 @@ export default {
         console.error("Error fetching user bookings:", error);
       }
     }
+  },
+  computed: {
+    getAdvertImagePath() {
+      if (this.user.image == "default-profile.webp") return "/" + this.user.image
+      return this.user.image
+    }
   }
 };
 </script>
 
 <template>
-  <div class="user-profile">
-    <section class="left-section">
-      <header>
-        <h3>Personal information</h3>
-      </header>
-      <img :src="user.image" :alt="`${user.name} ${user.surname}`" />
-
-      <dl class="properties">
-        <div class="property">
-          <dt>Name</dt>
-          <dd>{{ user.name }} {{ user.surname }}</dd>
-        </div>
-
-        <div class="property">
-          <dt>Email</dt>
-          <dd>{{ user.email }}</dd>
-        </div>
-
-        <div class="property">
-          <dt>Phone</dt>
-          <dd>{{ user.phone }}</dd>
-        </div>
-
-        <div class="buttons">
-          <button @click="editProfile">Edit profile</button>
-          <button @click="deleteAccount">Delete account</button>
-        </div>
-      </dl>
-    </section>
-
-    <section class="right-section">
-      <div class="adverts">
+  <div class="content">
+    <div v-if="!showUpdateUserProfileForm" class="user-profile">
+      <section class="left-section">
         <header>
-          <h3>Your currently published adverts</h3>
+          <h3>Personal information</h3>
         </header>
-        <table class="underheader-lines">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Type</th>
-              <th>Price</th>
-              <th>Location</th>
-              <th>Publish Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="advert in adverts" :key="advert.id">
-              <td>{{ advert.title }}</td>
-              <td>{{ advert.isRequest === "1" ? 'Request' : 'Offer' }}</td>
-              <td>{{ advert.price }}</td>
-              <td>{{ advert.loc_name }}</td>
-              <td>{{ new Date(advert.publish_date).toLocaleDateString() }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <br>
-      <div class="bookings">
-        <header>
-          <h3 id="bookings">Your bookings</h3>
-        </header>
-        <table class="underheader-lines">
-          <thead>
-            <tr>
-              <th>Advert Title</th>
-              <th>Booking Date</th>
-              <th>Valoration Score</th>
-              <th>Valoration Comment</th>
-              <th>Valoration Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="booking in bookings" :key="booking.id">
-              <td>{{ booking.title }}</td>
-              <td>{{ new Date(booking.booking_date).toLocaleDateString() }}</td>
-              <td>{{ booking.valoration_score }}</td>
-              <td>{{ booking.valoration_comment }}</td>
-              <td>{{ new Date(booking.valoration_date).toLocaleDateString() }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-    <section v-if="showUpdateUserProfileForm" class="update-profile-form">
+        <img :src="user.image" :alt="`${user.name} ${user.surname}`" />
+
+        <dl class="properties">
+          <div class="property">
+            <dt>Name</dt>
+            <dd>{{ user.name }} {{ user.surname }}</dd>
+          </div>
+
+          <div class="property">
+            <dt>Email</dt>
+            <dd>{{ user.email }}</dd>
+          </div>
+
+          <div class="property">
+            <dt>Phone</dt>
+            <dd>{{ user.phone }}</dd>
+          </div>
+
+          <div class="buttons">
+            <button type="button" @click="editProfile">Edit profile</button>
+            <button type="button" @click="deleteAccount">Delete account</button>
+          </div>
+        </dl>
+      </section>
+
+      <section class="right-section">
+        <div class="adverts">
+          <header>
+            <h3>Your currently published adverts</h3>
+          </header>
+          <table class="underheader-lines">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>Duration</th>
+                <th>Publish Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="advert in adverts" :key="advert.id">
+                <td>{{ advert.title }}</td>
+                <td>{{ advert.isRequest === "1" ? 'Request' : 'Offer' }}</td>
+                <td>{{ advert.price }}</td>
+                <td>{{ convertCoinsToTime(advert.price) }}</td>
+                <td>{{ formatTimestamp(advert.publish_date) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <div class="bookings">
+          <header>
+            <h3 id="bookings">Your bookings</h3>
+          </header>
+          <table class="underheader-lines">
+            <thead>
+              <tr>
+                <th>Advert Title</th>
+                <th>Date</th>
+                <th>TCs</th>
+                <th>Duration</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="booking in bookings" :key="booking.id">
+                <td>{{ booking.title }}</td>
+                <td>{{ formatTimestamp(booking.booking_date) }}</td>
+                <td>{{ booking.price }}</td>
+                <td>{{ convertCoinsToTime(booking.price) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+    <section v-else class="update-profile-form">
       <UpdateUserProfileForm />
     </section>
   </div>
@@ -230,7 +241,8 @@ table.underheader-lines th {
   margin-top: 2rem;
 }
 
-.adverts, .bookings {
+.adverts,
+.bookings {
   display: flex;
   flex-direction: column;
   gap: .5rem;
