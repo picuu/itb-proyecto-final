@@ -16,7 +16,7 @@ div {
   z-index: -2;
   height: 100vh;
   width: 100%;
-  background-color: rgb(20 20 20);
+  background-color: rgb(13 13 13);
   background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(54, 77, 222, 0.5), rgba(255 255 255 / 0));
 }
 </style>
