@@ -67,7 +67,6 @@ export default {
                         <th>Type</th>
                         <th>Price</th>
                         <th>Category</th>
-                        <th>Tags</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -77,8 +76,7 @@ export default {
                         <td data-label="Title">{{ advert.title }}</td>
                         <td data-label="Type">{{ getAdvertType(advert.type) }}</td>
                         <td data-label="Price">{{ advert.price }}</td>
-                        <td data-label="Category">{{ advert.category }}</td>
-                        <td data-label="Tags">{{ advert.tags }}</td>
+                        <td data-label="Category">{{ advert.category.name }}</td>
                         <td data-label="Actions">
                             <button @click="deleteAdvert(advert.id)">Delete</button>
                             <button @click="toggleUpdateForm(id)">Update</button>
