@@ -1,12 +1,26 @@
 <?php
 //get all adverts
-    function getAdverts($conn) {
-        $result = mysqli_query($conn, "SELECT * FROM advert ORDER BY id");
-        $advertisements = array();
-        while ($row = mysqli_fetch_assoc($result)) {
-            $advertisements[] = $row;
+    function getAdverts($conn){
+        $result_adverts = mysqli_query($conn, "SELECT * FROM advert ORDER BY id");
+        
+        $adverts = array();
+        while ($advert = mysqli_fetch_assoc($result_adverts)) {
+            $offer_id = $advert['id'];
+            $result_category = mysqli_query($conn, "SELECT c.name, c.id FROM advert a JOIN category c ON (a.category_id = c.id) WHERE a.id = '$offer_id'");
+            $result_tags = mysqli_query($conn, "SELECT t.* FROM advert_tags at JOIN tag t ON (at.tag_id = t.id) WHERE advert_id = '$offer_id'");
+
+            $advert['category'] = mysqli_fetch_assoc($result_category);
+
+            $tags = array();
+            while ($tag = mysqli_fetch_assoc($result_tags)) {
+                $tags[] = $tag;
+            }
+            $advert['tags'] = $tags;
+
+            $adverts[] = $advert;
         }
-        return json_encode($advertisements);
+
+        return json_encode($adverts);
     }
 //get all adverts by user id
     function getAdvertsByUserId($conn, $owner_id) {
