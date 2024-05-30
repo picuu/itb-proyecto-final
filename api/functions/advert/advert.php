@@ -24,7 +24,7 @@
     }
 //get all adverts by user id
     function getAdvertsByUserId($conn, $owner_id) {
-        $result = mysqli_query($conn, "SELECT a.title, a.isRequest, a.price, a.loc_name, a.publish_date FROM advert a WHERE a.owner_id = '$owner_id' ORDER BY a.publish_date");
+        $result = mysqli_query($conn, "SELECT a.id, a.title, a.isRequest, a.price, a.loc_name, a.publish_date FROM advert a WHERE a.owner_id = '$owner_id' ORDER BY a.publish_date");
         $advertisements = array();
         while ($row = mysqli_fetch_assoc($result)) {
             $advertisements[] = $row;

@@ -105,6 +105,7 @@ export default {
       }
     },
     redirectToUpdateAdvertForm(advertId) {
+      console.log("advertId:", advertId);
       this.$router.push({ name: 'update-advert', params: { advertId: advertId } });
     },
     deleteAdvert(advertId) {
@@ -235,7 +236,7 @@ export default {
                 <td>{{ formatTimestamp(advert.publish_date) }}</td>
                 <td>
                   <button @click="redirectToUpdateAdvertForm(advert.id)">Update</button>
-                  <button @click="confirmDeleteAdvert(advert.id)">Delete</button>
+                  <button @click="deleteAdvert(advert.id)">Delete</button>
                 </td>
               </tr>
             </tbody>
