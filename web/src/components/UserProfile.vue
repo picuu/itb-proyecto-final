@@ -27,18 +27,25 @@ export default {
     };
   },
   created() {
-    this.isLogged = validateSession()
-    this.fetchUserData(this.userId);
-    this.fetchUserAdverts(this.userId);
-
-    if (this.isLogged && this.isLogged.id == this.userId) {
-      this.fetchUserBookings(this.userId);
-      this.fetchServices(this.userId)
-    }
+    this.fetchData()
   },
   methods: {
     convertCoinsToTime,
     formatTimestamp,
+    fetchData() {
+      this.isLogged = validateSession()
+      this.fetchUserData(this.userId);
+      this.fetchUserAdverts(this.userId);
+
+      if (this.isLogged && this.isLogged.id == this.userId) {
+        this.fetchUserBookings(this.userId);
+        this.fetchServices(this.userId)
+      }
+    },
+    userUpdateSuccess() {
+      this.fetchData()
+      this.toggleEditProfile()
+    },
     toggleEditProfile() {
       this.showUpdateUserProfileForm = !this.showUpdateUserProfileForm;
     },
@@ -337,7 +344,7 @@ export default {
       </section>
     </div>
     <section v-else class="update-profile-form">
-      <UpdateUserProfileForm />
+      <UpdateUserProfileForm @user-update-success="userUpdateSuccess" />
       <button type="button" class="cancel-btn" @click="toggleEditProfile">Cancel</button>
     </section>
   </div>

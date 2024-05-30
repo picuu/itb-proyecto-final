@@ -59,12 +59,11 @@ export default {
 
                 console.log(json_res);
 
-                if (json_res && typeof json_res == "object" && json_res.token) {
-                    console.info("Successfully registered user");
-                    localStorage.setItem("authInfo", JSON.stringify(json_res));
-                    this.$router.push(`/user/${json_res.id}`);
+                if (json_res && json_res.status && json_res.status == "success") {
+                    console.info("Successfully updated user");
+                    this.$emit("userUpdateSuccess")
                 } else {
-                    console.warn("Registration error:", json_res.message);
+                    console.warn("Error uptading user:", json_res.message);
                 }
             }
         }
