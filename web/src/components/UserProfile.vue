@@ -37,8 +37,8 @@ export default {
   methods: {
     convertCoinsToTime,
     formatTimestamp,
-    editProfile() {
-      this.showUpdateUserProfileForm = true;
+    toggleEditProfile() {
+      this.showUpdateUserProfileForm = !this.showUpdateUserProfileForm;
     },
     async fetchUserData(userId) {
       try {
@@ -120,8 +120,8 @@ export default {
           </div>
 
           <div class="buttons">
-            <button type="button" @click="editProfile">Edit profile</button>
-            <button type="button" @click="deleteAccount">Delete account</button>
+            <button type="button" @click="toggleEditProfile" class="edit-btn">Edit profile</button>
+            <button type="button" @click="deleteAccount" class="delete-btn">Delete account</button>
           </div>
         </dl>
       </section>
@@ -210,6 +210,7 @@ export default {
     </div>
     <section v-else class="update-profile-form">
       <UpdateUserProfileForm />
+      <button type="button" class="cancel-btn" @click="toggleEditProfile">Cancel</button>
     </section>
   </div>
 </template>
@@ -299,5 +300,45 @@ table.underheader-lines th {
 
 h3 {
   color: var(--color-heading)
+}
+
+button {
+  padding: .5rem 1.25rem;
+  width: fit-content;
+  background-color: rgba(255 255 255 / .1);
+  border: 1px solid var(--color-border-hover);
+  border-radius: 6px;
+  transition: filter .2s ease-in-out;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button.edit-btn {
+  background-color: rgba(50 110 210 / 0.1);
+  border: 1px solid rgb(50, 110, 210);
+  color: rgb(50, 110, 210);
+}
+
+button.edit-btn:hover {
+  filter: brightness(1.25) drop-shadow(0 0 15px rgba(55, 130, 255, .25));
+}
+
+button.delete-btn {
+  background-color: rgba(210 50 50 / 0.1);
+  border: 1px solid rgb(210, 50, 50);
+  color: rgb(210, 50, 50);
+}
+
+button.delete-btn:hover,
+button.cancel-btn:hover {
+  filter: brightness(1.25) drop-shadow(0 0 15px rgba(255, 50, 50, 0.3));
+}
+
+button.cancel-btn {
+  margin-top: 1.25rem;
+  background-color: rgba(210 50 50 / 0.05);
+  border: 1px solid rgb(210 50 50 / .5);
 }
 </style>
