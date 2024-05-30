@@ -63,7 +63,7 @@ export default {
       <p>
         Developed by
         <a href="https://github.com/JacomarGS" class="owner" target="_blank" rel="noreferrer noopener">JacomarGS</a>,
-        <a href="https://github.com/DevThalia" class="owner" target="_blank" rel="noreferrer noopener">Thalia Bravo</a> y
+        <a href="https://github.com/DevThalia" class="owner" target="_blank" rel="noreferrer noopener">Thalia Bravo</a> and
         <a href="https://carloscapo.com" class="owner" target="_blank" rel="noreferrer noopener">Carlos Capó</a>
       </p>
     </section>
@@ -136,7 +136,7 @@ img {
 }
 
 .owner {
-  color: var(--color-text-bright);
+  color: rgba(60, 120, 220);
 }
 
 @media screen and (width < 769px) {

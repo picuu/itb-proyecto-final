@@ -75,7 +75,7 @@ export default {
     
         <AdvertList endpoint="/request/" />
         <template v-if="isLogged">
-          <RouterLink to="/new-advert-form">Add New Advert</RouterLink>
+          <RouterLink to="/new-advert-form">Add New Request</RouterLink>
         </template>
         <div v-for="request in requests" :key="request.id">
           <template v-if="isLogged && userId == request.owner_id">
@@ -96,5 +96,17 @@ h2 {
   color: var(--color-heading);
   font-size: 2rem;
   font-weight: 500;
+}
+
+a {
+  display: block;
+  width: fit-content;
+  padding: .65rem 1.25rem;
+  margin-top: 2rem;
+  background-color: #007bff;
+  border: none;
+  border-radius: 6px;
+  color: var(--color-heading);
+  text-decoration: none;
 }
 </style>

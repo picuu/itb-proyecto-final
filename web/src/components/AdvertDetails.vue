@@ -243,9 +243,6 @@ export default {
 
       </section>
     </div>
-    <p>
-      <RouterLink :to="'/update-advert/' + advert.id">Update Advert  </RouterLink>
-    </p>
   </span>
 </template>
 
@@ -277,6 +274,7 @@ img {
   aspect-ratio: 1 / 1;
   object-fit: cover;
   background: rgba(200 200 200 / .05);
+  border-radius: 8px;
 }
 
 .properties {
