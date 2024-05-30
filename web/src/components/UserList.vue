@@ -64,7 +64,6 @@ export default {
 <template>
     <div>
         <template v-if="!showUpdateForm">
-            <h2>Users</h2>
             <div>
                 <table>
                     <thead>
@@ -83,8 +82,8 @@ export default {
                             <td>{{ user.email }}</td>
                             <td>{{ getUserRole(user.isAdmin) }}</td>
                             <td>
-                                <button @click="toggleUpdateForm">Update</button> 
-                                <button @click="deleteUser(user.id)">Delete</button> 
+                                <button @click="toggleUpdateForm">Update</button>
+                                <button @click="deleteUser(user.id)">Delete</button>
                             </td>
                         </tr>
                     </tbody>
@@ -97,3 +96,138 @@ export default {
         </template>
     </div>
 </template>
+
+<style scoped>
+/* General Layout */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff;
+    padding: 2rem;
+}
+
+h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-block: 1rem;
+    color: var(--color-heading);
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+    padding: 1rem;
+    text-align: left;
+    color: #ffffff;
+
+}
+
+th {
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+td {
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+
+
+/* Button Styles */
+button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+button:focus {
+    outline: none;
+}
+
+button:first-child {
+    background-color: #007bff;
+    margin-right: 0.5rem;
+}
+
+button:first-child:hover {
+    background-color: #0056b3;
+}
+
+button:last-child {
+    background-color: #dc3545;
+}
+
+button:last-child:hover {
+    background-color: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    th,
+    td {
+        padding: 0.5rem;
+    }
+
+    tr {
+        margin-bottom: 1rem;
+    }
+
+    th {
+        background-color: #333;
+        text-align: center;
+    }
+
+    td {
+        color: #333;
+        text-align: right;
+        position: relative;
+        padding-left: 50%;
+    }
+
+    td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 1rem;
+        font-weight: 600;
+        color: #666;
+    }
+}
+</style>
