@@ -26,7 +26,12 @@ export default {
         <main class="content-grid">
             <LayoutSection>
                 <h2>Users</h2>
-                    <UserList />
+                    <AdminUserList />
+            </LayoutSection>
+
+            <LayoutSection>
+                <h2>Adverts</h2>
+                    <AdminAdvertList />
             </LayoutSection>
         </main>
     </div>
