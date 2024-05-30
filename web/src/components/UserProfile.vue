@@ -299,6 +299,9 @@ export default {
                 <td>{{ formatTimestamp(booking.booking_date) }}</td>
                 <td>{{ booking.price }}</td>
                 <td>{{ convertCoinsToTime(booking.price) }}</td>
+                <td>
+                  <button @click="deleteBooking(booking.id)">Delete</button>
+                </td>
               </tr>
             </tbody>
           </table>

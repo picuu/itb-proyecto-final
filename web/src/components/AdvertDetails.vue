@@ -61,7 +61,8 @@ export default {
         user_id: authInfo.id,
         booking_date: this.selectedDate,
         advert_owner_id: this.advert.owner_id,
-        advert_price: this.advert.price
+        advert_price: this.advert.price,
+        isRequest: this.advert.isRequest
       }
 
       console.log(bookingData)

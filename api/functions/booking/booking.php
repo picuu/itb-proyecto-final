@@ -33,14 +33,22 @@
         $booking_date = $data['booking_date'];
         $advert_owner_id = $data['advert_owner_id'];
         $advert_price = intval($data['advert_price']);
+        $isRequest = $data['isRequest'];
 
         $result = mysqli_query($conn, "INSERT INTO booking VALUES (DEFAULT, '$advert_id', '$user_id', '$booking_date', NULL, NULL, NULL)");
 
 
         if ($result) {
             $booking_id = mysqli_insert_id($conn);
-            mysqli_query($conn, "UPDATE user u SET balance = (balance - $advert_price) WHERE u.id = '$user_id'");
-            mysqli_query($conn, "UPDATE user u SET balance = (balance + $advert_price) WHERE u.id = '$advert_owner_id'");
+
+            if ($isRequest == 1) {
+                mysqli_query($conn, "UPDATE user u SET balance = (balance + $advert_price) WHERE u.id = '$user_id'");
+                mysqli_query($conn, "UPDATE user u SET balance = (balance - $advert_price) WHERE u.id = '$advert_owner_id'");
+            } else {
+                mysqli_query($conn, "UPDATE user u SET balance = (balance - $advert_price) WHERE u.id = '$user_id'");
+                mysqli_query($conn, "UPDATE user u SET balance = (balance + $advert_price) WHERE u.id = '$advert_owner_id'");
+
+            }
             $response = array('status' => 'success', 'booking_id' => $booking_id);
         } else {
             $response = array('status' => 'error');
