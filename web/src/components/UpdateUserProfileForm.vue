@@ -16,14 +16,9 @@ export default {
             registerPassword: '',
             registerPasswordRepeat: '',
             registerBalance: 0,
-            registerIsAdmin: 0
+            registerIsAdmin: 0,
+            registrationError: null,
         };
-    },
-    created() {
-        const authInfo = JSON.parse(localStorage.getItem("authInfo"));
-        if (authInfo && authInfo.id) {
-            this.submitForm(authInfo.id);
-        }
     },
     methods: {
         // Función para actualizar 'registerProfileImage' con el valor transmitido por el evento 'avatar-selected'
@@ -32,49 +27,52 @@ export default {
             console.log(this.registerProfileImage);
         },
         // Función que permite al usuario editar su perfil
-        async submitForm(userId) {
-            this.registrationError = null
-            if (this.registerPassword !== this.registerPasswordRepeat) {
-                this.registrationError = "Passwords do not match.";
-                return;
-            }
+        async submitForm() {
+            const authInfo = JSON.parse(localStorage.getItem("authInfo"));
+            if (authInfo && authInfo.id) {
+                const userId = authInfo.id;
+                if (this.registerPassword !== this.registerPasswordRepeat) {
+                    this.registrationError = "Passwords do not match.";
+                    return;
+                }
 
-            const data = {
-                name: this.registerName,
-                surname: this.registerSurname,
-                image: this.registerProfileImage,
-                email: this.registerEmail,
-                phone: this.registerPhone,
-                password: this.registerPassword,
-                password_repeat: this.registerPasswordRepeat,
-                balance: this.registerBalance,
-                isAdmin: this.registerIsAdmin
-            };
+                const data = {
+                    name: this.registerName,
+                    surname: this.registerSurname,
+                    image: this.registerProfileImage,
+                    email: this.registerEmail,
+                    phone: this.registerPhone,
+                    password: this.registerPassword,
+                    password_repeat: this.registerPasswordRepeat,
+                    balance: this.registerBalance,
+                    isAdmin: this.registerIsAdmin
+                };
 
-            console.log('Register:', data);
+                console.log('Register:', data);
 
-            const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}`, {
-                method: "PUT",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-            });
+                const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
 
-            const json_res = await res.json();
+                const json_res = await res.json();
 
-            console.log(json_res);
+                console.log(json_res);
 
-            if (json_res && typeof json_res == "object" && json_res.token) {
-                console.info("Successfully registered user");
-                localStorage.setItem("authInfo", JSON.stringify(json_res));
-                this.$router.push(`/user/${json_res.id}`);
-            } else {
-                console.warn("Registration error:", json_res.message);
+                if (json_res && typeof json_res == "object" && json_res.token) {
+                    console.info("Successfully registered user");
+                    localStorage.setItem("authInfo", JSON.stringify(json_res));
+                    this.$router.push(`/user/${json_res.id}`);
+                } else {
+                    console.warn("Registration error:", json_res.message);
+                }
             }
         }
-    },
+    }
 };
 </script>
 
@@ -127,7 +125,11 @@ export default {
             <AvatarCarousel v-model="registerProfileImage" @avatar-selected="handleAvatarSelected" />
         </label>
 
-        <button type="submit">Save Changes</button>
+        <button type="submit">Save changes</button>
+
+        <template v-if="registrationError">
+            <article class="error">{{ registrationError }}</article>
+        </template>
     </form>
 </template>
 

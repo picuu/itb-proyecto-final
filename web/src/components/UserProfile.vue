@@ -45,7 +45,6 @@ export default {
           this.user.image = await import(`../assets/profileAvatarCollection/${userData.image}`);
           this.user.image = this.user.image.default
         }
-
         this.user.name = userData.name;
         this.user.surname = userData.surname;
         this.user.email = userData.email;
