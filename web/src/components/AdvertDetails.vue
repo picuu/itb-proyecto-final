@@ -108,7 +108,9 @@ export default {
       } catch (e) {
         console.error("Error fetching advert bookings:", e)
       }
-    }
+    },
+
+    formatTimestamp
   },
 
   computed: {
@@ -194,7 +196,7 @@ export default {
               <RouterLink :to="'/user/' + advert.owner_id" :title="advert.owner.name + ' ' + advert.owner.surname">
                 {{ advert.owner.name }}
               </RouterLink>
-              on {{ advert.publish_date }}
+              on {{ formatTimestamp(advert.publish_date) }}
             </p>
           </div>
         </header>
