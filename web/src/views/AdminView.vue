@@ -1,7 +1,7 @@
 <script>
 import HeaderComponent from '@/components/HeaderComponent.vue'
 import LayoutSection from '@/sections/LayoutSection.vue'
-import AdvertDetails from '@/components/AdvertDetails.vue'
+import UserList from '@/components/UserList.vue'
 
 export default {
     name: 'UserManagementView',
@@ -14,7 +14,7 @@ export default {
     components: {
         HeaderComponent,
         LayoutSection,
-        AdvertDetails
+        UserList
     }
 }
 </script>
