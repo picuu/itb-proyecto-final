@@ -39,13 +39,17 @@ export default {
       try {
         const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}`);
         const userData = await response.json();
-        const image = await import(`../assets/profileAvatarCollection/${userData.image}`);
+
+        if (userData.image == "default-profile.webp") this.user.image = "/" + userData.image
+        else {
+          this.user.image = await import(`../assets/profileAvatarCollection/${userData.image}`);
+          this.user.image = this.user.image.default
+        }
 
         this.user.name = userData.name;
         this.user.surname = userData.surname;
         this.user.email = userData.email;
         this.user.phone = userData.phone;
-        this.user.image = image.default;
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
