@@ -96,6 +96,12 @@ const router = createRouter({
       name: "update-advert",
       component: () => import("../views/UpdateAdvertFormView.vue"),
       props: true
+    },
+    {
+      path: '/admin',
+      name: "admin-panel",
+      component: () => import("../views/AdminView.vue"),
+      props: true
     }
   ]
 })

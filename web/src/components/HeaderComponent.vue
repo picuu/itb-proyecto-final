@@ -80,6 +80,9 @@ export default {
               <RouterLink to="/about">About</RouterLink>
               <RouterLink to="/offers">Offers</RouterLink>
               <RouterLink to="/requests">Requests</RouterLink>
+              <template v-if="user.isAdmin === '1'">
+                <RouterLink to="/admin">Users managment</RouterLink>
+              </template>
             </div>
 
             <div class="auth-nav">
