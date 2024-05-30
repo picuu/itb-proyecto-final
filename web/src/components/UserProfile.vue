@@ -76,6 +76,33 @@ export default {
       } catch (error) {
         console.error("Error fetching user bookings:", error);
       }
+    },
+    deleteAccount() {
+      if (confirm("Are you sure you want to delete your account?")) {
+        const authInfo = JSON.parse(localStorage.getItem("authInfo"));
+        if (authInfo && authInfo.id) {
+          const userId = authInfo.id;
+          fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}`, {
+            method: "DELETE",
+            headers: {
+              "Accept": "application/json",
+              "Content-Type": "application/json"
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'success') {
+              console.log("User account deleted successfully");
+              this.$router.push('/');
+            } else {
+              console.error("Error deleting user account");
+            }
+          })
+          .catch(error => {
+            console.error("Error deleting user account:", error);
+          });
+        }
+      }
     }
   },
   computed: {

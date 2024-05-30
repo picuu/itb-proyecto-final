@@ -50,6 +50,11 @@
                     $addANewUser = addUser($conn, $data);
                     echo $addANewUser;
                 }
+                // borrar usuario
+                if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+                    $id = $uri[1];
+                    echo deleteUser($conn, $id);
+                }
             } elseif($uri[0]=="advert") {
                 // mostrar todos los anuncios
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
