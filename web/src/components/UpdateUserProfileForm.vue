@@ -16,8 +16,7 @@ export default {
             registerPassword: '',
             registerPasswordRepeat: '',
             registerBalance: 0,
-            registerIsAdmin: 0,
-            registrationError: null,
+            registerIsAdmin: 0
         };
     },
     created() {
@@ -129,10 +128,6 @@ export default {
         </label>
 
         <button type="submit">Save Changes</button>
-
-        <template v-if="registrationError">
-            <article class="error">{{ registrationError }}</article>
-        </template>
     </form>
 </template>
 
