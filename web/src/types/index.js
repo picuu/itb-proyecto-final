@@ -1,4 +1,4 @@
-import { advert } from "./advert.js/index.js"
+import { advert } from "./advert.js"
 import { user } from "./user.js"
 import { booking } from "./booking.js"
 
