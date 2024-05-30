@@ -1,11 +1,14 @@
 <script>
 import UpdateUserProfileForm from './UpdateUserProfileForm.vue';
-import { convertCoinsToTime, formatTimestamp } from '@/helpers';
+import { convertCoinsToTime, formatTimestamp, validateSession } from '@/helpers';
 
 export default {
   name: "UserProfile",
   components: {
     UpdateUserProfileForm
+  },
+  props: {
+    userId: { type: String, default: "0" }
   },
   data() {
     return {
@@ -18,15 +21,17 @@ export default {
       },
       adverts: [],
       bookings: [],
-      showUpdateUserProfileForm: false
+      showUpdateUserProfileForm: false,
+      isLogged: false
     };
   },
   created() {
-    const authInfo = JSON.parse(localStorage.getItem("authInfo"));
-    if (authInfo && authInfo.id) {
-      this.fetchUserData(authInfo.id);
-      this.fetchUserAdverts(authInfo.id);
-      this.fetchUserBookings(authInfo.id);
+    this.isLogged = validateSession()
+    this.fetchUserData(this.userId);
+    this.fetchUserAdverts(this.userId);
+
+    if (this.isLogged && this.isLogged.id == this.userId) {
+      this.fetchUserBookings(this.userId);
     }
   },
   methods: {
@@ -45,6 +50,7 @@ export default {
           this.user.image = await import(`../assets/profileAvatarCollection/${userData.image}`);
           this.user.image = this.user.image.default
         }
+
         this.user.name = userData.name;
         this.user.surname = userData.surname;
         this.user.email = userData.email;
@@ -76,6 +82,13 @@ export default {
     getAdvertImagePath() {
       if (this.user.image == "default-profile.webp") return "/" + this.user.image
       return this.user.image
+    },
+
+    isOwnProfile() {
+      console.log(this.isLogged.id)
+      console.log(this.userId)
+      if (this.isLogged) return this.isLogged.id == this.userId
+      return false
     }
   }
 };
@@ -114,11 +127,11 @@ export default {
       </section>
 
       <section class="right-section">
-        <div class="adverts">
+        <div v-if="isOwnProfile" class="adverts">
           <header>
             <h3>Your currently published adverts</h3>
           </header>
-          <table class="underheader-lines">
+          <table v-if="adverts.length > 0" class="underheader-lines">
             <thead>
               <tr>
                 <th>Title</th>
@@ -139,13 +152,40 @@ export default {
               </tr>
             </tbody>
           </table>
+          <p v-else>You haven't published any advert yet</p>
+        </div>
+        <div v-else class="adverts">
+          <header>
+            <h3>Published adverts</h3>
+          </header>
+          <table v-if="adverts.length > 0" class="underheader-lines">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>Duration</th>
+                <th>Publish Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="advert in adverts" :key="advert.id">
+                <td>{{ advert.title }}</td>
+                <td>{{ advert.isRequest === "1" ? 'Request' : 'Offer' }}</td>
+                <td>{{ advert.price }}</td>
+                <td>{{ convertCoinsToTime(advert.price) }}</td>
+                <td>{{ formatTimestamp(advert.publish_date) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p v-else>{{ user.name }} hasn't published any advert yet</p>
         </div>
         <br>
-        <div class="bookings">
+        <div v-if="isOwnProfile" class="bookings">
           <header>
             <h3 id="bookings">Your bookings</h3>
           </header>
-          <table class="underheader-lines">
+          <table v-if="bookings.length > 0" class="underheader-lines">
             <thead>
               <tr>
                 <th>Advert Title</th>
@@ -164,6 +204,7 @@ export default {
               </tr>
             </tbody>
           </table>
+          <p v-else>You dont have any booking yet</p>
         </div>
       </section>
     </div>
