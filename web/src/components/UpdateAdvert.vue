@@ -127,7 +127,7 @@ export default {
 
         async getAdvert() {
             try {
-                const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`)
+                const res = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/advert/${this.advertId}`)
                 const data = await res.json()
                 this.advert = data
                 this.advertDurationTime = formatTime(convertCoinsToTime(data.price))
@@ -140,7 +140,7 @@ export default {
 
         async getTags() {
             try {
-                const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/tag`)
+                const res = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/tag`)
                 const data = await res.json()
                 this.tagList = data
             } catch (error) {
@@ -150,7 +150,7 @@ export default {
 
         async getCategories() {
             try {
-                const res = await fetch('http://localhost/itb-proyecto-final/api/index.php/category')
+                const res = await fetch('http://itb-api.us-east-1.elasticbeanstalk.com/index.php/category')
                 const data = await res.json()
                 this.categoryList = data
             } catch (e) {
@@ -178,7 +178,7 @@ export default {
             // console.log(this.advert)
 
             try {
-                const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`, {
+                const res = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/advert/${this.advertId}`, {
                     method: 'PUT',
                     headers: {
                         "Content-Type": "application/json"

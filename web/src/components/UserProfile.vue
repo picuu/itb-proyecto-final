@@ -51,7 +51,7 @@ export default {
     },
     async fetchUserData(userId) {
       try {
-        const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}`);
+        const response = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/user/${userId}`);
         const userData = await response.json();
 
         if (userData.image == "default-profile.webp") this.user.image = "/" + userData.image
@@ -70,7 +70,7 @@ export default {
     },
     async fetchUserAdverts(userId) {
       try {
-        const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/user/${userId}`);
+        const response = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/advert/user/${userId}`);
         const advertsData = await response.json();
         this.adverts = advertsData;
       } catch (error) {
@@ -79,7 +79,7 @@ export default {
     },
     async fetchUserBookings(userId) {
       try {
-        const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/booking/user/${userId}`);
+        const response = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/booking/user/${userId}`);
         const bookingsData = await response.json();
         this.bookings = bookingsData;
       } catch (error) {
@@ -91,7 +91,7 @@ export default {
         const authInfo = JSON.parse(localStorage.getItem("authInfo"));
         if (authInfo && authInfo.id) {
           const userId = authInfo.id;
-          fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}`, {
+          fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/user/${userId}`, {
             method: "DELETE",
             headers: {
               "Accept": "application/json",
@@ -121,7 +121,7 @@ export default {
       if (confirm("Are you sure you want to delete this advert?")) {
         const authInfo = JSON.parse(localStorage.getItem("authInfo"));
         if (authInfo && authInfo.id) {
-          fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${advertId}`, {
+          fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/advert/${advertId}`, {
             method: "DELETE",
             headers: {
               "Accept": "application/json",
@@ -154,7 +154,7 @@ export default {
             isRequest
           }
 
-          fetch(`http://localhost/itb-proyecto-final/api/index.php/booking/${bookingId}`, {
+          fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/booking/${bookingId}`, {
             method: "DELETE",
             headers: {
               "Accept": "application/json",
@@ -180,7 +180,7 @@ export default {
     },
     async fetchServices(userId) {
       try {
-        const response = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}/services`);
+        const response = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/user/${userId}/services`);
         const data = await response.json();
         this.services = data;
       } catch (error) {

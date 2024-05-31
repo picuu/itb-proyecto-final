@@ -17,7 +17,7 @@ export default {
     methods: {
         async getAdverts() {
             try {
-                const res = await fetch('http://localhost/itb-proyecto-final/api/index.php/advert')
+                const res = await fetch('http://itb-api.us-east-1.elasticbeanstalk.com/index.php/advert')
                 const data = await res.json()
                 this.adverts = data
             } catch (e) {
@@ -27,7 +27,7 @@ export default {
 
         async deleteAdvert(){
             try {
-                const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`, {
+                const res = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/advert/${this.advertId}`, {
                     method: 'DELETE'
                 })
                 const data = await res.json()

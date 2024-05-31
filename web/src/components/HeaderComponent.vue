@@ -47,7 +47,7 @@ export default {
 
     async getUser() {
       try {
-        const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${this.userId}`)
+        const res = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/user/${this.userId}`)
         const data = await res.json()
         this.user = data
       } catch (e) {

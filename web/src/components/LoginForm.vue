@@ -149,7 +149,7 @@ export default {
 
       console.log(data);
 
-      const res = await fetch("http://localhost/itb-proyecto-final/api/index.php/auth/login", {
+      const res = await fetch("http://itb-api.us-east-1.elasticbeanstalk.com/index.php/auth/login", {
         method: "POST",
         headers: {
           "Accept": "application/json",
@@ -193,7 +193,7 @@ export default {
 
       console.log('Register:', data);
 
-      const res = await fetch("http://localhost/itb-proyecto-final/api/index.php/auth/register", {
+      const res = await fetch("http://itb-api.us-east-1.elasticbeanstalk.com/index.php/auth/register", {
         method: "POST",
         headers: {
           "Accept": "application/json",

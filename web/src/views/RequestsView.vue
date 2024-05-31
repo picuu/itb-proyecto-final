@@ -40,7 +40,7 @@ export default {
       }
     },
     getRequests() {
-      fetch('http://localhost/itb-proyecto-final/api/index.php/request/')
+      fetch('http://itb-api.us-east-1.elasticbeanstalk.com/index.php/request/')
         .then((res) => res.json())
         .then((data) => {
           this.requests = data;
@@ -48,7 +48,7 @@ export default {
         .catch((e) => console.error('Error fetching requests:', e));
     },
     deleteRequest(id) {
-      fetch(`http://localhost/itb-proyecto-final/api/index.php/request/${id}`, {
+      fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/request/${id}`, {
         method: 'DELETE',
       })
         .then((res) => res.json())

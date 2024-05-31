@@ -33,7 +33,7 @@ export default {
 
   methods: {
     async getAdvert() {
-      const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}`)
+      const res = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/advert/${this.advertId}`)
       const data = await res.json()
       this.loading = false
       return data
@@ -68,7 +68,7 @@ export default {
       console.log(bookingData)
 
       try {
-        const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/booking`, {
+        const res = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/booking`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -98,7 +98,7 @@ export default {
 
     async getUser() {
       try {
-        const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${this.userId}`)
+        const res = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/user/${this.userId}`)
         const data = await res.json()
         this.user = data
       } catch (e) {
@@ -108,7 +108,7 @@ export default {
 
     async getAdvertBookings() {
       try {
-        const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/advert/${this.advertId}/booking`)
+        const res = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/advert/${this.advertId}/booking`)
         const data = await res.json()
         this.bookings = data
       } catch (e) {

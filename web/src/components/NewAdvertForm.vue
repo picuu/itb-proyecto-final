@@ -51,7 +51,7 @@ export default {
     // Función para obtener categorías desde la API
     async getCategories() {
       try {
-        const res = await fetch('http://localhost/itb-proyecto-final/api/index.php/category')
+        const res = await fetch('http://itb-api.us-east-1.elasticbeanstalk.com/index.php/category')
         if (res.ok) {
           this.categories = await res.json()
           // console.log('Categories:', this.categories)
@@ -66,7 +66,7 @@ export default {
     // Función para obtener etiquetas desde la API
     async getTags() {
       try {
-        const res = await fetch('http://localhost/itb-proyecto-final/api/index.php/tag')
+        const res = await fetch('http://itb-api.us-east-1.elasticbeanstalk.com/index.php/tag')
         if (res.ok) {
           this.tags = await res.json()
           // console.log('Tags:', this.tags)
@@ -112,7 +112,7 @@ export default {
       console.log(this.formData)
 
       try {
-        const res = await fetch('http://localhost/itb-proyecto-final/api/index.php/advert', {
+        const res = await fetch('http://itb-api.us-east-1.elasticbeanstalk.com/index.php/advert', {
           method: 'POST',
           header: {
             "Content-Type": "application/json"

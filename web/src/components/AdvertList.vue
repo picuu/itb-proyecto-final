@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     async getOffers() {
-      const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php${this.endpoint}`)
+      const res = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php${this.endpoint}`)
       const data = await res.json()
       return data
     }

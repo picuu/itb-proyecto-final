@@ -46,7 +46,7 @@ export default {
 
                 console.log('Register:', data);
 
-                const res = await fetch(`http://localhost/itb-proyecto-final/api/index.php/user/${userId}`, {
+                const res = await fetch(`http://itb-api.us-east-1.elasticbeanstalk.com/index.php/user/${userId}`, {
                     method: "PUT",
                     headers: {
                         "Accept": "application/json",
